@@ -101,7 +101,8 @@ const seo = z.object({
 });
 
 // ── 国际化字段级覆盖 ──────────────────────────────────
-const i18nOverride = z.object({
+/** Field-level locale override; also the shape of `index.<locale>.json` files. */
+export const projectI18nOverrideSchema = z.object({
   name: z.string().optional(),
   tagline: z.string().optional(),
   summary: z.string().optional(),
@@ -189,7 +190,7 @@ export const projectSchema = z.object({
   seo: seo.prefault({}),
 
   // ── 国际化 ──
-  i18n: z.record(z.string(), i18nOverride).default({}),
+  i18n: z.record(z.string(), projectI18nOverrideSchema).default({}),
   availableLocales: z.array(z.string()).optional(),
 
   // ── 扩展位 ──
@@ -198,3 +199,4 @@ export const projectSchema = z.object({
 
 export type Project = z.infer<typeof projectSchema>;
 export type ProjectInput = z.input<typeof projectSchema>;
+export type ProjectI18nOverride = z.infer<typeof projectI18nOverrideSchema>;

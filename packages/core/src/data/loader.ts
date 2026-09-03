@@ -13,7 +13,7 @@ import type { ResolvedMineprojConfig } from '../config/schema';
 import { formatDataIssues, validateProject, zodIssuesToDataIssues } from './validate';
 
 /** Wrap zod issues into a readable DataError for auxiliary data files. */
-function invalidData(file: string, error: { issues: { path: (string | number | symbol)[]; message: string }[] }): DataError {
+export function invalidData(file: string, error: { issues: { path: (string | number | symbol)[]; message: string }[] }): DataError {
   return new DataError(`Invalid data:\n${formatDataIssues(zodIssuesToDataIssues(file, error))}`);
 }
 
@@ -57,7 +57,7 @@ async function readJson(file: string): Promise<unknown> {
 }
 
 /** Reads JSON, returning `undefined` when the file does not exist. */
-async function tryReadJson(file: string): Promise<unknown | undefined> {
+export async function tryReadJson(file: string): Promise<unknown | undefined> {
   try {
     return JSON.parse(await readFile(file, 'utf-8'));
   } catch (err) {
