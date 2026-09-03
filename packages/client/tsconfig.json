@@ -1,0 +1,7 @@
+{
+  "extends": "@mineproj/tsconfig/react-lib.json",
+  "include": ["src"],
+  "compilerOptions": {
+    "types": ["node", "vitest/globals"]
+  }
+}

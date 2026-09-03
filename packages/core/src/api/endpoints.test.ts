@@ -1,10 +1,10 @@
 import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { mineprojConfigSchema, type ResolvedMineprojConfig } from '../config/schema';
 import { loadDataset, type Dataset } from '../data/loader';
-import { generateApiEndpoints, endpointDefinitions, envelope, API_VERSION } from './endpoints';
+import { generateApiEndpoints, envelope, API_VERSION } from './endpoints';
 import { emitApiEndpoints } from './emit';
 import { readFile } from 'node:fs/promises';
 
