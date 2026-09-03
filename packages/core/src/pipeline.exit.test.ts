@@ -112,7 +112,7 @@ export default theme;
       // The only external script allowed is the islands runtime itself.
       const srcScripts = [...html.matchAll(/<script[^>]*src="([^"]*)"/g)].map((m) => m[1]);
       for (const src of srcScripts) {
-        expect(src, `${page} unexpected script ${src}`).toBe('@mp/islands.js');
+        expect(src, `${page} unexpected script ${src}`).toBe('/@mp/islands.js');
       }
       // No inline executable scripts (state data is application/json).
       expect(html.match(/<script>/g), `${page} has inline scripts`).toBeNull();
