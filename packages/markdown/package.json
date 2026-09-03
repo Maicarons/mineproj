@@ -1,0 +1,34 @@
+{
+  "name": "@mineproj/markdown",
+  "version": "0.0.0",
+  "description": "mineproj markdown pipeline: markdown-it + GFM, Shiki build-time highlighting, TOC, excerpts, sanitization",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@shikijs/markdown-it": "^3.0.0",
+    "gray-matter": "^4.0.3",
+    "markdown-it": "^14.0.0",
+    "markdown-it-footnote": "^4.0.0",
+    "markdown-it-task-lists": "^2.1.1",
+    "shiki": "^3.0.0"
+  },
+  "devDependencies": {
+    "@mineproj/tsconfig": "workspace:*",
+    "@mineproj/vitest": "workspace:*",
+    "@types/markdown-it": "^14.0.0",
+    "@types/node": "^24.0.0",
+    "tsdown": "^0.12.0",
+    "typescript": "^5.7.0",
+    "vitest": "^4.0.0"
+  }
+}
