@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 安全漏洞
+    url: https://github.com/Maicarons/mineproj/security/advisories/new
+    about: 请勿公开报告安全漏洞，请走 Security Advisory。

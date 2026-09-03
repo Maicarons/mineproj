@@ -1,0 +1,9 @@
+# CODEOWNERS —— mineproj
+# 默认所有变更需 @Maicarons 审阅
+*       @Maicarons
+
+# 文档站与计划文档
+/docs/  @Maicarons
+
+# 面向 AI 的技能说明
+/skills/ @Maicarons

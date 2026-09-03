@@ -1,0 +1,35 @@
+{
+  "name": "mineproj",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Apache-2.0 licensed, backend-free static site generator for showcasing personal projects",
+  "license": "Apache-2.0",
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "docs"
+  ],
+  "scripts": {
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "lint": "eslint .",
+    "docs:dev": "pnpm --filter mineproj-docs dev",
+    "docs:build": "pnpm --filter mineproj-docs build",
+    "docs:preview": "pnpm --filter mineproj-docs preview",
+    "check:encoding": "python scripts/check-encoding.py"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "vitest": "^4.0.0",
+    "eslint": "^9.0.0"
+  },
+  "engines": {
+    "node": ">=22.12"
+  },
+  "packageManager": "pnpm@10.0.0",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
+}

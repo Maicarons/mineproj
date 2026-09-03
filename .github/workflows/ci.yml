@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.12
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Test
+        run: pnpm -r test
+
+      - name: Build
+        run: pnpm -r build
+
+      - name: Encoding check (UTF-8 + LF)
+        run: |
+          python scripts/check-encoding.py $(git diff --name-only --diff-filter=ACM HEAD~1 2>/dev/null | grep -E '\.(md|ts|json|yml|yaml)$' || true)

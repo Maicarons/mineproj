@@ -1,0 +1,24 @@
+{
+  "name": "@mineproj/cli",
+  "version": "0.0.0",
+  "description": "mineproj command line: dev / build / audit",
+  "license": "Apache-2.0",
+  "type": "module",
+  "bin": {
+    "mineproj": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@mineproj/core": "workspace:*"
+  },
+  "peerDependencies": {
+    "vite": "^7.0.0"
+  },
+  "devDependencies": {
+    "tsdown": "^0.12.0",
+    "vitest": "^4.0.0"
+  }
+}

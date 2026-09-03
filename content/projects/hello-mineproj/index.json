@@ -1,0 +1,13 @@
+{
+  "id": "hello-mineproj",
+  "name": "Hello mineproj",
+  "tagline": "一个用于演示数据模型的示例项目",
+  "summary": "这是 mineproj 的示例内容，展示 index.json 的最小可用字段。",
+  "createdAt": "2026-09-03",
+  "updatedAt": "2026-09-03",
+  "tags": ["demo", "sample"],
+  "links": [
+    { "label": "仓库", "url": "https://github.com/Maicarons/mineproj", "kind": "repo" }
+  ],
+  "highlights": ["最小可用数据模型", "可被可视化编辑器读取"]
+}

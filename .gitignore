@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+build/
+out/
+docs/.vitepress/dist/
+docs/.vitepress/cache/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# Test / coverage
+coverage/
+.nyc_output/
+
+# Temp scratch (one-off patch scripts etc.)
+.tmp/
+
+# VitePress / Vite cache
+*.local
+.vite/
+
+# Local tool state
+.mimosa/
+.workbuddy/
