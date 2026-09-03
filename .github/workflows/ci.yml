@@ -29,11 +29,20 @@ jobs:
       - name: Lint
         run: pnpm lint
 
-      - name: Test
-        run: pnpm -r test
+      - name: Typecheck
+        run: pnpm typecheck
 
       - name: Build
         run: pnpm -r build
+
+      - name: Test
+        run: pnpm -r test
+
+      - name: Install Playwright browser
+        run: pnpm --filter @mineproj/e2e exec playwright install --with-deps chromium
+
+      - name: Smoke E2E
+        run: pnpm --filter @mineproj/e2e test
 
       - name: Encoding check (UTF-8 + LF)
         run: |

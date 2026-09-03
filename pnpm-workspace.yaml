@@ -2,4 +2,5 @@ packages:
   - 'packages/*'
   - 'configs/*'
   - 'examples/*'
+  - 'tests/e2e'
   - 'docs'
