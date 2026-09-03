@@ -1,10 +1,13 @@
 import { resolve } from 'node:path';
 import {
+  bodySourceOf,
   buildSite,
   loadConfig,
   loadDataset,
+  loadProjectBody,
   mineprojApiMiddleware,
   mineprojVirtualPlugin,
+  sourceDirOfProjectFile,
   type ResolvedMineprojConfig,
 } from '@mineproj/core';
 import { parseArgs, USAGE, type CliFlags, type ParsedArgs } from './args';
@@ -76,6 +79,30 @@ export async function runPreview(flags: CliFlags, logger: Logger): Promise<void>
   );
 }
 
+export async function runCheck(flags: CliFlags, logger: Logger): Promise<void> {
+  const root = resolve(flags.root ?? process.cwd());
+  const { path: configPath, config } = await loadConfig(root, flags.config);
+  logger.log(`config OK: ${configPath}`);
+
+  const dataset = await loadDataset(root, config);
+  let bodyCount = 0;
+  for (const project of dataset.projects) {
+    const sourceFile = dataset.sources.find((s) => s.slug === project.slug)?.file;
+    const dirRel = sourceFile === undefined ? null : sourceDirOfProjectFile(sourceFile);
+    const source = bodySourceOf(project);
+    if (source?.kind === 'file' && source.file !== 'body.md' && dirRel !== null) {
+      // A custom bodyFile is declared; loadProjectBody throws if missing.
+      await loadProjectBody(root, project, dirRel);
+    }
+    if (source !== null) bodyCount += 1;
+  }
+
+  logger.log(
+    `data OK: ${dataset.projects.length} project(s), ${dataset.tags.length} tag(s), ` +
+      `${dataset.collections.length} collection(s), ${bodyCount} with body content`,
+  );
+}
+
 export async function dispatch(args: ParsedArgs, logger: Logger): Promise<void> {
   switch (args.command) {
     case 'dev':
@@ -86,6 +113,9 @@ export async function dispatch(args: ParsedArgs, logger: Logger): Promise<void> 
       break;
     case 'preview':
       await runPreview(args.flags, logger);
+      break;
+    case 'check':
+      await runCheck(args.flags, logger);
       break;
     case 'help':
       console.log(USAGE);

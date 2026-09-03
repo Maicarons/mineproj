@@ -8,7 +8,7 @@ export interface CliFlags {
 }
 
 export interface ParsedArgs {
-  command: 'dev' | 'build' | 'preview' | 'help' | 'version';
+  command: 'dev' | 'build' | 'preview' | 'check' | 'help' | 'version';
   flags: CliFlags;
 }
 
@@ -21,6 +21,7 @@ Commands:
   dev        Start the dev server
   build      Build the static site into dist/
   preview    Preview the built site locally
+  check      Validate config and data files (CI-friendly, exits non-zero on errors)
 
 Options:
   --root <dir>     Site root directory (default: cwd)
@@ -88,7 +89,7 @@ export function parseArgs(argv: string[]): ParsedArgs {
   }
 
   const command = (positional ?? 'help') as ParsedArgs['command'];
-  if (!['dev', 'build', 'preview', 'help', 'version'].includes(command)) {
+  if (!['dev', 'build', 'preview', 'check', 'help', 'version'].includes(command)) {
     throw new Error(`Unknown command: ${positional}\n\n${USAGE}`);
   }
   return { command, flags };
