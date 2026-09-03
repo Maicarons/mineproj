@@ -1,0 +1,6 @@
+{
+  "name": "Voxel Tool EN",
+  "tagline": "A tiny voxel editor that runs entirely in the browser",
+  "summary": "A tiny voxel editor that runs entirely in the browser with zero install, built on WebGL and a custom greedy-meshing renderer for smooth 60fps edits.",
+  "highlights": ["Greedy meshing", "Zero install", "60 fps editing"]
+}
