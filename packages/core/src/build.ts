@@ -21,15 +21,16 @@ export interface BuildResult {
 }
 
 /**
- * Full static build: config → data → routes → render → emit.
- * Implemented by the minimal render pipeline (M0-08); CLI wiring precedes it.
+ * Full static build: config → data → render → emit.
+ * M0 emits a single bare `index.html`; the Vite/theme pipeline arrives in M2.
  */
 export async function buildSite(
   root: string,
   config: ResolvedMineprojConfig,
-  _options: BuildOptions = {},
+  options: BuildOptions = {},
 ): Promise<BuildResult> {
-  void resolve(root);
-  void config;
-  throw new BuildError('the render pipeline is not implemented yet (M0-08 pending)');
+  const outDir = resolve(root, options.outDir ?? config.outDir);
+  const { emitSite } = await import('./render/render');
+  const pages = await emitSite(root, config, outDir);
+  return { outDir, pages };
 }
