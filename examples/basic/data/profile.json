@@ -1,0 +1,9 @@
+{
+  "name": "Mai",
+  "title": "Indie developer",
+  "bio": "Builds small tools, tiny games and useful CLIs. Enjoys shipping static sites.",
+  "socials": [
+    { "type": "github", "label": "GitHub", "url": "https://github.com/maicarons" }
+  ],
+  "skills": ["TypeScript", "React", "Vite", "Python"]
+}

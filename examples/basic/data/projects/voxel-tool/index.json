@@ -1,0 +1,30 @@
+{
+  "slug": "voxel-tool",
+  "name": "Voxel Tool",
+  "tagline": "A tiny voxel editor that runs entirely in the browser",
+  "summary": "A tiny voxel editor that runs entirely in the browser with zero install, built on WebGL and a custom greedy-meshing renderer for smooth 60fps edits.",
+  "cover": "cover.png",
+  "coverFit": "cover",
+  "category": "web",
+  "tags": ["web", "experiment"],
+  "platforms": ["web"],
+  "techStack": ["TypeScript", "WebGL", "Vite"],
+  "createdAt": "2026-03-12T00:00:00.000Z",
+  "updatedAt": "2026-08-20T00:00:00.000Z",
+  "releasedAt": "2026-04-01T00:00:00.000Z",
+  "status": "released",
+  "featured": true,
+  "weight": 5,
+  "links": [
+    { "type": "repo", "label": "Source", "url": "https://github.com/maicarons/voxel-tool", "primary": true },
+    { "type": "demo", "label": "Live demo", "url": "https://voxel-tool.example.com" }
+  ],
+  "playable": {
+    "type": "iframe",
+    "entry": "/demos/voxel-tool/index.html",
+    "aspectRatio": "16 / 9",
+    "height": 480
+  },
+  "highlights": ["Greedy meshing", "Zero install", "60 fps editing"],
+  "license": "Apache-2.0"
+}

@@ -7,4 +7,6 @@ export default defineConfig({
   clean: true,
   // Workspace packages ship TS sources; bundle them into the CLI binary.
   noExternal: [/^@mineproj\//],
+  // jiti must stay external: it lazily requires files from its own dist directory.
+  external: ['jiti'],
 });

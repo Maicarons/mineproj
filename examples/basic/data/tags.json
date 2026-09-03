@@ -1,0 +1,7 @@
+{
+  "web": { "color": "#2563EB", "description": "Runs in the browser", "group": "platform" },
+  "cli": { "color": "#0F766E", "description": "Terminal tools", "group": "platform" },
+  "game": { "color": "#C2410C", "description": "Playable games", "group": "kind" },
+  "tool": { "color": "#4D7C0F", "description": "Utilities that get things done", "group": "kind" },
+  "experiment": { "color": "#7C3AED", "description": "Playground prototypes", "group": "kind" }
+}

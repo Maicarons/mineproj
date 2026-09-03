@@ -13,7 +13,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@mineproj/core": "workspace:*"
+    "@mineproj/core": "workspace:*",
+    "jiti": "^2.0.0"
   },
   "peerDependencies": {
     "vite": "^7.0.0"

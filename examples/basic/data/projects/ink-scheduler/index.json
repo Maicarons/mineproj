@@ -1,0 +1,18 @@
+{
+  "slug": "ink-scheduler",
+  "name": "Ink Scheduler",
+  "tagline": "Desktop timetable planner with handwriting input",
+  "summary": "A desktop timetable planner with handwriting input for stylus laptops, exporting clean PDF schedules; still an alpha experiment around time-blocking heuristics.",
+  "category": "desktop",
+  "tags": ["tool", "experiment"],
+  "platforms": ["windows", "macos"],
+  "techStack": ["Tauri", "React"],
+  "createdAt": "2026-08-10T00:00:00.000Z",
+  "status": "alpha",
+  "weight": 1,
+  "links": [
+    { "type": "repo", "label": "Source", "url": "https://github.com/maicarons/ink-scheduler", "primary": true }
+  ],
+  "highlights": ["Stylus input", "PDF export", "Time-blocking"],
+  "license": "Apache-2.0"
+}

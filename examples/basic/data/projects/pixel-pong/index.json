@@ -1,0 +1,24 @@
+{
+  "slug": "pixel-pong",
+  "name": "Pixel Pong",
+  "tagline": "A one-file pong clone with gamepad support",
+  "summary": "A one-file pong clone with gamepad support and a CRT-style filter, written in vanilla JavaScript to prove how far a single HTML file can go in 2026.",
+  "category": "game",
+  "tags": ["web", "game"],
+  "platforms": ["web"],
+  "techStack": ["JavaScript", "Canvas"],
+  "createdAt": "2026-06-18T00:00:00.000Z",
+  "status": "wip",
+  "featured": true,
+  "weight": 4,
+  "links": [
+    { "type": "repo", "label": "Source", "url": "https://github.com/maicarons/pixel-pong", "primary": true }
+  ],
+  "playable": {
+    "type": "iframe",
+    "entry": "/demos/pixel-pong/index.html",
+    "requirements": { "keyboard": true, "mobileFriendly": false }
+  },
+  "highlights": ["Single file", "Gamepad support", "CRT filter"],
+  "license": "Apache-2.0"
+}

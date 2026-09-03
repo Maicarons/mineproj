@@ -1,0 +1,19 @@
+{
+  "slug": "csv-wrangler",
+  "name": "CSV Wrangler",
+  "tagline": "Command-line swiss knife for messy spreadsheets",
+  "summary": "A command-line swiss knife for messy spreadsheets: streaming CSV parsing, type inference, dedupe and join, all in a single static binary with no runtime dependencies.",
+  "category": "cli",
+  "tags": ["cli", "tool"],
+  "platforms": ["windows", "macos", "linux"],
+  "techStack": ["Rust"],
+  "createdAt": "2025-11-02T00:00:00.000Z",
+  "updatedAt": "2026-07-14T00:00:00.000Z",
+  "status": "released",
+  "weight": 3,
+  "links": [
+    { "type": "repo", "label": "Source", "url": "https://github.com/maicarons/csv-wrangler", "primary": true }
+  ],
+  "highlights": ["Streaming parser", "Static binary", "Type inference"],
+  "license": "MIT"
+}
