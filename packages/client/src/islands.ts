@@ -1,5 +1,3 @@
-import { hydrateRoot } from 'react-dom/client';
-
 /**
  * Island hydration runtime (M2-11), client side. Loaded only on pages that
  * contain `data-mp-island` containers — content pages never load it.
