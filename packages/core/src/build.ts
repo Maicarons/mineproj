@@ -1,6 +1,8 @@
-import { resolve } from 'node:path';
+import { rm } from 'node:fs/promises';
+import { join, resolve } from 'node:path';
 import type { ResolvedMineprojConfig } from './config/schema';
 import { loadDataset } from './data/loader';
+import { processProjectAssets, sourceDirOfProjectFile } from './data/assets';
 
 export class BuildError extends Error {
   constructor(message: string) {
@@ -32,7 +34,25 @@ export async function buildSite(
 ): Promise<BuildResult> {
   const outDir = resolve(root, options.outDir ?? config.outDir);
   const dataset = await loadDataset(root, config);
+
+  // Clean the output up front so asset copies below land in a fresh tree.
+  await rm(outDir, { recursive: true, force: true });
+
+  const projects = await Promise.all(
+    dataset.projects.map(async (project) => {
+      const sourceFile = dataset.sources.find((s) => s.slug === project.slug)?.file;
+      const dirRel = sourceFile === undefined ? null : sourceDirOfProjectFile(sourceFile);
+      if (dirRel === null) return project;
+      return processProjectAssets(project, {
+        slug: project.slug,
+        sourceDirAbs: join(root, ...dirRel.split('/')),
+        assetsOutDirAbs: join(outDir, 'projects', project.slug),
+        urlBase: `/projects/${project.slug}`,
+      });
+    }),
+  );
+
   const { emitSite } = await import('./render/render');
-  const pages = await emitSite(root, config, outDir, dataset.projects);
+  const pages = await emitSite(root, config, outDir, projects, { clean: false });
   return { outDir, pages };
 }

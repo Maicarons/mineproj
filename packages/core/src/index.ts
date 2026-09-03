@@ -9,4 +9,6 @@ export * from './hooks';
 export * from './virtual';
 export * from './build';
 export * from './data/loader';
+export * from './data/validate';
+export * from './data/assets';
 export * from './render/render';
