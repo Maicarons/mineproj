@@ -69,7 +69,11 @@ export async function resolveTheme(
   const { root } = options;
 
   const loadReference = options.loadThemeReference ?? (async (ref: string) => {
-    return resolveTheme(expandThemeReference(ref), { ...options, loadThemeReference: undefined });
+    const expandedRef = expandThemeReference(ref);
+    if (!(expandedRef.startsWith('@') || expandedRef.startsWith('mineproj-theme-'))) {
+      throw new ThemeResolutionError(`Cannot resolve theme reference "${ref}"`);
+    }
+    return importThemeModule(expandedRef, root);
   });
 
   // Inline object.
@@ -97,9 +101,10 @@ export async function resolveTheme(
     return resolveThemeExtends(local, (ref) => loadReference(ref));
   }
 
-  // Package reference.
+  // Package reference. Prefer the injected loader (used by the pipeline and
+  // tests); fall back to importing the package from the site root.
   if (expanded.startsWith('@') || expanded.startsWith('mineproj-theme-')) {
-    const theme = await importThemeModule(expanded, root);
+    const theme = await loadReference(expanded);
     return resolveThemeExtends(theme, (ref) => loadReference(ref));
   }
 

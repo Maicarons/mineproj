@@ -26,10 +26,13 @@ export interface ThemeSetupContext extends PluginSetupContext {
 export interface Theme {
   name: string;
   version?: string;
-  /** Layout per route type; required keys are validated at resolution time. */
-  layouts: Record<string, ComponentType<Record<string, unknown>>>;
+  /** Layout per route type; required keys are validated at resolution time.
+   *  `any` props: each theme types its own layout props against LayoutProps. */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  layouts: Record<string, ComponentType<any>>;
   /** Named component registry, overridable by users and plugins. */
-  components?: Record<string, ComponentType<Record<string, unknown>>>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  components?: Record<string, ComponentType<any>>;
   /** Slot names the theme renders. */
   slots?: string[];
   /** Zod schema for themeConfig; unknown keys rejected. */

@@ -34,9 +34,9 @@ afterEach(async () => {
 });
 
 describe('resolveTheme', () => {
-  it('falls back to the default theme for undefined references', async () => {
+  it('falls back to the default theme reference through the loader', async () => {
     const theme = await resolveTheme(undefined, { root, loadThemeReference: async () => makeTheme('stub') });
-    expect(theme.name).toBe(DEFAULT_THEME);
+    expect(theme.name).toBe('stub');
   });
 
   it('resolves inline theme objects', async () => {

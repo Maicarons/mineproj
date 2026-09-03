@@ -4,9 +4,11 @@
   "description": "mineproj default theme — neutral,大众风格, light/dark; also the contract validator (dogfooding)",
   "license": "Apache-2.0",
   "type": "module",
-  "main": "./src/index.ts",
+  "main": "./dist/index.js",
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "default": "./dist/index.js"
+    }
   },
   "scripts": {
     "build": "tsdown",
@@ -20,8 +22,15 @@
   "devDependencies": {
     "@mineproj/tsconfig": "workspace:*",
     "@mineproj/vitest": "workspace:*",
+    "@types/react": "^19.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "tsdown": "^0.12.0",
     "typescript": "^5.7.0",
     "vitest": "^4.0.0"
-  }
+  },
+  "dependencies": {
+    "@mineproj/core": "workspace:^"
+  },
+  "types": "./dist/index.d.ts"
 }
