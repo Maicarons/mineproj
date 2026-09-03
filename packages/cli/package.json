@@ -23,6 +23,8 @@
     "@mineproj/tsconfig": "workspace:*",
     "@mineproj/vitest": "workspace:*",
     "@types/node": "^24.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "tsdown": "^0.12.0",
     "typescript": "^5.7.0",
     "vitest": "^4.0.0"

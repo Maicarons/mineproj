@@ -52,6 +52,9 @@ importers:
 
   examples/basic:
     dependencies:
+      '@mineproj/client':
+        specifier: workspace:*
+        version: link:../../packages/client
       '@mineproj/core':
         specifier: workspace:*
         version: link:../../packages/core
@@ -80,6 +83,12 @@ importers:
       '@types/node':
         specifier: ^24.0.0
         version: 24.13.3
+      react:
+        specifier: ^19.0.0
+        version: 19.2.8
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.2.8(react@19.2.8)
       tsdown:
         specifier: ^0.12.0
         version: 0.12.9(typescript@5.9.3)

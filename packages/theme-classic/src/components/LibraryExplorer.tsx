@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { createElement } from 'react';
 import type { Project } from '@mineproj/schema';
-import { serializeIslandProps } from '@mineproj/core';
+import { serializeIslandProps } from './islandSerializer';
 import { ProjectCard } from './ProjectCard';
 import { Button, SearchBox, Select, Switch } from './base';
 import {
