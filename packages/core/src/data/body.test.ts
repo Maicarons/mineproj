@@ -3,7 +3,6 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import type { Project } from '@mineproj/schema';
-import { DataError } from './loader';
 import { bodySourceOf, createMarkdownRenderer, loadProjectBody } from './body';
 
 let root: string;
@@ -126,14 +125,17 @@ describe('loadProjectBody', () => {
     expect(body?.html).toContain('shiki-themes');
   });
 
-  it('throws a readable error when the declared bodyFile is missing', async () => {
+  it('throws a readable error when a custom bodyFile is explicitly declared and missing', async () => {
     await mkdir(join(root, 'data', 'projects', 'voxel-tool'), { recursive: true });
+    const custom: Project = { ...project, bodyFile: 'docs/story.md' };
     await expect(
-      loadProjectBody(root, project, 'data/projects/voxel-tool'),
-    ).rejects.toThrow(DataError);
-    await expect(loadProjectBody(root, project, 'data/projects/voxel-tool')).rejects.toThrow(
-      /Missing body file "body\.md"[\s\S]*voxel-tool/,
-    );
+      loadProjectBody(root, custom, 'data/projects/voxel-tool'),
+    ).rejects.toThrow(/Missing body file "docs\/story\.md"[\s\S]*voxel-tool/);
+  });
+
+  it('returns null when the default body.md is absent', async () => {
+    await mkdir(join(root, 'data', 'projects', 'voxel-tool'), { recursive: true });
+    expect(await loadProjectBody(root, project, 'data/projects/voxel-tool')).toBeNull();
   });
 
   it('renders inline description when no bodyFile is set', async () => {

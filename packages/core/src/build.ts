@@ -54,5 +54,17 @@ export async function buildSite(
 
   const { emitSite } = await import('./render/render');
   const pages = await emitSite(root, config, outDir, projects, { clean: false });
+
+  // Static API (M1-07): generate + write dist/api/v1/*.json.
+  const { generateApiEndpoints } = await import('./api/endpoints');
+  const { emitApiEndpoints } = await import('./api/emit');
+  const endpoints = await generateApiEndpoints({
+    root,
+    config,
+    // API responses carry the asset-rewritten project view.
+    dataset: { ...dataset, projects },
+  });
+  await emitApiEndpoints(outDir, endpoints);
+
   return { outDir, pages };
 }

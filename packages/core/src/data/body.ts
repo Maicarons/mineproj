@@ -113,6 +113,9 @@ export async function loadProjectBody(
     markdown = await readFile(fileAbs, 'utf-8');
   } catch (err) {
     if ((err as NodeJS.ErrnoException).code === 'ENOENT') {
+      // `body.md` is the implicit default; its absence just means "no prose".
+      // A project that explicitly declares a custom bodyFile gets a hard error.
+      if (source.file === 'body.md') return null;
       throw new DataError(
         `Missing body file "${source.file}" declared by ${project.slug} (bodyFile): looked for ${fileAbs}`,
       );
