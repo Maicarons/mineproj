@@ -1,0 +1,51 @@
+{
+  "apiVersion": "v1",
+  "kind": "Feed",
+  "generatedAt": "2026-09-03T08:00:00.000Z",
+  "schemaVersion": "1.0.0",
+  "data": {
+    "version": "https://jsonfeed.org/version/1.1",
+    "title": "Basic Example",
+    "description": "An example mineproj site showcasing five personal projects.",
+    "items": [
+      {
+        "id": "voxel-tool",
+        "url": "/projects/voxel-tool/",
+        "title": "Voxel Tool",
+        "content_text": "A tiny voxel editor that runs entirely in the browser with zero install, built on WebGL and a custom greedy-meshing renderer for smooth 60fps edits.",
+        "date_published": "2026-04-01T00:00:00.000Z",
+        "date_modified": "2026-08-20T00:00:00.000Z"
+      },
+      {
+        "id": "pixel-pong",
+        "url": "/projects/pixel-pong/",
+        "title": "Pixel Pong",
+        "content_text": "A one-file pong clone with gamepad support and a CRT-style filter, written in vanilla JavaScript to prove how far a single HTML file can go in 2026.",
+        "date_published": "2026-06-18T00:00:00.000Z"
+      },
+      {
+        "id": "atlas-maps",
+        "url": "/projects/atlas-maps/",
+        "title": "Atlas Maps",
+        "content_text": "An offline-first map viewer that serves your own tile sets from a static host, with vector labels, a mobile-friendly UI and service-worker caching for field trips.",
+        "date_published": "2026-01-25T00:00:00.000Z",
+        "date_modified": "2026-09-01T00:00:00.000Z"
+      },
+      {
+        "id": "csv-wrangler",
+        "url": "/projects/csv-wrangler/",
+        "title": "CSV Wrangler",
+        "content_text": "A command-line swiss knife for messy spreadsheets: streaming CSV parsing, type inference, dedupe and join, all in a single static binary with no runtime dependencies.",
+        "date_published": "2025-11-02T00:00:00.000Z",
+        "date_modified": "2026-07-14T00:00:00.000Z"
+      },
+      {
+        "id": "ink-scheduler",
+        "url": "/projects/ink-scheduler/",
+        "title": "Ink Scheduler",
+        "content_text": "A desktop timetable planner with handwriting input for stylus laptops, exporting clean PDF schedules; still an alpha experiment around time-blocking heuristics.",
+        "date_published": "2026-08-10T00:00:00.000Z"
+      }
+    ]
+  }
+}

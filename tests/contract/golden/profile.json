@@ -1,0 +1,25 @@
+{
+  "apiVersion": "v1",
+  "kind": "Profile",
+  "generatedAt": "2026-09-03T08:00:00.000Z",
+  "schemaVersion": "1.0.0",
+  "data": {
+    "name": "Mai",
+    "title": "Indie developer",
+    "bio": "Builds small tools, tiny games and useful CLIs. Enjoys shipping static sites.",
+    "socials": [
+      {
+        "type": "github",
+        "label": "GitHub",
+        "url": "https://github.com/maicarons"
+      }
+    ],
+    "skills": [
+      "TypeScript",
+      "React",
+      "Vite",
+      "Python"
+    ],
+    "ext": {}
+  }
+}

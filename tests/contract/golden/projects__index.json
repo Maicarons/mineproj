@@ -1,0 +1,127 @@
+{
+  "apiVersion": "v1",
+  "kind": "ProjectList",
+  "generatedAt": "2026-09-03T08:00:00.000Z",
+  "schemaVersion": "1.0.0",
+  "total": 5,
+  "page": 1,
+  "pageSize": 24,
+  "facets": {
+    "tags": {
+      "tool": 3,
+      "web": 3,
+      "experiment": 2,
+      "cli": 1,
+      "game": 1
+    },
+    "status": {
+      "released": 2,
+      "wip": 1,
+      "beta": 1,
+      "alpha": 1
+    }
+  },
+  "data": [
+    {
+      "slug": "voxel-tool",
+      "name": "Voxel Tool",
+      "tagline": "A tiny voxel editor that runs entirely in the browser",
+      "cover": "cover.png",
+      "tags": [
+        "web",
+        "experiment"
+      ],
+      "category": "web",
+      "status": "released",
+      "createdAt": "2026-03-12T00:00:00.000Z",
+      "featured": true,
+      "weight": 5,
+      "playable": {
+        "type": "iframe",
+        "entry": "/demos/voxel-tool/index.html",
+        "sandbox": "allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox",
+        "allow": "fullscreen; gamepad; clipboard-write",
+        "trusted": false,
+        "aspectRatio": "16 / 9",
+        "height": 480,
+        "lazy": true,
+        "postMessageResize": true,
+        "requirements": {
+          "mobileFriendly": false,
+          "keyboard": false
+        }
+      }
+    },
+    {
+      "slug": "pixel-pong",
+      "name": "Pixel Pong",
+      "tagline": "A one-file pong clone with gamepad support",
+      "tags": [
+        "web",
+        "game"
+      ],
+      "category": "game",
+      "status": "wip",
+      "createdAt": "2026-06-18T00:00:00.000Z",
+      "featured": true,
+      "weight": 4,
+      "playable": {
+        "type": "iframe",
+        "entry": "/demos/pixel-pong/index.html",
+        "sandbox": "allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox",
+        "allow": "fullscreen; gamepad; clipboard-write",
+        "trusted": false,
+        "aspectRatio": "16 / 9",
+        "height": 480,
+        "lazy": true,
+        "postMessageResize": true,
+        "requirements": {
+          "mobileFriendly": false,
+          "keyboard": true
+        }
+      }
+    },
+    {
+      "slug": "csv-wrangler",
+      "name": "CSV Wrangler",
+      "tagline": "Command-line swiss knife for messy spreadsheets",
+      "tags": [
+        "cli",
+        "tool"
+      ],
+      "category": "cli",
+      "status": "released",
+      "createdAt": "2025-11-02T00:00:00.000Z",
+      "featured": false,
+      "weight": 3
+    },
+    {
+      "slug": "atlas-maps",
+      "name": "Atlas Maps",
+      "tagline": "Offline-first map viewer for your own tiles",
+      "tags": [
+        "web",
+        "tool"
+      ],
+      "category": "web",
+      "status": "beta",
+      "createdAt": "2026-01-25T00:00:00.000Z",
+      "featured": false,
+      "weight": 2
+    },
+    {
+      "slug": "ink-scheduler",
+      "name": "Ink Scheduler",
+      "tagline": "Desktop timetable planner with handwriting input",
+      "tags": [
+        "tool",
+        "experiment"
+      ],
+      "category": "desktop",
+      "status": "alpha",
+      "createdAt": "2026-08-10T00:00:00.000Z",
+      "featured": false,
+      "weight": 1
+    }
+  ]
+}

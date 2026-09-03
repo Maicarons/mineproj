@@ -1,0 +1,86 @@
+{
+  "apiVersion": "v1",
+  "kind": "Project",
+  "generatedAt": "2026-09-03T08:00:00.000Z",
+  "schemaVersion": "1.0.0",
+  "data": {
+    "slug": "voxel-tool",
+    "name": "Voxel Tool",
+    "tagline": "A tiny voxel editor that runs entirely in the browser",
+    "summary": "A tiny voxel editor that runs entirely in the browser with zero install, built on WebGL and a custom greedy-meshing renderer for smooth 60fps edits.",
+    "cover": "cover.png",
+    "coverFit": "cover",
+    "screenshots": [],
+    "bodyFile": "body.md",
+    "highlights": [
+      "Greedy meshing",
+      "Zero install",
+      "60 fps editing"
+    ],
+    "docs": [],
+    "changelog": [],
+    "faq": [],
+    "category": "web",
+    "tags": [
+      "web",
+      "experiment"
+    ],
+    "platforms": [
+      "web"
+    ],
+    "techStack": [
+      "TypeScript",
+      "WebGL",
+      "Vite"
+    ],
+    "languages": [],
+    "createdAt": "2026-03-12T00:00:00.000Z",
+    "updatedAt": "2026-08-20T00:00:00.000Z",
+    "releasedAt": "2026-04-01T00:00:00.000Z",
+    "status": "released",
+    "featured": true,
+    "weight": 5,
+    "hidden": false,
+    "links": [
+      {
+        "type": "repo",
+        "label": "Source",
+        "url": "https://github.com/maicarons/voxel-tool",
+        "primary": true
+      },
+      {
+        "type": "demo",
+        "label": "Live demo",
+        "url": "https://voxel-tool.example.com",
+        "primary": false
+      }
+    ],
+    "playable": {
+      "type": "iframe",
+      "entry": "/demos/voxel-tool/index.html",
+      "sandbox": "allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox",
+      "allow": "fullscreen; gamepad; clipboard-write",
+      "trusted": false,
+      "aspectRatio": "16 / 9",
+      "height": 480,
+      "lazy": true,
+      "postMessageResize": true,
+      "requirements": {
+        "mobileFriendly": false,
+        "keyboard": false
+      }
+    },
+    "stats": {
+      "custom": []
+    },
+    "collaborators": [],
+    "license": "Apache-2.0",
+    "seo": {
+      "keywords": [],
+      "noindex": false
+    },
+    "i18n": {},
+    "ext": {},
+    "body": null
+  }
+}

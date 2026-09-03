@@ -1,0 +1,18 @@
+{
+  "name": "@mineproj/contract-tests",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Golden-file contract tests for the mineproj static API",
+  "license": "Apache-2.0",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "update-golden": "UPDATE_GOLDEN=1 vitest run"
+  },
+  "dependencies": {
+    "@mineproj/core": "workspace:*"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.0"
+  }
+}

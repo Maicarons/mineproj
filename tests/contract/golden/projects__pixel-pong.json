@@ -1,0 +1,76 @@
+{
+  "apiVersion": "v1",
+  "kind": "Project",
+  "generatedAt": "2026-09-03T08:00:00.000Z",
+  "schemaVersion": "1.0.0",
+  "data": {
+    "slug": "pixel-pong",
+    "name": "Pixel Pong",
+    "tagline": "A one-file pong clone with gamepad support",
+    "summary": "A one-file pong clone with gamepad support and a CRT-style filter, written in vanilla JavaScript to prove how far a single HTML file can go in 2026.",
+    "coverFit": "cover",
+    "screenshots": [],
+    "bodyFile": "body.md",
+    "highlights": [
+      "Single file",
+      "Gamepad support",
+      "CRT filter"
+    ],
+    "docs": [],
+    "changelog": [],
+    "faq": [],
+    "category": "game",
+    "tags": [
+      "web",
+      "game"
+    ],
+    "platforms": [
+      "web"
+    ],
+    "techStack": [
+      "JavaScript",
+      "Canvas"
+    ],
+    "languages": [],
+    "createdAt": "2026-06-18T00:00:00.000Z",
+    "status": "wip",
+    "featured": true,
+    "weight": 4,
+    "hidden": false,
+    "links": [
+      {
+        "type": "repo",
+        "label": "Source",
+        "url": "https://github.com/maicarons/pixel-pong",
+        "primary": true
+      }
+    ],
+    "playable": {
+      "type": "iframe",
+      "entry": "/demos/pixel-pong/index.html",
+      "sandbox": "allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox",
+      "allow": "fullscreen; gamepad; clipboard-write",
+      "trusted": false,
+      "aspectRatio": "16 / 9",
+      "height": 480,
+      "lazy": true,
+      "postMessageResize": true,
+      "requirements": {
+        "mobileFriendly": false,
+        "keyboard": true
+      }
+    },
+    "stats": {
+      "custom": []
+    },
+    "collaborators": [],
+    "license": "Apache-2.0",
+    "seo": {
+      "keywords": [],
+      "noindex": false
+    },
+    "i18n": {},
+    "ext": {},
+    "body": null
+  }
+}

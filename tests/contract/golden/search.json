@@ -1,0 +1,1197 @@
+{
+  "apiVersion": "v1",
+  "kind": "SearchIndex",
+  "generatedAt": "2026-09-03T08:00:00.000Z",
+  "schemaVersion": "1.0.0",
+  "data": {
+    "index": {
+      "documentCount": 5,
+      "nextId": 5,
+      "documentIds": {
+        "0": "voxel-tool",
+        "1": "pixel-pong",
+        "2": "csv-wrangler",
+        "3": "atlas-maps",
+        "4": "ink-scheduler"
+      },
+      "fieldIds": {
+        "name": 0,
+        "tagline": 1,
+        "summary": 2,
+        "tags": 3
+      },
+      "fieldLength": {
+        "0": [
+          2,
+          10,
+          27,
+          2
+        ],
+        "1": [
+          2,
+          8,
+          27,
+          2
+        ],
+        "2": [
+          2,
+          7,
+          27,
+          2
+        ],
+        "3": [
+          2,
+          8,
+          29,
+          2
+        ],
+        "4": [
+          2,
+          6,
+          23,
+          2
+        ]
+      },
+      "averageFieldLength": [
+        2,
+        7.8,
+        26.6,
+        2
+      ],
+      "storedFields": {
+        "0": {
+          "id": "voxel-tool"
+        },
+        "1": {
+          "id": "pixel-pong"
+        },
+        "2": {
+          "id": "csv-wrangler"
+        },
+        "3": {
+          "id": "atlas-maps"
+        },
+        "4": {
+          "id": "ink-scheduler"
+        }
+      },
+      "dirtCount": 0,
+      "index": [
+        [
+          "ui",
+          {
+            "2": {
+              "3": 1
+            }
+          }
+        ],
+        [
+          "laptops",
+          {
+            "2": {
+              "4": 1
+            }
+          }
+        ],
+        [
+          "labels",
+          {
+            "2": {
+              "3": 1
+            }
+          }
+        ],
+        [
+          "line",
+          {
+            "1": {
+              "2": 1
+            },
+            "2": {
+              "2": 1
+            }
+          }
+        ],
+        [
+          "your",
+          {
+            "1": {
+              "3": 1
+            },
+            "2": {
+              "3": 1
+            }
+          }
+        ],
+        [
+          "own",
+          {
+            "1": {
+              "3": 1
+            },
+            "2": {
+              "3": 1
+            }
+          }
+        ],
+        [
+          "offline",
+          {
+            "1": {
+              "3": 1
+            },
+            "2": {
+              "3": 1
+            }
+          }
+        ],
+        [
+          "one",
+          {
+            "1": {
+              "1": 1
+            },
+            "2": {
+              "1": 1
+            }
+          }
+        ],
+        [
+          "on",
+          {
+            "2": {
+              "0": 1
+            }
+          }
+        ],
+        [
+          "mobile",
+          {
+            "2": {
+              "3": 1
+            }
+          }
+        ],
+        [
+          "map",
+          {
+            "1": {
+              "3": 1
+            },
+            "2": {
+              "3": 1
+            }
+          }
+        ],
+        [
+          "maps",
+          {
+            "0": {
+              "3": 1
+            }
+          }
+        ],
+        [
+          "messy",
+          {
+            "1": {
+              "2": 1
+            },
+            "2": {
+              "2": 1
+            }
+          }
+        ],
+        [
+          "meshing",
+          {
+            "2": {
+              "0": 1
+            }
+          }
+        ],
+        [
+          "desktop",
+          {
+            "1": {
+              "4": 1
+            },
+            "2": {
+              "4": 1
+            }
+          }
+        ],
+        [
+          "dependencies",
+          {
+            "2": {
+              "2": 1
+            }
+          }
+        ],
+        [
+          "dedupe",
+          {
+            "2": {
+              "2": 1
+            }
+          }
+        ],
+        [
+          "no",
+          {
+            "2": {
+              "2": 1
+            }
+          }
+        ],
+        [
+          "join",
+          {
+            "2": {
+              "2": 1
+            }
+          }
+        ],
+        [
+          "javascript",
+          {
+            "2": {
+              "1": 1
+            }
+          }
+        ],
+        [
+          "knife",
+          {
+            "1": {
+              "2": 1
+            },
+            "2": {
+              "2": 1
+            }
+          }
+        ],
+        [
+          "2026",
+          {
+            "2": {
+              "1": 1
+            }
+          }
+        ],
+        [
+          "heuristics",
+          {
+            "2": {
+              "4": 1
+            }
+          }
+        ],
+        [
+          "handwriting",
+          {
+            "1": {
+              "4": 1
+            },
+            "2": {
+              "4": 1
+            }
+          }
+        ],
+        [
+          "host",
+          {
+            "2": {
+              "3": 1
+            }
+          }
+        ],
+        [
+          "how",
+          {
+            "2": {
+              "1": 1
+            }
+          }
+        ],
+        [
+          "html",
+          {
+            "2": {
+              "1": 1
+            }
+          }
+        ],
+        [
+          "vector",
+          {
+            "2": {
+              "3": 1
+            }
+          }
+        ],
+        [
+          "viewer",
+          {
+            "1": {
+              "3": 1
+            },
+            "2": {
+              "3": 1
+            }
+          }
+        ],
+        [
+          "vanilla",
+          {
+            "2": {
+              "1": 1
+            }
+          }
+        ],
+        [
+          "voxel",
+          {
+            "0": {
+              "0": 1
+            },
+            "1": {
+              "0": 1
+            },
+            "2": {
+              "0": 1
+            }
+          }
+        ],
+        [
+          "schedules",
+          {
+            "2": {
+              "4": 1
+            }
+          }
+        ],
+        [
+          "scheduler",
+          {
+            "0": {
+              "4": 1
+            }
+          }
+        ],
+        [
+          "service",
+          {
+            "2": {
+              "3": 1
+            }
+          }
+        ],
+        [
+          "serves",
+          {
+            "2": {
+              "3": 1
+            }
+          }
+        ],
+        [
+          "sets",
+          {
+            "2": {
+              "3": 1
+            }
+          }
+        ],
+        [
+          "still",
+          {
+            "2": {
+              "4": 1
+            }
+          }
+        ],
+        [
+          "stylus",
+          {
+            "2": {
+              "4": 1
+            }
+          }
+        ],
+        [
+          "style",
+          {
+            "2": {
+              "1": 1
+            }
+          }
+        ],
+        [
+          "static",
+          {
+            "2": {
+              "2": 1,
+              "3": 1
+            }
+          }
+        ],
+        [
+          "streaming",
+          {
+            "2": {
+              "2": 1
+            }
+          }
+        ],
+        [
+          "spreadsheets",
+          {
+            "1": {
+              "2": 1
+            },
+            "2": {
+              "2": 1
+            }
+          }
+        ],
+        [
+          "swiss",
+          {
+            "1": {
+              "2": 1
+            },
+            "2": {
+              "2": 1
+            }
+          }
+        ],
+        [
+          "single",
+          {
+            "2": {
+              "1": 1,
+              "2": 1
+            }
+          }
+        ],
+        [
+          "support",
+          {
+            "1": {
+              "1": 1
+            },
+            "2": {
+              "1": 1
+            }
+          }
+        ],
+        [
+          "smooth",
+          {
+            "2": {
+              "0": 1
+            }
+          }
+        ],
+        [
+          "game",
+          {
+            "3": {
+              "1": 1
+            }
+          }
+        ],
+        [
+          "gamepad",
+          {
+            "1": {
+              "1": 1
+            },
+            "2": {
+              "1": 1
+            }
+          }
+        ],
+        [
+          "go",
+          {
+            "2": {
+              "1": 1
+            }
+          }
+        ],
+        [
+          "greedy",
+          {
+            "2": {
+              "0": 1
+            }
+          }
+        ],
+        [
+          "caching",
+          {
+            "2": {
+              "3": 1
+            }
+          }
+        ],
+        [
+          "can",
+          {
+            "2": {
+              "1": 1
+            }
+          }
+        ],
+        [
+          "clean",
+          {
+            "2": {
+              "4": 1
+            }
+          }
+        ],
+        [
+          "cli",
+          {
+            "3": {
+              "2": 1
+            }
+          }
+        ],
+        [
+          "clone",
+          {
+            "1": {
+              "1": 1
+            },
+            "2": {
+              "1": 1
+            }
+          }
+        ],
+        [
+          "command",
+          {
+            "1": {
+              "2": 1
+            },
+            "2": {
+              "2": 1
+            }
+          }
+        ],
+        [
+          "csv",
+          {
+            "0": {
+              "2": 1
+            },
+            "2": {
+              "2": 1
+            }
+          }
+        ],
+        [
+          "crt",
+          {
+            "2": {
+              "1": 1
+            }
+          }
+        ],
+        [
+          "custom",
+          {
+            "2": {
+              "0": 1
+            }
+          }
+        ],
+        [
+          "friendly",
+          {
+            "2": {
+              "3": 1
+            }
+          }
+        ],
+        [
+          "from",
+          {
+            "2": {
+              "3": 1
+            }
+          }
+        ],
+        [
+          "field",
+          {
+            "2": {
+              "3": 1
+            }
+          }
+        ],
+        [
+          "first",
+          {
+            "1": {
+              "3": 1
+            },
+            "2": {
+              "3": 1
+            }
+          }
+        ],
+        [
+          "filter",
+          {
+            "2": {
+              "1": 1
+            }
+          }
+        ],
+        [
+          "file",
+          {
+            "1": {
+              "1": 1
+            },
+            "2": {
+              "1": 2
+            }
+          }
+        ],
+        [
+          "far",
+          {
+            "2": {
+              "1": 1
+            }
+          }
+        ],
+        [
+          "for",
+          {
+            "1": {
+              "2": 1,
+              "3": 1
+            },
+            "2": {
+              "0": 1,
+              "2": 1,
+              "3": 1,
+              "4": 1
+            }
+          }
+        ],
+        [
+          "pdf",
+          {
+            "2": {
+              "4": 1
+            }
+          }
+        ],
+        [
+          "planner",
+          {
+            "1": {
+              "4": 1
+            },
+            "2": {
+              "4": 1
+            }
+          }
+        ],
+        [
+          "parsing",
+          {
+            "2": {
+              "2": 1
+            }
+          }
+        ],
+        [
+          "prove",
+          {
+            "2": {
+              "1": 1
+            }
+          }
+        ],
+        [
+          "pong",
+          {
+            "0": {
+              "1": 1
+            },
+            "1": {
+              "1": 1
+            },
+            "2": {
+              "1": 1
+            }
+          }
+        ],
+        [
+          "pixel",
+          {
+            "0": {
+              "1": 1
+            }
+          }
+        ],
+        [
+          "60fps",
+          {
+            "2": {
+              "0": 1
+            }
+          }
+        ],
+        [
+          "runtime",
+          {
+            "2": {
+              "2": 1
+            }
+          }
+        ],
+        [
+          "runs",
+          {
+            "1": {
+              "0": 1
+            },
+            "2": {
+              "0": 1
+            }
+          }
+        ],
+        [
+          "renderer",
+          {
+            "2": {
+              "0": 1
+            }
+          }
+        ],
+        [
+          "worker",
+          {
+            "2": {
+              "3": 1
+            }
+          }
+        ],
+        [
+          "wrangler",
+          {
+            "0": {
+              "2": 1
+            }
+          }
+        ],
+        [
+          "written",
+          {
+            "2": {
+              "1": 1
+            }
+          }
+        ],
+        [
+          "web",
+          {
+            "3": {
+              "0": 1,
+              "1": 1,
+              "3": 1
+            }
+          }
+        ],
+        [
+          "webgl",
+          {
+            "2": {
+              "0": 1
+            }
+          }
+        ],
+        [
+          "with",
+          {
+            "1": {
+              "1": 1,
+              "4": 1
+            },
+            "2": {
+              "0": 1,
+              "1": 1,
+              "2": 1,
+              "3": 1,
+              "4": 1
+            }
+          }
+        ],
+        [
+          "blocking",
+          {
+            "2": {
+              "4": 1
+            }
+          }
+        ],
+        [
+          "binary",
+          {
+            "2": {
+              "2": 1
+            }
+          }
+        ],
+        [
+          "built",
+          {
+            "2": {
+              "0": 1
+            }
+          }
+        ],
+        [
+          "browser",
+          {
+            "1": {
+              "0": 1
+            },
+            "2": {
+              "0": 1
+            }
+          }
+        ],
+        [
+          "zero",
+          {
+            "2": {
+              "0": 1
+            }
+          }
+        ],
+        [
+          "input",
+          {
+            "1": {
+              "4": 1
+            },
+            "2": {
+              "4": 1
+            }
+          }
+        ],
+        [
+          "ink",
+          {
+            "0": {
+              "4": 1
+            }
+          }
+        ],
+        [
+          "inference",
+          {
+            "2": {
+              "2": 1
+            }
+          }
+        ],
+        [
+          "install",
+          {
+            "2": {
+              "0": 1
+            }
+          }
+        ],
+        [
+          "in",
+          {
+            "1": {
+              "0": 1
+            },
+            "2": {
+              "0": 1,
+              "1": 2,
+              "2": 1
+            }
+          }
+        ],
+        [
+          "exporting",
+          {
+            "2": {
+              "4": 1
+            }
+          }
+        ],
+        [
+          "experiment",
+          {
+            "2": {
+              "4": 1
+            },
+            "3": {
+              "0": 1,
+              "4": 1
+            }
+          }
+        ],
+        [
+          "edits",
+          {
+            "2": {
+              "0": 1
+            }
+          }
+        ],
+        [
+          "editor",
+          {
+            "1": {
+              "0": 1
+            },
+            "2": {
+              "0": 1
+            }
+          }
+        ],
+        [
+          "entirely",
+          {
+            "1": {
+              "0": 1
+            },
+            "2": {
+              "0": 1
+            }
+          }
+        ],
+        [
+          "trips",
+          {
+            "2": {
+              "3": 1
+            }
+          }
+        ],
+        [
+          "time",
+          {
+            "2": {
+              "4": 1
+            }
+          }
+        ],
+        [
+          "timetable",
+          {
+            "1": {
+              "4": 1
+            },
+            "2": {
+              "4": 1
+            }
+          }
+        ],
+        [
+          "tile",
+          {
+            "2": {
+              "3": 1
+            }
+          }
+        ],
+        [
+          "tiles",
+          {
+            "1": {
+              "3": 1
+            }
+          }
+        ],
+        [
+          "tiny",
+          {
+            "1": {
+              "0": 1
+            },
+            "2": {
+              "0": 1
+            }
+          }
+        ],
+        [
+          "type",
+          {
+            "2": {
+              "2": 1
+            }
+          }
+        ],
+        [
+          "to",
+          {
+            "2": {
+              "1": 1
+            }
+          }
+        ],
+        [
+          "tool",
+          {
+            "0": {
+              "0": 1
+            },
+            "3": {
+              "2": 1,
+              "3": 1,
+              "4": 1
+            }
+          }
+        ],
+        [
+          "the",
+          {
+            "1": {
+              "0": 1
+            },
+            "2": {
+              "0": 1
+            }
+          }
+        ],
+        [
+          "that",
+          {
+            "1": {
+              "0": 1
+            },
+            "2": {
+              "0": 1,
+              "3": 1
+            }
+          }
+        ],
+        [
+          "around",
+          {
+            "2": {
+              "4": 1
+            }
+          }
+        ],
+        [
+          "alpha",
+          {
+            "2": {
+              "4": 1
+            }
+          }
+        ],
+        [
+          "all",
+          {
+            "2": {
+              "2": 1
+            }
+          }
+        ],
+        [
+          "an",
+          {
+            "2": {
+              "3": 1,
+              "4": 1
+            }
+          }
+        ],
+        [
+          "and",
+          {
+            "2": {
+              "0": 1,
+              "1": 1,
+              "2": 1,
+              "3": 1
+            }
+          }
+        ],
+        [
+          "atlas",
+          {
+            "0": {
+              "3": 1
+            }
+          }
+        ],
+        [
+          "a",
+          {
+            "1": {
+              "0": 1,
+              "1": 1
+            },
+            "2": {
+              "0": 2,
+              "1": 3,
+              "2": 2,
+              "3": 2,
+              "4": 1
+            }
+          }
+        ]
+      ],
+      "serializationVersion": 2
+    },
+    "documents": [
+      {
+        "id": "voxel-tool",
+        "name": "Voxel Tool",
+        "tagline": "A tiny voxel editor that runs entirely in the browser",
+        "summary": "A tiny voxel editor that runs entirely in the browser with zero install, built on WebGL and a custom greedy-meshing renderer for smooth 60fps edits.",
+        "tags": "web experiment"
+      },
+      {
+        "id": "pixel-pong",
+        "name": "Pixel Pong",
+        "tagline": "A one-file pong clone with gamepad support",
+        "summary": "A one-file pong clone with gamepad support and a CRT-style filter, written in vanilla JavaScript to prove how far a single HTML file can go in 2026.",
+        "tags": "web game"
+      },
+      {
+        "id": "csv-wrangler",
+        "name": "CSV Wrangler",
+        "tagline": "Command-line swiss knife for messy spreadsheets",
+        "summary": "A command-line swiss knife for messy spreadsheets: streaming CSV parsing, type inference, dedupe and join, all in a single static binary with no runtime dependencies.",
+        "tags": "cli tool"
+      },
+      {
+        "id": "atlas-maps",
+        "name": "Atlas Maps",
+        "tagline": "Offline-first map viewer for your own tiles",
+        "summary": "An offline-first map viewer that serves your own tile sets from a static host, with vector labels, a mobile-friendly UI and service-worker caching for field trips.",
+        "tags": "web tool"
+      },
+      {
+        "id": "ink-scheduler",
+        "name": "Ink Scheduler",
+        "tagline": "Desktop timetable planner with handwriting input",
+        "summary": "A desktop timetable planner with handwriting input for stylus laptops, exporting clean PDF schedules; still an alpha experiment around time-blocking heuristics.",
+        "tags": "tool experiment"
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "apiVersion": "v1",
+  "schemaVersion": "1.0.0",
+  "generatedAt": "2026-09-03T08:00:00.000Z",
+  "dataModel": {
+    "projects": 5,
+    "tags": 5,
+    "collections": 0,
+    "hasProfile": true
+  },
+  "endpoints": [
+    "/v1/projects.json",
+    "/v1/projects/index.json",
+    "/v1/tags.json",
+    "/v1/categories.json",
+    "/v1/collections.json",
+    "/v1/profile.json",
+    "/v1/stats.json",
+    "/v1/search.json",
+    "/v1/feed.json",
+    "/v1/manifest.json"
+  ]
+}

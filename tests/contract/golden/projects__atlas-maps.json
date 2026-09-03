@@ -1,0 +1,78 @@
+{
+  "apiVersion": "v1",
+  "kind": "Project",
+  "generatedAt": "2026-09-03T08:00:00.000Z",
+  "schemaVersion": "1.0.0",
+  "data": {
+    "slug": "atlas-maps",
+    "name": "Atlas Maps",
+    "tagline": "Offline-first map viewer for your own tiles",
+    "summary": "An offline-first map viewer that serves your own tile sets from a static host, with vector labels, a mobile-friendly UI and service-worker caching for field trips.",
+    "coverFit": "cover",
+    "screenshots": [],
+    "bodyFile": "body.md",
+    "highlights": [
+      "Offline caching",
+      "Own tile sets",
+      "Vector labels"
+    ],
+    "docs": [],
+    "changelog": [],
+    "faq": [
+      {
+        "q": "Does it need a server?",
+        "a": "No. Tiles are plain static files on any host."
+      },
+      {
+        "q": "Which formats are supported?",
+        "a": "XYZ tiles and MBTiles converted to XYZ."
+      }
+    ],
+    "category": "web",
+    "tags": [
+      "web",
+      "tool"
+    ],
+    "platforms": [
+      "web",
+      "android"
+    ],
+    "techStack": [
+      "TypeScript",
+      "MapLibre"
+    ],
+    "languages": [],
+    "createdAt": "2026-01-25T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "status": "beta",
+    "featured": false,
+    "weight": 2,
+    "hidden": false,
+    "links": [
+      {
+        "type": "repo",
+        "label": "Source",
+        "url": "https://github.com/maicarons/atlas-maps",
+        "primary": true
+      },
+      {
+        "type": "docs",
+        "label": "Docs",
+        "url": "https://atlas-maps.example.com/docs",
+        "primary": false
+      }
+    ],
+    "stats": {
+      "custom": []
+    },
+    "collaborators": [],
+    "license": "Apache-2.0",
+    "seo": {
+      "keywords": [],
+      "noindex": false
+    },
+    "i18n": {},
+    "ext": {},
+    "body": null
+  }
+}

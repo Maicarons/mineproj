@@ -1,0 +1,24 @@
+{
+  "apiVersion": "v1",
+  "kind": "CategoryList",
+  "generatedAt": "2026-09-03T08:00:00.000Z",
+  "schemaVersion": "1.0.0",
+  "data": [
+    {
+      "name": "web",
+      "count": 2
+    },
+    {
+      "name": "cli",
+      "count": 1
+    },
+    {
+      "name": "desktop",
+      "count": 1
+    },
+    {
+      "name": "game",
+      "count": 1
+    }
+  ]
+}

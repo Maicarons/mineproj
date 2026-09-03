@@ -1,0 +1,62 @@
+{
+  "apiVersion": "v1",
+  "kind": "Project",
+  "generatedAt": "2026-09-03T08:00:00.000Z",
+  "schemaVersion": "1.0.0",
+  "data": {
+    "slug": "ink-scheduler",
+    "name": "Ink Scheduler",
+    "tagline": "Desktop timetable planner with handwriting input",
+    "summary": "A desktop timetable planner with handwriting input for stylus laptops, exporting clean PDF schedules; still an alpha experiment around time-blocking heuristics.",
+    "coverFit": "cover",
+    "screenshots": [],
+    "bodyFile": "body.md",
+    "highlights": [
+      "Stylus input",
+      "PDF export",
+      "Time-blocking"
+    ],
+    "docs": [],
+    "changelog": [],
+    "faq": [],
+    "category": "desktop",
+    "tags": [
+      "tool",
+      "experiment"
+    ],
+    "platforms": [
+      "windows",
+      "macos"
+    ],
+    "techStack": [
+      "Tauri",
+      "React"
+    ],
+    "languages": [],
+    "createdAt": "2026-08-10T00:00:00.000Z",
+    "status": "alpha",
+    "featured": false,
+    "weight": 1,
+    "hidden": false,
+    "links": [
+      {
+        "type": "repo",
+        "label": "Source",
+        "url": "https://github.com/maicarons/ink-scheduler",
+        "primary": true
+      }
+    ],
+    "stats": {
+      "custom": []
+    },
+    "collaborators": [],
+    "license": "Apache-2.0",
+    "seo": {
+      "keywords": [],
+      "noindex": false
+    },
+    "i18n": {},
+    "ext": {},
+    "body": null
+  }
+}
