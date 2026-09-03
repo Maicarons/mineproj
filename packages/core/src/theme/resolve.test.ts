@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { defineTheme, type Theme } from './contract';
-import { DEFAULT_THEME, resolveTheme, ThemeResolutionError } from './resolve';
+import { resolveTheme, ThemeResolutionError } from './resolve';
 
 let root: string;
 
