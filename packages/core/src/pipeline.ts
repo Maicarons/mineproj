@@ -211,6 +211,10 @@ export async function buildSite(
     }
 
     const inner = await renderElementToString(createElement(Layout, props));
+    const head = [
+      ...(theme.styles ?? []).map((css) => `<style>${css}</style>`),
+      ...(theme.headScripts ?? []).map((script) => `<script>${script}</script>`),
+    ].join('\n');
     let html = renderDocument(inner, {
       lang: resolvedConfig.site.defaultLocale,
       title:
@@ -218,6 +222,7 @@ export async function buildSite(
           ? `${route.title} · ${resolvedConfig.site.title}`
           : resolvedConfig.site.title,
       description: resolvedConfig.site.description,
+      head,
       state: { route },
       // Islands: only pages that actually contain islands load JS at all —
       // pure content pages ship 0 bytes of client script (M2-11).

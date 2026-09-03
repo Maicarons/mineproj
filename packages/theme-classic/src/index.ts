@@ -8,15 +8,16 @@ import {
   NotFoundLayout,
   TagLayout,
 } from './layouts';
+import { tokensCss } from './styles/tokens';
 
 /**
  * @mineproj/theme-classic — the default theme and contract validator.
- * M2 ships minimal semantic layouts proving the pipeline; the polished UI
- * (design tokens, cards, filtering, islands) lands in M3.
+ * M3: real UI on the plan §8.3 design token system (neutral palette default,
+ * dark mode first-class, CSS variables end-to-end — no hardcoded colors).
  */
 const theme = defineTheme({
   name: '@mineproj/theme-classic',
-  version: '0.0.0',
+  version: '0.1.0',
   layouts: {
     home: HomeLayout,
     list: ListLayout,
@@ -28,6 +29,7 @@ const theme = defineTheme({
   },
   components: {},
   slots: ['nav-end', 'prose-top', 'prose-bottom'],
+  styles: [tokensCss],
 });
 
 export default theme;

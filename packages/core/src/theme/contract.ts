@@ -41,6 +41,10 @@ export interface Theme {
   locales?: Record<string, Record<string, string>>;
   /** Vite contributions merged into the final build config. */
   vite?: ThemeViteConfig;
+  /** CSS text inlined into every page `<head>` (critical CSS, no requests). */
+  styles?: string[];
+  /** Inline scripts for the head — e.g. the no-flash theme bootstrap. */
+  headScripts?: string[];
   /** Install-time hook. */
   setup?: (ctx: ThemeSetupContext) => void;
   /** Parent theme (inline object or resolvable reference string). */
@@ -112,6 +116,8 @@ export async function resolveThemeExtends(
     }
     merged.locales = { ...(merged.locales ?? {}), ...(link.locales ?? {}) };
     merged.vite = { ...(merged.vite ?? {}), ...(link.vite ?? {}) };
+    merged.styles = [...(merged.styles ?? []), ...(link.styles ?? [])];
+    merged.headScripts = [...(merged.headScripts ?? []), ...(link.headScripts ?? [])];
     if (link.configSchema !== undefined) merged.configSchema = link.configSchema;
     if (link.version !== undefined) merged.version = link.version;
   }
