@@ -4,6 +4,7 @@ import footnote from 'markdown-it-footnote';
 import taskLists from 'markdown-it-task-lists';
 import { buildToc, useHeadingAnchors, type Heading, type TocEntry } from './slugify';
 import { installImageRule, type ImageProcessor } from './image';
+import { installLinkRule, annotateDeadLinks, type LinkProcessorOptions } from './link';
 import { excerptOf, htmlToPlainText, readingTimeOf } from './meta';
 import { parseFrontMatter, type MarkdownRendererOptions } from './gfm';
 
@@ -30,6 +31,8 @@ export interface AsyncRendererOptions extends MarkdownRendererOptions {
   themes?: { light: string; dark: string };
   /** Image processor callback for responsive images (M4-05). */
   imageProcessor?: ImageProcessor;
+  /** Link processing options (M4-06). */
+  linkOptions?: LinkProcessorOptions;
 }
 
 export type MarkdownRenderer = (markdown: string) => string;
@@ -115,10 +118,11 @@ export async function renderMarkdown(source: string, options: AsyncRendererOptio
     // Shiki unavailable — proceed without highlighting rather than failing.
   }
 
-  // Install image rule before rendering
+  // Install image and link rules before rendering
   installImageRule(md, options.imageProcessor);
+  installLinkRule(md, options.linkOptions);
 
-  const html = md.render(content);
+  const html = annotateDeadLinks(md.render(content));
   const plainText = htmlToPlainText(html);
   return {
     html,
