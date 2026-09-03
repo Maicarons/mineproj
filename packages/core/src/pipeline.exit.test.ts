@@ -114,8 +114,11 @@ export default theme;
       for (const src of srcScripts) {
         expect(src, `${page} unexpected script ${src}`).toBe('/@mp/islands.js');
       }
-      // No inline executable scripts (state data is application/json).
-      expect(html.match(/<script>/g), `${page} has inline scripts`).toBeNull();
+      // The only inline executable script is the ~300B no-flash bootstrap.
+      const inlineScripts = [...html.matchAll(/<script>([^<]*)<\/script>/g)].map((m) => m[1] ?? '');
+      for (const inline of inlineScripts) {
+        expect(inline).toContain('mp-theme');
+      }
       expect(html).toContain('type="application/json"');
     }
   });
