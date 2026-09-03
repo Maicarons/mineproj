@@ -45,6 +45,10 @@ export interface Theme {
   styles?: string[];
   /** Inline scripts for the head — e.g. the no-flash theme bootstrap. */
   headScripts?: string[];
+  /** Interactive island components hydrated by the client runtime. */
+  islands?: Record<string, ComponentType<any>>;
+  /** Module specifier the client bundle imports the islands map from. */
+  islandsImport?: string;
   /** Install-time hook. */
   setup?: (ctx: ThemeSetupContext) => void;
   /** Parent theme (inline object or resolvable reference string). */
@@ -118,6 +122,8 @@ export async function resolveThemeExtends(
     merged.vite = { ...(merged.vite ?? {}), ...(link.vite ?? {}) };
     merged.styles = [...(merged.styles ?? []), ...(link.styles ?? [])];
     merged.headScripts = [...(merged.headScripts ?? []), ...(link.headScripts ?? [])];
+    merged.islands = { ...(merged.islands ?? {}), ...(link.islands ?? {}) };
+    if (link.islandsImport !== undefined) merged.islandsImport = link.islandsImport;
     if (link.configSchema !== undefined) merged.configSchema = link.configSchema;
     if (link.version !== undefined) merged.version = link.version;
   }

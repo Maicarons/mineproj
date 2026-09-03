@@ -14,6 +14,7 @@ import { hashInput, loadBuildCache, outputExists, PIPELINE_TEMPLATE_VERSION, sav
 import { copyDir } from './render/render';
 import { renderElementToString, renderDocument, outputFileForRoute } from './render/ssr';
 import { detectIslands, islandScriptTags } from './render/islands';
+import { bundleIslands } from './render/islandsBundle';
 import { DEFAULT_THEME, importThemeFromReference, resolveTheme } from './theme/resolve';
 import type { Theme } from './theme/contract';
 import type { LayoutData, LayoutProps } from './theme/props';
@@ -154,6 +155,7 @@ export async function buildSite(
   };
   const fallbackWarned = new Set<string>();
   let pages = 0;
+  await bundleIslands(siteRoot, outDir, theme);
   let revalidated = 0;
   const cache = await loadBuildCache(siteRoot);
   const nextCache: Record<string, string> = {};

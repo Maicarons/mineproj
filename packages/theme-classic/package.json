@@ -8,7 +8,8 @@
   "exports": {
     ".": {
       "default": "./dist/index.js"
-    }
+    },
+    "./islands": "./src/islands.tsx"
   },
   "scripts": {
     "build": "tsdown",

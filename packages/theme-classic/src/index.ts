@@ -8,7 +8,12 @@ import {
   NotFoundLayout,
   TagLayout,
 } from './layouts';
+import { LibraryExplorer } from './components/LibraryExplorer';
+import { ThemeToggle } from './components/ThemeToggle';
 import { tokensCss } from './styles/tokens';
+import { componentsCss } from './styles/components';
+import { cardCss } from './styles/card';
+import { noFlashScript } from './components/ThemeToggle';
 
 /**
  * @mineproj/theme-classic — the default theme and contract validator.
@@ -29,8 +34,15 @@ const theme = defineTheme({
   },
   components: {},
   slots: ['nav-end', 'prose-top', 'prose-bottom'],
-  styles: [tokensCss],
+  styles: [tokensCss, componentsCss, cardCss],
+  headScripts: [noFlashScript],
+  islands: {
+    'theme-toggle': ThemeToggle,
+    'library-explorer': LibraryExplorer,
+  },
+  islandsImport: '@mineproj/theme-classic/islands',
 });
 
 export default theme;
 export { theme };
+export { islands } from './islands';

@@ -1,6 +1,8 @@
 import type { LayoutProps } from '@mineproj/core';
+import { IslandContainer } from './components/LibraryExplorer';
 import { LibraryExplorerIsland } from './components/LibraryExplorer';
 import { ProjectCard } from './components/ProjectCard';
+import { ThemeToggle } from './components/ThemeToggle';
 
 /**
  * Classic layouts (M3-04 … M3-07): Nav / Hero / Featured / grid / Footer for
@@ -16,6 +18,9 @@ function Nav({ config }: { config: LayoutProps['config'] }): React.ReactNode {
       <div className="mp-nav__links">
         <a href="/projects/">Projects</a>
         <a href="/about/">About</a>
+        <IslandContainer name="theme-toggle">
+          <ThemeToggle />
+        </IslandContainer>
       </div>
     </nav>
   );
