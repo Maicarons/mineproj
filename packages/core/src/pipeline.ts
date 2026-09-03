@@ -1,5 +1,5 @@
 import { existsSync } from 'node:fs';
-import { mkdir, rm, writeFile } from 'node:fs/promises';
+import { mkdir, readdir, rm, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { createElement } from 'react';
 import type { MineprojPlugin } from './plugin/contract';
@@ -76,7 +76,6 @@ export async function buildSite(
   };
 
   const outDir = resolve(siteRoot, options.outDir ?? resolvedConfig.outDir);
-  await rm(outDir, { recursive: true, force: true });
   await mkdir(outDir, { recursive: true });
   const emitCtx: PluginEmitContext = {
     root: siteRoot,
@@ -134,7 +133,7 @@ export async function buildSite(
   let routes = collectRoutes(dataset, resolvedConfig);
   routes = await applyWaterfall(plugins, 'routes:collect', routes, emitCtx);
 
-  // 6.5. api endpoints (+ api:endpoints waterfall for plugin endpoints).
+  // 6.4. api endpoints (+ api:endpoints waterfall for plugin endpoints).
   // 8. api endpoints (+ api:endpoints waterfall for plugin endpoints).
   let endpoints = await (await import('./api/endpoints')).generateApiEndpoints({
     root: siteRoot,
@@ -202,11 +201,10 @@ export async function buildSite(
     const routeHash = hashInput(
       globalKey,
       JSON.stringify(route),
-      JSON.stringify(data),
-      Object.keys(config.themeConfig).length > 0 ? 'cfg' : '',
+      pageFingerprint(route, data),
     );
     const outputFile = outputFileForRoute(route);
-    if (cache[route.path] === routeHash && outputExists(siteRoot, outputFile)) {
+    if (cache[route.path] === routeHash && outputExists(outDir, outputFile)) {
       nextCache[route.path] = routeHash;
       revalidated += 1;
       continue;
@@ -237,6 +235,14 @@ export async function buildSite(
     await copyDir(publicDir, outDir);
   }
 
+  // Prune stale page outputs (routes removed from the site).
+  const kept = new Set(routes.map((r) => outputFileForRoute(r)));
+  for (const file of await listHtmlFiles(outDir)) {
+    if (!kept.has(file)) {
+      await rm(join(outDir, file), { force: true });
+    }
+  }
+
   // 9. emit hook — plugins may still write extra files.
   await applySeq(plugins, 'emit', emitCtx);
 
@@ -244,4 +250,48 @@ export async function buildSite(
   await applySeq(plugins, 'build:done', { ...emitCtx, pages, routes });
 
   return { outDir, pages, routes, theme, revalidated };
+}
+
+async function listHtmlFiles(dir: string, base = ''): Promise<string[]> {
+  const out: string[] = [];
+  for (const entry of await readdir(dir, { withFileTypes: true })) {
+    const rel = base ? `${base}/${entry.name}` : entry.name;
+    if (entry.isDirectory()) {
+      if (entry.name === 'api' || entry.name === 'assets') continue;
+      out.push(...(await listHtmlFiles(join(dir, entry.name), rel)));
+    } else if (entry.name.endsWith('.html')) {
+      out.push(rel);
+    }
+  }
+  return out;
+}
+
+/**
+ * Fingerprint only the data slice a layout actually renders, so an edit to
+ * one project does not invalidate every other detail page.
+ */
+function pageFingerprint(route: RouteRecord, data: LayoutData): string {
+  switch (route.layout) {
+    case 'detail':
+      return JSON.stringify({ p: data.project, tagCounts: data.tagCounts });
+    case 'tag':
+      return JSON.stringify({
+        tag: data.tag,
+        projects: data.projects.filter((p) => p.tags.includes(route.tag ?? '')).map((p) => [p.slug, p.name, p.tagline]),
+      });
+    case 'collection':
+      return JSON.stringify({ c: data.collection });
+    case 'about':
+      return JSON.stringify(data.profile);
+    case 'notFound':
+      return 'static';
+    default:
+      // home / list show the whole library.
+      return JSON.stringify({
+        projects: data.projects.map((p) => [p.slug, p.name, p.tagline]),
+        stats: data.stats,
+        tagCounts: data.tagCounts,
+        profile: data.profile,
+      });
+  }
 }
