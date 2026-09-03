@@ -25,6 +25,7 @@
     "minisearch": "^7.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "sharp": "^0.34.0",
     "shiki": "^3.0.0",
     "zod": "^4.0.0"
   },
@@ -35,7 +36,7 @@
     "@mineproj/tsconfig": "workspace:*",
     "@mineproj/vitest": "workspace:*",
     "@types/markdown-it": "^14.2.0",
-    "@types/node": "^24.0.0",
+    "@types/node": "^24.13.3",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.2.7",
     "tsdown": "^0.12.0",
