@@ -11,4 +11,6 @@ export * from './build';
 export * from './data/loader';
 export * from './data/validate';
 export * from './data/assets';
+export * from './data/derive';
+export * from './data/i18n';
 export * from './render/render';
