@@ -72,7 +72,7 @@ describe('theme-classic layouts', () => {
   it('renders tag pages with only matching projects', () => {
     const props = makeProps({
       route: { path: '/tags/web/', layout: 'tag', tag: 'web' },
-      data: { tag: 'web' },
+      data: { tag: 'web', projects: makeProps().data.projects },
     } as Partial<LayoutProps>);
     const html = renderToString(<TagLayout {...props} />);
     expect(html).toContain('#web');
@@ -82,7 +82,10 @@ describe('theme-classic layouts', () => {
   it('renders collection pages', () => {
     const props = makeProps({
       route: { path: '/collections/picks/', layout: 'collection', collection: 'picks' },
-      data: { collection: { slug: 'picks', name: 'Picks', projectSlugs: ['voxel-tool'] } },
+      data: {
+        collection: { slug: 'picks', name: 'Picks', projectSlugs: ['voxel-tool'] },
+        projects: makeProps().data.projects,
+      },
     } as Partial<LayoutProps>);
     const html = renderToString(<CollectionLayout {...props} />);
     expect(html).toContain('Picks');

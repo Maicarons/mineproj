@@ -67,7 +67,7 @@ export function TagLayout({ data }: LayoutProps): React.ReactNode {
   const matching = (data.projects ?? []).filter((p) => p.tags.includes(tag));
   return (
     <main id="main">
-      <h1>#{tag}</h1>
+      <h1>{`#${tag}`}</h1>
       <ProjectList projects={matching} />
     </main>
   );
