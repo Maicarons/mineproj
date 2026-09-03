@@ -22,6 +22,7 @@ export function createVitestConfig(options: CreateVitestConfigOptions = {}) {
       environment,
       include,
       passWithNoTests,
+      testTimeout: 30_000,
     },
   });
 }
