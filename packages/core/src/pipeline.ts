@@ -12,6 +12,7 @@ import { deriveStats, deriveTags } from './data/derive';
 import { collectRoutes } from './router/collect';
 import { copyDir } from './render/render';
 import { renderElementToString, renderDocument, outputFileForRoute } from './render/ssr';
+import { detectIslands, islandScriptTags } from './render/islands';
 import { DEFAULT_THEME, importThemeFromReference, resolveTheme } from './theme/resolve';
 import type { Theme } from './theme/contract';
 import type { LayoutData, LayoutProps } from './theme/props';
@@ -190,6 +191,9 @@ export async function buildSite(
       title: route.title ? `${route.title} · ${resolvedConfig.site.title}` : resolvedConfig.site.title,
       description: resolvedConfig.site.description,
       state: { route },
+      // Islands: only pages that actually contain islands load JS at all —
+      // pure content pages ship 0 bytes of client script (M2-11).
+      scripts: detectIslands(inner) ? islandScriptTags() : [],
     });
     html = await applyWaterfall(plugins, 'render:before', html, { ...emitCtx, route });
     const file = join(outDir, outputFileForRoute(route));
