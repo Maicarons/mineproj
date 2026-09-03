@@ -24,6 +24,7 @@ export interface QuerySpec {
 }
 
 export interface Facets {
+  [facet: string]: Record<string, number>;
   tags: Record<string, number>;
   status: Record<string, number>;
   categories: Record<string, number>;
