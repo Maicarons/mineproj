@@ -1,0 +1,28 @@
+{
+  "name": "@mineproj/schema",
+  "version": "0.0.0",
+  "description": "mineproj data contracts: Zod schemas for Project / Profile / Tag / Collection / SiteConfig + JSON Schema export",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@mineproj/tsconfig": "workspace:*",
+    "@mineproj/vitest": "workspace:*",
+    "@types/node": "^24.0.0",
+    "tsdown": "^0.12.0",
+    "typescript": "^5.7.0",
+    "vitest": "^4.0.0"
+  }
+}
