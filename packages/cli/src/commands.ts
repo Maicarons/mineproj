@@ -181,6 +181,59 @@ export async function runAudit(flags: CliFlags, logger: Logger): Promise<void> {
   }
 }
 
+export async function runThemeEject(flags: CliFlags, logger: Logger): Promise<void> {
+  const root = resolve(flags.root ?? process.cwd());
+  const { loadConfig, resolveTheme, importThemeFromReference, expandThemeReference } = await import('@mineproj/core');
+  const { config } = await loadConfig(root, flags.config);
+  const themeRef = expandThemeReference(config.theme);
+  const theme = await importThemeFromReference(root, themeRef);
+  const { mkdir, writeFile, readFile } = await import('node:fs/promises');
+  const { join } = await import('node:path');
+  const themeDir = join(root, '.mineproj', 'theme');
+  await mkdir(themeDir, { recursive: true });
+  // Write the theme source as a local module
+  const content = `// Ejected theme from ${theme.name}\n// Edit this file to customize the theme.\n\nexport default ${JSON.stringify(theme, null, 2)};\n`;
+  await writeFile(join(themeDir, 'index.mjs'), content, 'utf-8');
+  logger.log(`Theme "${theme.name}" ejected to ${themeDir}`);
+  logger.log('Update your mineproj.config.ts: theme: ".mineproj/theme"');
+}
+
+export async function runNew(flags: CliFlags, logger: Logger): Promise<void> {
+  const root = resolve(flags.root ?? process.cwd());
+  const { mkdir, writeFile } = await import('node:fs/promises');
+  const { join } = await import('node:path');
+  const slug = flags.locale || 'new-project';
+  const dir = join(root, 'data', 'projects', slug);
+  await mkdir(dir, { recursive: true });
+  const data = {
+    slug,
+    name: 'New Project',
+    tagline: 'A new project',
+    summary: `A new project "${slug}". This summary is long enough to pass validation.`,
+    createdAt: new Date().toISOString().slice(0, 10) + 'T00:00:00.000Z',
+  };
+  await writeFile(join(dir, 'index.json'), JSON.stringify(data, null, 2), 'utf-8');
+  await writeFile(join(dir, 'body.md'), `# ${slug}\n\nDescribe your project here.\n`, 'utf-8');
+  logger.log(`Project "${slug}" created at ${dir}`);
+}
+
+export async function runDoctor(flags: CliFlags, logger: Logger): Promise<void> {
+  const root = resolve(flags.root ?? process.cwd());
+  logger.log(`Node: ${process.version}`);
+  logger.log(`Platform: ${process.platform}`);
+  try {
+    const { loadConfig } = await import('@mineproj/core');
+    const { config } = await loadConfig(root, flags.config);
+    logger.log(`Config: OK (${config.site.title})`);
+    logger.log(`Theme: ${config.theme}`);
+    logger.log(`Locales: ${config.site.locales.join(', ')}`);
+    logger.log(`Data dir: ${config.dataDir}`);
+    logger.log(`Out dir: ${config.outDir}`);
+  } catch (err) {
+    logger.error(`Config: ${(err as Error).message}`);
+  }
+}
+
 export async function dispatch(args: ParsedArgs, logger: Logger): Promise<void> {
   switch (args.command) {
     case 'dev':
@@ -200,6 +253,15 @@ export async function dispatch(args: ParsedArgs, logger: Logger): Promise<void> 
       break;
     case 'audit':
       await runAudit(args.flags, logger);
+      break;
+    case 'theme:eject':
+      await runThemeEject(args.flags, logger);
+      break;
+    case 'new':
+      await runNew(args.flags, logger);
+      break;
+    case 'doctor':
+      await runDoctor(args.flags, logger);
       break;
     case 'i18n:init':
     case 'i18n:extract':

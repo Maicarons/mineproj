@@ -11,7 +11,7 @@ export interface CliFlags {
 }
 
 export interface ParsedArgs {
-  command: 'dev' | 'build' | 'preview' | 'check' | 'info' | 'audit' | 'i18n:init' | 'i18n:extract' | 'help' | 'version';
+  command: 'dev' | 'build' | 'preview' | 'check' | 'info' | 'audit' | 'theme:eject' | 'new' | 'doctor' | 'i18n:init' | 'i18n:extract' | 'help' | 'version';
   flags: CliFlags;
 }
 
@@ -26,6 +26,9 @@ Commands:
   preview    Preview the built site locally
   check      Validate config and data files (CI-friendly, exits non-zero on errors)
   audit      Score the built site on SEO, AI, a11y and perf (CI-friendly)
+  theme:eject  Copy the current theme to .mineproj/theme/ for customization
+  new <slug>   Create a new project skeleton
+  doctor     Diagnose the environment, config and project state
   i18n:init <locale>   Scaffold a new locale
   i18n:extract         Extract untranslated keys per locale
   info       Show resolved config, theme and plugin diagnostics
@@ -113,7 +116,7 @@ export function parseArgs(argv: string[]): ParsedArgs {
   }
 
   const command = (positional ?? 'help').replace(/_/g, ':') as ParsedArgs['command'];
-  if (!['dev', 'build', 'preview', 'check', 'audit', 'info', 'i18n:init', 'i18n:extract', 'help', 'version'].includes(command)) {
+  if (!['dev', 'build', 'preview', 'check', 'audit', 'theme:eject', 'new', 'doctor', 'info', 'i18n:init', 'i18n:extract', 'help', 'version'].includes(command)) {
     throw new Error(`Unknown command: ${positional}\n\n${USAGE}`);
   }
   return { command, flags };
