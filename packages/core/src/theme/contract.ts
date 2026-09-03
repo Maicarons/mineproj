@@ -94,14 +94,14 @@ export async function resolveThemeExtends(
       throw new Error(`Invalid extends value in theme "${current.name}"`);
     }
   }
-  const root = chain[chain.length - 1]!;
+  // Merge from the root ancestor down to the theme itself.
+  const ordered = [...chain].reverse();
   const merged: Theme = {
     name: theme.name,
     layouts: {},
   };
   // Apply from the root ancestor down to the theme itself.
-  for (let i = chain.length - 1; i >= 0; i--) {
-    const link = chain[i]!;
+  for (const link of ordered) {
     merged.layouts = { ...merged.layouts, ...link.layouts };
     merged.components = { ...(merged.components ?? {}), ...(link.components ?? {}) };
     if (link.slots !== undefined || merged.slots === undefined) {

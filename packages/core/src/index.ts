@@ -22,4 +22,8 @@ export * from './plugin/contract';
 export * from './plugin/registry';
 export * from './router/collect';
 export * from './theme/contract';
+export * from './theme/layout';
+export * from './theme/registry';
+export * from './theme/resolve';
+export * from './theme/slots';
 export * from './render/render';
