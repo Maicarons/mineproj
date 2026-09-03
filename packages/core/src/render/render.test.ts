@@ -78,14 +78,17 @@ describe('buildSite', () => {
     }
   });
 
-  it('cleans the outDir and honors an override', async () => {
+  it('honors an outDir override and prunes stale page outputs', async () => {
     await seedThreeProjects();
     await mkdir(join(root, 'custom-out'), { recursive: true });
-    await writeFile(join(root, 'custom-out', 'stale.txt'), 'delete me', 'utf-8');
+    await writeFile(join(root, 'custom-out', 'stale-page.html'), 'old route', 'utf-8');
+    await writeFile(join(root, 'custom-out', 'keep-me.txt'), 'not a page', 'utf-8');
     const result = await buildSite(root, config, { outDir: 'custom-out' });
-    await expect(stat(join(root, 'custom-out', 'stale.txt'))).rejects.toMatchObject({
+    await expect(stat(join(root, 'custom-out', 'stale-page.html'))).rejects.toMatchObject({
       code: 'ENOENT',
     });
+    const { readFile: read } = await import('node:fs/promises');
+    expect(await read(join(root, 'custom-out', 'keep-me.txt'), 'utf-8')).toBe('not a page');
     expect(result.outDir).toBe(join(root, 'custom-out'));
   });
 
