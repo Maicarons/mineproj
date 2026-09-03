@@ -64,7 +64,7 @@ export function DetailLayout({ data }: LayoutProps): React.ReactNode {
 
 export function TagLayout({ data }: LayoutProps): React.ReactNode {
   const tag = data.tag ?? '';
-  const matching = data.projects.filter((p) => p.tags.includes(tag));
+  const matching = (data.projects ?? []).filter((p) => p.tags.includes(tag));
   return (
     <main id="main">
       <h1>#{tag}</h1>
@@ -76,7 +76,7 @@ export function TagLayout({ data }: LayoutProps): React.ReactNode {
 export function CollectionLayout({ data }: LayoutProps): React.ReactNode {
   const collection = data.collection;
   if (!collection) return <NotFoundLayout />;
-  const inCollection = data.projects.filter((p) => collection.projectSlugs.includes(p.slug));
+  const inCollection = (data.projects ?? []).filter((p) => collection.projectSlugs.includes(p.slug));
   return (
     <main id="main">
       <h1>{collection.name}</h1>
