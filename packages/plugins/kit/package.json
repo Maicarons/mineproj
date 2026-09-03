@@ -1,0 +1,20 @@
+{
+  "name": "@mineproj/plugin-kit",
+  "version": "0.0.0",
+  "description": "mineproj official plugin kit: feed, search shards, playable, analytics, msw, pwa",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./feed": "./src/feed.ts",
+    "./search": "./src/search.ts",
+    "./playable": "./src/playable.ts",
+    "./analytics": "./src/analytics.ts",
+    "./msw": "./src/msw.ts",
+    "./pwa": "./src/pwa.ts"
+  },
+  "scripts": { "test": "vitest run" },
+  "dependencies": { "@mineproj/core": "workspace:*", "minisearch": "^7.0.0" },
+  "devDependencies": { "vitest": "^4.0.0" }
+}

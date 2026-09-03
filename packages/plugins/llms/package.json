@@ -1,0 +1,12 @@
+{
+  "name": "@mineproj/plugin-llms",
+  "version": "0.0.0",
+  "description": "mineproj official plugin: llms.txt, llms-full.txt and AGENTS.md for AI agents",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./src/index.ts",
+  "exports": { ".": "./src/index.ts" },
+  "scripts": { "test": "vitest run --passWithNoTests" },
+  "dependencies": { "@mineproj/core": "workspace:*" },
+  "devDependencies": { "vitest": "^4.0.0" }
+}

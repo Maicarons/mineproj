@@ -58,6 +58,21 @@ importers:
       '@mineproj/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@mineproj/plugin-kit':
+        specifier: workspace:*
+        version: link:../../packages/plugins/kit
+      '@mineproj/plugin-llms':
+        specifier: workspace:*
+        version: link:../../packages/plugins/llms
+      '@mineproj/plugin-markdown-mirror':
+        specifier: workspace:*
+        version: link:../../packages/plugins/markdown-mirror
+      '@mineproj/plugin-seo':
+        specifier: workspace:*
+        version: link:../../packages/plugins/seo
+      '@mineproj/plugin-sitemap':
+        specifier: workspace:*
+        version: link:../../packages/plugins/sitemap
       '@mineproj/theme-classic':
         specifier: workspace:*
         version: link:../../packages/theme-classic
@@ -245,6 +260,59 @@ importers:
       typescript:
         specifier: ^5.7.0
         version: 5.9.3
+      vitest:
+        specifier: ^4.0.0
+        version: 4.1.11(@types/node@24.13.3)(jsdom@26.1.0)(vite@7.3.6(@types/node@24.13.3)(jiti@2.7.0))
+
+  packages/plugins/kit:
+    dependencies:
+      '@mineproj/core':
+        specifier: workspace:*
+        version: link:../../core
+      minisearch:
+        specifier: ^7.0.0
+        version: 7.2.0
+    devDependencies:
+      vitest:
+        specifier: ^4.0.0
+        version: 4.1.11(@types/node@24.13.3)(jsdom@26.1.0)(vite@7.3.6(@types/node@24.13.3)(jiti@2.7.0))
+
+  packages/plugins/llms:
+    dependencies:
+      '@mineproj/core':
+        specifier: workspace:*
+        version: link:../../core
+    devDependencies:
+      vitest:
+        specifier: ^4.0.0
+        version: 4.1.11(@types/node@24.13.3)(jsdom@26.1.0)(vite@7.3.6(@types/node@24.13.3)(jiti@2.7.0))
+
+  packages/plugins/markdown-mirror:
+    dependencies:
+      '@mineproj/core':
+        specifier: workspace:*
+        version: link:../../core
+    devDependencies:
+      vitest:
+        specifier: ^4.0.0
+        version: 4.1.11(@types/node@24.13.3)(jsdom@26.1.0)(vite@7.3.6(@types/node@24.13.3)(jiti@2.7.0))
+
+  packages/plugins/seo:
+    dependencies:
+      '@mineproj/core':
+        specifier: workspace:*
+        version: link:../../core
+    devDependencies:
+      vitest:
+        specifier: ^4.0.0
+        version: 4.1.11(@types/node@24.13.3)(jsdom@26.1.0)(vite@7.3.6(@types/node@24.13.3)(jiti@2.7.0))
+
+  packages/plugins/sitemap:
+    dependencies:
+      '@mineproj/core':
+        specifier: workspace:*
+        version: link:../../core
+    devDependencies:
       vitest:
         specifier: ^4.0.0
         version: 4.1.11(@types/node@24.13.3)(jsdom@26.1.0)(vite@7.3.6(@types/node@24.13.3)(jiti@2.7.0))
