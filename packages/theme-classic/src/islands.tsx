@@ -1,3 +1,4 @@
+import { DiscoveryQueue, PlayableFrame, SearchPalette } from './components/interactive';
 import { LibraryExplorer } from './components/LibraryExplorer';
 import { ThemeToggle } from './components/ThemeToggle';
 
@@ -9,4 +10,7 @@ import { ThemeToggle } from './components/ThemeToggle';
 export const islands = {
   'theme-toggle': ThemeToggle,
   'library-explorer': LibraryExplorer,
+  'playable-frame': PlayableFrame,
+  'search-palette': SearchPalette,
+  'discovery-queue': DiscoveryQueue,
 };
