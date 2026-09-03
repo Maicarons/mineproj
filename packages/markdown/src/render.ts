@@ -5,6 +5,7 @@ import taskLists from 'markdown-it-task-lists';
 import { buildToc, useHeadingAnchors, type Heading, type TocEntry } from './slugify';
 import { installImageRule, type ImageProcessor } from './image';
 import { installLinkRule, annotateDeadLinks, type LinkProcessorOptions } from './link';
+import { sanitizeHtml } from './sanitize';
 import { excerptOf, htmlToPlainText, readingTimeOf } from './meta';
 import { parseFrontMatter, type MarkdownRendererOptions } from './gfm';
 
@@ -122,7 +123,10 @@ export async function renderMarkdown(source: string, options: AsyncRendererOptio
   installImageRule(md, options.imageProcessor);
   installLinkRule(md, options.linkOptions);
 
-  const html = annotateDeadLinks(md.render(content));
+  let html = annotateDeadLinks(md.render(content));
+  if (options.html) {
+    html = sanitizeHtml(html);
+  }
   const plainText = htmlToPlainText(html);
   return {
     html,
