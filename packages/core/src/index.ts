@@ -19,4 +19,5 @@ export * from './api/emit';
 export * from './api/middleware';
 export * from './api/query';
 export * from './plugin/contract';
+export * from './plugin/registry';
 export * from './render/render';
