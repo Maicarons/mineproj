@@ -67,10 +67,11 @@ describe('renderIndexHtml', () => {
 });
 
 describe('buildSite', () => {
-  it('writes dist/index.html containing all project names', async () => {
+  it('writes SSR pages for every route including all project names', async () => {
     await seedThreeProjects();
     const result: BuildResult = await buildSite(root, config);
-    expect(result.pages).toBe(3);
+    // home + list + 3 details + about + 404
+    expect(result.pages).toBe(7);
     const html = await readFile(join(result.outDir, 'index.html'), 'utf-8');
     for (const name of ['Alpha Project', 'Beta Project', 'Gamma Project']) {
       expect(html).toContain(name);
@@ -117,7 +118,8 @@ describe('buildSite', () => {
     const result = await buildSite(root, config);
     const html = await readFile(join(result.outDir, 'index.html'), 'utf-8');
     expect(html).not.toContain('Secret Project');
-    expect(result.pages).toBe(3);
+    // 3 visible detail pages; the hidden project has no detail route.
+    expect(result.pages).toBe(7);
   });
 });
 

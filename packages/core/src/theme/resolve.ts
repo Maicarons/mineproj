@@ -1,8 +1,8 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { createJiti } from 'jiti';
-import { isMineprojPlugin } from '../plugin/contract';
 import { isThemeLike, resolveThemeExtends, type Theme } from './contract';
+import { DEFAULT_THEME, expandThemeReference } from './shorthand';
 
 /**
  * Theme resolution (M2-05). Accepts, in priority order:
@@ -13,16 +13,7 @@ import { isThemeLike, resolveThemeExtends, type Theme } from './contract';
  * Missing references fall back to `@mineproj/theme-classic`.
  */
 
-export const DEFAULT_THEME = '@mineproj/theme-classic';
-
-export const SHORTHANDS: Record<string, string> = {
-  classic: '@mineproj/theme-classic',
-  gallery: '@mineproj/theme-gallery',
-};
-
-export function expandThemeReference(reference: string): string {
-  return SHORTHANDS[reference] ?? reference;
-}
+export { DEFAULT_THEME, SHORTHANDS, expandThemeReference } from './shorthand';
 
 export class ThemeResolutionError extends Error {
   constructor(message: string) {
@@ -31,8 +22,8 @@ export class ThemeResolutionError extends Error {
   }
 }
 
-function looksLikeThemeModule(mod: unknown): mod is { default: unknown } {
-  return typeof mod === 'object' && mod !== null && 'default' in mod;
+export function isThemeModule(value: unknown): value is Theme {
+  return isThemeLike(value);
 }
 
 async function importThemeModule(path: string, baseDir: string): Promise<Theme> {
@@ -40,7 +31,7 @@ async function importThemeModule(path: string, baseDir: string): Promise<Theme> 
   try {
     const mod = (await jiti.import(path)) as unknown;
     if (isThemeLike(mod)) return mod;
-    if (looksLikeThemeModule(mod)) {
+    if (typeof mod === 'object' && mod !== null && 'default' in mod) {
       const candidate = (mod as { default: unknown }).default;
       if (isThemeLike(candidate)) return candidate;
     }
@@ -51,9 +42,14 @@ async function importThemeModule(path: string, baseDir: string): Promise<Theme> 
   }
 }
 
+/** Import a theme package reference from the site root's node_modules. */
+export async function importThemeFromReference(root: string, reference: string): Promise<Theme> {
+  return importThemeModule(expandThemeReference(reference), root);
+}
+
 export interface ResolveThemeOptions {
   root: string;
-  /** Used when the theme's own extends is a string reference. */
+  /** Used to load package references (primary + extends parents). */
   loadThemeReference?: (reference: string) => Promise<Theme>;
 }
 
@@ -85,7 +81,7 @@ export async function resolveTheme(
   }
 
   // String reference.
-  const raw = reference ?? DEFAULT_THEME;
+  const raw: string | undefined = reference ?? DEFAULT_THEME;
   if (typeof raw !== 'string') {
     throw new ThemeResolutionError(`Unsupported theme reference: ${String(raw)}`);
   }
@@ -113,5 +109,3 @@ export async function resolveTheme(
       'a .mineproj/theme/ directory or an inline theme object.',
   );
 }
-
-export { isMineprojPlugin };

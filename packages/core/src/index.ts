@@ -7,7 +7,7 @@ export * from './config/define';
 export * from './config/load';
 export * from './hooks';
 export * from './virtual';
-export * from './build';
+export * from './pipeline';
 export * from './data/loader';
 export * from './data/validate';
 export * from './data/assets';
