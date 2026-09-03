@@ -6,3 +6,4 @@ export * from './config/schema';
 export * from './config/define';
 export * from './config/load';
 export * from './hooks';
+export * from './virtual';
