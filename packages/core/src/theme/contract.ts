@@ -46,6 +46,7 @@ export interface Theme {
   /** Inline scripts for the head — e.g. the no-flash theme bootstrap. */
   headScripts?: string[];
   /** Interactive island components hydrated by the client runtime. */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   islands?: Record<string, ComponentType<any>>;
   /** Module specifier the client bundle imports the islands map from. */
   islandsImport?: string;
