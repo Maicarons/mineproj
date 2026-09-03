@@ -11,6 +11,8 @@ import type { RouteRecord } from '../virtual';
 
 export interface DocumentOptions {
   lang: string;
+  /** Text direction derived from the locale (M5-12). */
+  dir?: 'rtl' | 'ltr';
   title: string;
   description?: string;
   /** Extra head tags (styles, canonical, feed links…). */
@@ -76,7 +78,7 @@ export function renderDocument(inner: string, options: DocumentOptions): string 
   const { lang, title, description, head = '', state, scripts = [] } = options;
   const parts: string[] = [
     '<!doctype html>',
-    `<html lang="${lang}">`,
+    `<html lang="${lang}"${options.dir ? ` dir="${options.dir}"` : ''}>`,
     '<head>',
     '<meta charset="utf-8">',
     '<meta name="viewport" content="width=device-width, initial-scale=1">',

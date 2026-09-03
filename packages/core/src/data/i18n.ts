@@ -143,3 +143,18 @@ export function dirForLocale(locale: string): 'rtl' | 'ltr' {
   const lang = locale.split(/[-_]/)[0] ?? locale;
   return RTL_LANGS.has(lang) ? 'rtl' : 'ltr';
 }
+
+/**
+ * Attachments per locale (M5-05): docs tagged with the current locale
+ * (`docs[].lang` or `<basename>.<locale>.<ext>` files) come first; docs with
+ * a *different* explicit locale are dropped; untagged docs act as fallback.
+ */
+export function selectLocalizedDocs<T extends { lang?: string; file: string }>(docs: T[], locale: string): T[] {
+  const matchesLocale = (d: T): boolean =>
+    d.lang === locale || new RegExp(`\.${locale}\.[a-z0-9]+$`, 'i').test(d.file);
+  const otherLocale = (d: T): boolean =>
+    d.lang !== undefined && d.lang !== locale;
+  const preferred = docs.filter(matchesLocale);
+  const fallback = docs.filter((d) => !matchesLocale(d) && !otherLocale(d));
+  return [...preferred, ...fallback];
+}

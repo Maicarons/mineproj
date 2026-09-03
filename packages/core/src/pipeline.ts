@@ -10,6 +10,8 @@ import { loadDataset, type Dataset } from './data/loader';
 import { processProjectAssets, sourceDirOfProjectFile } from './data/assets';
 import { deriveStats, deriveTags } from './data/derive';
 import { collectRoutes } from './router/collect';
+import { localizedRoutes } from './i18n/routes';
+import { collectI18nGaps, localizeProject } from './data/i18n';
 import { hashInput, loadBuildCache, outputExists, PIPELINE_TEMPLATE_VERSION, saveBuildCache } from './build/cache';
 import { copyDir } from './render/render';
 import { renderElementToString, renderDocument, outputFileForRoute } from './render/ssr';
@@ -184,10 +186,51 @@ export async function buildSite(
     JSON.stringify(resolvedConfig.site),
   );
 
-  for (const route of routes) {
+  // M5-06: per-locale localized routes (default unprefixed unless prefixAll).
+  const siteLocales = resolvedConfig.site.locales;
+  const defaultLocale = resolvedConfig.site.defaultLocale;
+  const localized = localizedRoutes(routes, {
+    locales: siteLocales,
+    defaultLocale,
+    prefixAll: resolvedConfig.site.prefixAll,
+  });
+
+  // M5-03: warn about projects with no translation for a non-default locale.
+  for (const locale of siteLocales) {
+    if (locale === defaultLocale) continue;
+    for (const gap of collectI18nGaps(projects, locale, defaultLocale)) {
+      logger.warn(`i18n: "${gap.slug}" has no ${locale} translation`);
+    }
+  }
+
+  // Per-locale localized project views (M5-02/04), computed lazily.
+  const localizedProjectsCache = new Map<string, typeof projects>();
+  const projectsForLocale = async (locale: string): Promise<typeof projects> => {
+    const cached = localizedProjectsCache.get(locale);
+    if (cached) return cached;
+    const result = await Promise.all(
+      projects.map(async (project) => {
+        const sourceFile = dataset.sources.find((s) => s.slug === project.slug)?.file;
+        if (sourceFile === undefined) return project;
+        try {
+          return await localizeProject(siteRoot, project, sourceFile, locale);
+        } catch {
+          return project;
+        }
+      }),
+    );
+    localizedProjectsCache.set(locale, result);
+    return result;
+  };
+
+  for (const route of localized) {
+    const localeProjects = await projectsForLocale(route.locale);
+    const localeVisible = localeProjects.filter((p) => !p.hidden);
+    const localizedVisible = route.locale === defaultLocale ? visible : localeVisible;
     const data: LayoutData = {
       ...layoutData,
-      project: route.slug ? projects.find((p) => p.slug === route.slug) : undefined,
+      projects: localizedVisible,
+      project: route.slug ? localeProjects.find((p) => p.slug === route.slug) : undefined,
       tag: route.tag,
       collection: route.collection
         ? (dataset.collections.find((c) => c.slug === route.collection) ?? undefined)
@@ -230,12 +273,17 @@ export async function buildSite(
     }
 
     const inner = await renderElementToString(createElement(Layout, props));
+    const hreflang = route.alternates
+      .map((alt) => `<link rel="alternate" hreflang="${alt.locale}" href="${alt.href}">`)
+      .join('\n');
     const head = [
       ...(theme.styles ?? []).map((css) => `<style>${css}</style>`),
       ...(theme.headScripts ?? []).map((script) => `<script>${script}</script>`),
+      hreflang,
     ].join('\n');
     let html = renderDocument(inner, {
-      lang: resolvedConfig.site.defaultLocale,
+      lang: route.locale,
+      dir: route.dir,
       title:
         route.title && route.title !== resolvedConfig.site.title
           ? `${route.title} · ${resolvedConfig.site.title}`
@@ -263,7 +311,7 @@ export async function buildSite(
   }
 
   // Prune stale page outputs (routes removed from the site).
-  const kept = new Set(routes.map((r) => outputFileForRoute(r)));
+  const kept = new Set(localized.map((r) => outputFileForRoute(r)));
   for (const file of await listHtmlFiles(outDir)) {
     if (!kept.has(file)) {
       await rm(join(outDir, file), { force: true });

@@ -14,6 +14,7 @@ export * from './data/assets';
 export * from './data/body';
 export * from './data/derive';
 export * from './data/i18n';
+export * from './i18n/routes';
 export * from './api/endpoints';
 export * from './api/emit';
 export * from './api/middleware';
