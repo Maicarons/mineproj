@@ -237,6 +237,9 @@ importers:
       '@mineproj/core':
         specifier: workspace:^
         version: link:../core
+      '@mineproj/schema':
+        specifier: workspace:^
+        version: link:../schema
     devDependencies:
       '@mineproj/tsconfig':
         specifier: workspace:*
