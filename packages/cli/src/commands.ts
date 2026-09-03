@@ -170,6 +170,17 @@ export async function runInfo(flags: CliFlags, logger: Logger): Promise<void> {
   }
 }
 
+export async function runAudit(flags: CliFlags, logger: Logger): Promise<void> {
+  const root = resolve(flags.root ?? process.cwd());
+  const outDir = resolve(root, flags.outDir ?? 'dist');
+  const { runAudit: auditSite, formatAuditTable } = await import('./audit');
+  const result = await auditSite(outDir, flags.failUnder ?? 85);
+  console.log(formatAuditTable(result));
+  if (!result.passed) {
+    throw new Error(`Audit failed with score ${result.score}/${100} (threshold ${flags.failUnder ?? 85})`);
+  }
+}
+
 export async function dispatch(args: ParsedArgs, logger: Logger): Promise<void> {
   switch (args.command) {
     case 'dev':
@@ -186,6 +197,9 @@ export async function dispatch(args: ParsedArgs, logger: Logger): Promise<void> 
       break;
     case 'info':
       await runInfo(args.flags, logger);
+      break;
+    case 'audit':
+      await runAudit(args.flags, logger);
       break;
     case 'i18n:init':
     case 'i18n:extract':

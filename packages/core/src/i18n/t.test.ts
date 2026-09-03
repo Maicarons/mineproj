@@ -31,8 +31,8 @@ describe('createT (M5-10)', () => {
     const merged = mergeDictionaries(dicts, [
       { en: { 'nav.projects': 'PLUGIN PROJECTS' } },
     ]);
-    expect(merged.en['nav.projects']).toBe('Projects'); // theme wins
+    expect(merged.en?.['nav.projects']).toBe('Projects'); // theme wins
     const mergedPluginKey = mergeDictionaries({}, [{ en: { 'plugin.key': 'from plugin' } }]);
-    expect(mergedPluginKey.en['plugin.key']).toBe('from plugin');
+    expect(mergedPluginKey.en?.['plugin.key']).toBe('from plugin');
   });
 });

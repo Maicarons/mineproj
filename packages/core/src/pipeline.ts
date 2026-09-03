@@ -57,6 +57,7 @@ export interface PluginEmitContext {
   outDir: string;
   config: ResolvedMineprojConfig;
   dataset: Dataset;
+  routes?: RouteRecord[];
   logger: { log: (m: string) => void; warn: (m: string) => void };
   /** Write an extra file into the build output (relative POSIX path). */
   emit: (path: string, content: string) => Promise<void>;
@@ -147,6 +148,7 @@ export async function buildSite(
   // 6. routes (+ routes:collect waterfall).
   let routes = collectRoutes(dataset, resolvedConfig);
   routes = await applyWaterfall(plugins, 'routes:collect', routes, emitCtx);
+  emitCtx.routes = routes;
 
   // 6.4. api endpoints (+ api:endpoints waterfall for plugin endpoints).
   // 8. api endpoints (+ api:endpoints waterfall for plugin endpoints).

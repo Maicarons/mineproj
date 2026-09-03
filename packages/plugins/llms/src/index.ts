@@ -65,8 +65,8 @@ export function defineLlmsPlugin(options: LlmsOptions): MineprojPlugin {
   return {
     name: '@mineproj/plugin-llms',
     enforce: 'post',
-    async hooks: {
-      'emit': (ctx) => {
+    hooks: {
+      'emit': async (_value, ctx) => {
         const c = ctx as unknown as {
           config: { site: { title: string; description?: string } };
           dataset: { projects: Project[] };

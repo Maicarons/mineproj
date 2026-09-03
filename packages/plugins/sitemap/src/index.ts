@@ -87,8 +87,8 @@ export function defineSitemapPlugin(options: SitemapOptions): MineprojPlugin {
   return {
     name: '@mineproj/plugin-sitemap',
     enforce: 'post',
-    async hooks: {
-      'emit': (ctx) => {
+    hooks: {
+      'emit': async (_value, ctx) => {
         const c = ctx as unknown as {
           config: { site: { url?: string; locales: string[]; defaultLocale: string; prefixAll: boolean } };
           dataset: { projects: Project[] };

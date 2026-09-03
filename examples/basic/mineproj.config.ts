@@ -1,5 +1,8 @@
 import { defineConfig } from '@mineproj/core';
 import { defineSeoPlugin } from '@mineproj/plugin-seo';
+import { defineSitemapPlugin } from '@mineproj/plugin-sitemap';
+import { defineLlmsPlugin } from '@mineproj/plugin-llms';
+import { defineMarkdownMirrorPlugin } from '@mineproj/plugin-markdown-mirror';
 
 export default defineConfig({
   site: {
@@ -20,8 +23,8 @@ export default defineConfig({
       siteTitle: 'Basic Example',
       siteDescription: 'An example mineproj site showcasing five personal projects.',
     }),
-    // sitemap, llms, mirror and kit plugins are registered via plain objects below
-    // (they use the same hook-based pattern but are not yet resolved through the
-    // plugin registry shorthand — the imports remain for release).
+    defineSitemapPlugin({ siteUrl: 'https://example.com' }),
+    defineLlmsPlugin({ siteTitle: 'Basic Example', siteDescription: 'An example mineproj site showcasing five personal projects.' }),
+    defineMarkdownMirrorPlugin(),
   ],
 });

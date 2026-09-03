@@ -34,21 +34,21 @@ export function defineMarkdownMirrorPlugin(
   return {
     name: '@mineproj/plugin-markdown-mirror',
     enforce: 'post',
-    async hooks: {
-      'render:before': async (html, ctx) => {
+    hooks: {
+      'render:before': (html, ctx) => {
         const route = (ctx as { route?: { path: string } }).route;
         if (!route) return html;
         const link = `<link rel="alternate" type="text/markdown" href="${route.path}index.md">`;
         return (html as string).replace('</head>', `${link}\n</head>`);
       },
-      'emit': async (ctx) => {
+      'emit': async (_value, ctx) => {
         const c = ctx as unknown as {
           dataset: { projects: Project[] };
-          routes: { path: string; title?: string; slug?: string; locale?: string }[];
+          routes?: { path: string; title?: string; slug?: string; locale?: string }[];
           emit: (path: string, content: string) => Promise<void>;
           config: { site: { locales: string[]; defaultLocale: string } };
         };
-        for (const route of c.routes) {
+        for (const route of c.routes ?? []) {
           const project = route.slug ? c.dataset.projects.find((p) => p.slug === route.slug) : undefined;
           const prefix = route.locale && route.locale !== c.config.site.defaultLocale ? `/${route.locale}` : '';
           const mirror: MirrorPage = { path: route.path, title: route.title, project, markdown: project?.description };
