@@ -10,6 +10,7 @@ import { loadDataset, type Dataset } from './data/loader';
 import { processProjectAssets, sourceDirOfProjectFile } from './data/assets';
 import { deriveStats, deriveTags } from './data/derive';
 import { collectRoutes } from './router/collect';
+import { hashInput, loadBuildCache, outputExists, PIPELINE_TEMPLATE_VERSION, saveBuildCache } from './build/cache';
 import { copyDir } from './render/render';
 import { renderElementToString, renderDocument, outputFileForRoute } from './render/ssr';
 import { detectIslands, islandScriptTags } from './render/islands';
@@ -44,6 +45,8 @@ export interface BuildResult {
   pages: number;
   routes: RouteRecord[];
   theme: Theme;
+  /** Pages skipped because their inputs were unchanged (incremental build). */
+  revalidated: number;
 }
 
 export interface PluginEmitContext {
@@ -152,6 +155,16 @@ export async function buildSite(
   };
   const fallbackWarned = new Set<string>();
   let pages = 0;
+  let revalidated = 0;
+  const cache = await loadBuildCache(siteRoot);
+  const nextCache: Record<string, string> = {};
+  const globalKey = hashInput(
+    PIPELINE_TEMPLATE_VERSION,
+    theme.name,
+    theme.version ?? '',
+    JSON.stringify(resolvedConfig.themeConfig),
+    JSON.stringify(resolvedConfig.site),
+  );
 
   for (const route of routes) {
     const data: LayoutData = {
@@ -185,6 +198,20 @@ export async function buildSite(
       },
       themeConfig: resolvedConfig.themeConfig,
     };
+    // Incremental build: skip pages whose data/theme/config inputs are unchanged.
+    const routeHash = hashInput(
+      globalKey,
+      JSON.stringify(route),
+      JSON.stringify(data),
+      Object.keys(config.themeConfig).length > 0 ? 'cfg' : '',
+    );
+    const outputFile = outputFileForRoute(route);
+    if (cache[route.path] === routeHash && outputExists(siteRoot, outputFile)) {
+      nextCache[route.path] = routeHash;
+      revalidated += 1;
+      continue;
+    }
+
     const inner = await renderElementToString(createElement(Layout, props));
     let html = renderDocument(inner, {
       lang: resolvedConfig.site.defaultLocale,
@@ -196,11 +223,13 @@ export async function buildSite(
       scripts: detectIslands(inner) ? islandScriptTags() : [],
     });
     html = await applyWaterfall(plugins, 'render:before', html, { ...emitCtx, route });
-    const file = join(outDir, outputFileForRoute(route));
+    const file = join(outDir, outputFile);
     await mkdir(dirname(file), { recursive: true });
     await writeFile(file, html, 'utf-8');
     pages += 1;
+    nextCache[route.path] = routeHash;
   }
+  await saveBuildCache(siteRoot, nextCache);
 
   // Copy the public directory verbatim into the output root.
   const publicDir = join(siteRoot, resolvedConfig.publicDir);
@@ -214,5 +243,5 @@ export async function buildSite(
   // 10. build:done.
   await applySeq(plugins, 'build:done', { ...emitCtx, pages, routes });
 
-  return { outDir, pages, routes, theme };
+  return { outDir, pages, routes, theme, revalidated };
 }
