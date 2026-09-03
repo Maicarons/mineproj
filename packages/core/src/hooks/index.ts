@@ -54,7 +54,6 @@ export function sortPlugins<T extends MineprojPluginLike>(plugins: T[]): T[] {
 
 function sortTier<T extends MineprojPluginLike>(tier: T[]): T[] {
   const byName = new Map<string, T>(tier.map((p) => [p.name, p]));
-  const inTier = (name: string) => byName.has(name);
 
   // Edge u -> v means "u must come before v".
   const edges = new Map<T, Set<T>>();
