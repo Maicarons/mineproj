@@ -3,7 +3,6 @@ import { join } from 'node:path';
 import {
   collectionSchema,
   profileSchema,
-  projectSchema,
   tagSchema,
   type Collection,
   type Profile,
@@ -11,6 +10,12 @@ import {
   type Tag,
 } from '@mineproj/schema';
 import type { ResolvedMineprojConfig } from '../config/schema';
+import { formatDataIssues, validateProject, zodIssuesToDataIssues } from './validate';
+
+/** Wrap zod issues into a readable DataError for auxiliary data files. */
+function invalidData(file: string, error: { issues: { path: (string | number | symbol)[]; message: string }[] }): DataError {
+  return new DataError(`Invalid data:\n${formatDataIssues(zodIssuesToDataIssues(file, error))}`);
+}
 
 /**
  * Full data loader (M1): scans the three organization forms, mixes them,
@@ -43,15 +48,6 @@ export interface Dataset {
   sources: ProjectSource[];
 }
 
-export function formatDataIssues(file: string, error: { issues: { path: (string | number | symbol)[]; message: string }[] }): string {
-  return error.issues
-    .map((issue) => {
-      const fieldPath = issue.path.length > 0 ? issue.path.join('.') : '(root)';
-      return `  ${file} · ${fieldPath}: ${issue.message}`;
-    })
-    .join('\n');
-}
-
 async function readJson(file: string): Promise<unknown> {
   try {
     return JSON.parse(await readFile(file, 'utf-8'));
@@ -72,16 +68,13 @@ async function tryReadJson(file: string): Promise<unknown | undefined> {
 
 async function parseProjectFile(file: string, slugFromFile?: string): Promise<Project> {
   const raw = await readJson(file);
-  const result = projectSchema.safeParse(raw);
-  if (!result.success) {
-    throw new DataError(`Invalid project data:\n${formatDataIssues(file, result.error)}`);
-  }
-  if (slugFromFile && result.data.slug !== slugFromFile) {
+  const project = validateProject(file, raw);
+  if (slugFromFile && project.slug !== slugFromFile) {
     throw new DataError(
-      `Project slug mismatch in ${file}: file/directory name is "${slugFromFile}" but slug is "${result.data.slug}"`,
+      `Project slug mismatch in ${file}: file/directory name is "${slugFromFile}" but slug is "${project.slug}"`,
     );
   }
-  return result.data;
+  return project;
 }
 
 async function walkProjectsDir(
@@ -139,11 +132,7 @@ export async function loadProjects(
     let index = 0;
     for (const item of singleRaw) {
       const file = `${dataDir}/projects.json#${index}`;
-      const result = projectSchema.safeParse(item);
-      if (!result.success) {
-        throw new DataError(`Invalid project data:\n${formatDataIssues(file, result.error)}`);
-      }
-      register(result.data, file);
+      register(validateProject(file, item), file);
       index += 1;
     }
   }
@@ -174,7 +163,7 @@ export async function loadProfile(root: string, dataDir: string): Promise<Profil
   if (raw === undefined) return null;
   const result = profileSchema.safeParse(raw);
   if (!result.success) {
-    throw new DataError(`Invalid profile data:\n${formatDataIssues(`${dataDir}/profile.json`, result.error)}`);
+    throw invalidData(`${dataDir}/profile.json`, result.error);
   }
   return result.data;
 }
@@ -190,7 +179,7 @@ export async function loadTags(root: string, dataDir: string): Promise<Tag[]> {
   for (const item of entries) {
     const result = tagSchema.safeParse(item);
     if (!result.success) {
-      throw new DataError(`Invalid tag data:\n${formatDataIssues(rel, result.error)}`);
+      throw invalidData(rel, result.error);
     }
     tags.push(result.data);
   }
@@ -209,7 +198,7 @@ export async function loadCollections(root: string, dataDir: string): Promise<Co
   for (const item of raw) {
     const result = collectionSchema.safeParse(item);
     if (!result.success) {
-      throw new DataError(`Invalid collection data:\n${formatDataIssues(rel, result.error)}`);
+      throw invalidData(rel, result.error);
     }
     collections.push(result.data);
   }
