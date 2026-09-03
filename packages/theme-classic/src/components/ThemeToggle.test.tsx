@@ -25,24 +25,24 @@ describe('ThemeToggle (M3-12)', () => {
   });
 
   it('cycles light → dark → system and persists', () => {
-    localStorage.setItem(THEME_STORAGE_KEY, 'system');
+    window.localStorage.setItem(THEME_STORAGE_KEY, 'system');
     render(<ThemeToggle />);
     const button = screen.getByRole('button');
     expect(button.getAttribute('aria-label')).toBe('Theme: System');
     fireEvent.click(button);
     expect(button.getAttribute('aria-label')).toBe('Theme: Light');
-    expect(localStorage.getItem(THEME_STORAGE_KEY)).toBe('light');
+    expect(window.localStorage.getItem(THEME_STORAGE_KEY)).toBe('light');
     fireEvent.click(button);
     expect(button.getAttribute('aria-label')).toBe('Theme: Dark');
     expect(document.documentElement.dataset.theme).toBe('dark');
     fireEvent.click(button);
-    expect(localStorage.getItem(THEME_STORAGE_KEY)).toBe('system');
+    expect(window.localStorage.getItem(THEME_STORAGE_KEY)).toBe('system');
   });
 
   it('ships a no-flash bootstrap covering storage + system fallback', () => {
     // The script must run before first paint: it reads the stored choice,
     // falls back to the media query and writes data-theme synchronously.
-    expect(noFlashScript).toContain(`localStorage.getItem('${THEME_STORAGE_KEY}')`);
+    expect(noFlashScript).toContain(`window.localStorage.getItem('${THEME_STORAGE_KEY}')`);
     expect(noFlashScript).toContain('prefers-color-scheme: dark');
     expect(noFlashScript).toContain('dataset.theme');
     // Replicate its decision table to lock the semantics.
