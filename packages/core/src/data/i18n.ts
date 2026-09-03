@@ -158,3 +158,20 @@ export function selectLocalizedDocs<T extends { lang?: string; file: string }>(d
   const fallback = docs.filter((d) => !matchesLocale(d) && !otherLocale(d));
   return [...preferred, ...fallback];
 }
+
+import { localizeProject as localizeFull } from './i18n';
+/** Locale-aware project view for API paths; falls back to default on errors. */
+export async function localizeProjectLite(
+  root: string,
+  project: Project,
+  sourceFile: string | null,
+  locale: string,
+  defaultLocale: string,
+): Promise<Project> {
+  if (locale === defaultLocale || sourceFile === null || sourceFile.includes('#')) return project;
+  try {
+    return await localizeFull(root, project, sourceFile, locale);
+  } catch {
+    return project;
+  }
+}

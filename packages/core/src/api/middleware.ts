@@ -1,5 +1,6 @@
 import type { Connect, ViteDevServer } from 'vite';
 import { envelope, endpointDefinitions, type ApiContext } from './endpoints';
+import { localizeProject } from '../data/i18n';
 import { applyQuery, parseQuery } from './query';
 
 /**

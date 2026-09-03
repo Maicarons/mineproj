@@ -1,4 +1,4 @@
-import { resolve } from 'node:path';
+import { join, resolve } from 'node:path';
 import {
   buildSite,
   collectRoutes,
@@ -79,6 +79,40 @@ export async function runPreview(flags: CliFlags, logger: Logger): Promise<void>
   );
 }
 
+/** M5-13: i18n:init / i18n:extract. */
+async function runI18n(command: 'i18n:init' | 'i18n:extract', flags: CliFlags, logger: Logger): Promise<void> {
+  const root = resolve(flags.root ?? process.cwd());
+  const { config } = await loadConfig(root, flags.config);
+  const dataset = await loadDataset(root, config);
+  const { collectI18nGaps } = await import('@mineproj/core');
+  const locale = flags.locale;
+  if (command === 'i18n:init') {
+    if (!locale) throw new Error('i18n:init requires --locale <locale>');
+    const { mkdir, writeFile } = await import('node:fs/promises');
+    const dir = join(root, '.mineproj', 'i18n');
+    await mkdir(dir, { recursive: true });
+    const file = join(dir, `${locale}.json`);
+    await writeFile(file, JSON.stringify({ _locale: locale, _fallback: config.site.fallbackLocale ?? config.site.defaultLocale }, null, 2), 'utf-8');
+    logger.log(`locale "${locale}" scaffolded at ${file}`);
+    logger.log(`add "${locale}" to site.locales in mineproj.config.ts, then add index.${locale}.json files per project.`);
+    return;
+  }
+  // i18n:extract — write a missing-translation report per non-default locale.
+  const report: Record<string, { slug: string; locale: string }[]> = {};
+  for (const locale of config.site.locales) {
+    if (locale === config.site.defaultLocale) continue;
+    const gaps = collectI18nGaps(dataset.projects, locale, config.site.defaultLocale);
+    report[locale] = gaps;
+    logger.log(`${locale}: ${gaps.length} untranslated project(s)`);
+  }
+  const { mkdir: mk, writeFile: wf } = await import('node:fs/promises');
+  const outDir = join(root, '.mineproj', 'i18n');
+  await mk(outDir, { recursive: true });
+  const out = join(outDir, 'missing.json');
+  await wf(out, JSON.stringify(report, null, 2), 'utf-8');
+  logger.log(`extraction written to ${out}`);
+}
+
 export async function runCheck(flags: CliFlags, logger: Logger): Promise<void> {
   const root = resolve(flags.root ?? process.cwd());
   const { path: configPath, config } = await loadConfig(root, flags.config);
@@ -101,6 +135,22 @@ export async function runCheck(flags: CliFlags, logger: Logger): Promise<void> {
     `data OK: ${dataset.projects.length} project(s), ${dataset.tags.length} tag(s), ` +
       `${dataset.collections.length} collection(s), ${bodyCount} with body content`,
   );
+
+  // M5-13: per-locale coverage with --i18n (or whenever multiple locales).
+  if (flags.i18n || config.site.locales.length > 1) {
+    const { collectI18nGaps } = await import('@mineproj/core');
+    for (const locale of config.site.locales) {
+      if (locale === config.site.defaultLocale) continue;
+      const gaps = collectI18nGaps(dataset.projects, locale, config.site.defaultLocale);
+      const missing = gaps.map((g) => g.slug);
+      if (missing.length === 0) {
+        logger.log(`i18n ${locale}: complete`);
+      } else {
+        logger.warn(`i18n ${locale}: ${missing.length} project(s) untranslated: ${missing.join(', ')}`);
+        if (flags.i18n) throw new Error(`i18n coverage incomplete for ${locale}`);
+      }
+    }
+  }
 }
 
 export async function runInfo(flags: CliFlags, logger: Logger): Promise<void> {
@@ -136,6 +186,10 @@ export async function dispatch(args: ParsedArgs, logger: Logger): Promise<void> 
       break;
     case 'info':
       await runInfo(args.flags, logger);
+      break;
+    case 'i18n:init':
+    case 'i18n:extract':
+      await runI18n(args.command, args.flags, logger);
       break;
     case 'help':
       console.log(USAGE);
