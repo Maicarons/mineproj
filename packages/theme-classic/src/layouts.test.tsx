@@ -61,7 +61,15 @@ describe('theme-classic layouts', () => {
   it('renders detail pages with meta and tag links', () => {
     const props = makeProps({
       route: { path: '/projects/voxel-tool/', layout: 'detail', slug: 'voxel-tool' },
-      data: { project: { ...makeProps().data.projects[0]!, summary: 'Summary here', license: 'Apache-2.0' } },
+      data: {
+        project: {
+          ...makeProps().data.projects[0]!,
+          summary: 'Summary here',
+          license: 'Apache-2.0',
+          highlights: ['Fast'],
+          links: [],
+        },
+      },
     } as Partial<LayoutProps>);
     const html = renderToString(<DetailLayout {...props} />);
     expect(html).toContain('<h1');

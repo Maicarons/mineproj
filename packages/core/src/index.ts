@@ -27,4 +27,5 @@ export * from './theme/registry';
 export * from './theme/resolve';
 export * from './theme/slots';
 export * from './theme/props';
+export * from './render/islands';
 export * from './render/render';
