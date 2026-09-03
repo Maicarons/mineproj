@@ -105,12 +105,18 @@ export default theme;
     expect(hello.message).toBe('hello');
   });
 
-  it('content pages ship zero interactive JS', async () => {
+  it('content pages ship zero inline JS and only the island runtime', async () => {
     const result = await buildSite(root, mineprojConfigSchema.parse({ site: { title: 'Exit Criteria' } }));
     for (const page of ['projects/alpha/index.html', 'about/index.html']) {
       const html = await readFile(join(result.outDir, page), 'utf-8');
-      const scripts = html.match(/<script[^>]*src=/g) ?? [];
-      expect(scripts, `${page} must have no scripts`).toEqual([]);
+      // The only external script allowed is the islands runtime itself.
+      const srcScripts = [...html.matchAll(/<script[^>]*src="([^"]*)"/g)].map((m) => m[1]);
+      for (const src of srcScripts) {
+        expect(src, `${page} unexpected script ${src}`).toBe('@mp/islands.js');
+      }
+      // No inline executable scripts (state data is application/json).
+      expect(html.match(/<script>/g), `${page} has inline scripts`).toBeNull();
+      expect(html).toContain('type="application/json"');
     }
   });
 });
