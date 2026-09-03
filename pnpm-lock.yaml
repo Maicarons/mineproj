@@ -55,6 +55,9 @@ importers:
       '@mineproj/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@mineproj/theme-classic':
+        specifier: workspace:*
+        version: link:../../packages/theme-classic
 
   packages/cli:
     dependencies:

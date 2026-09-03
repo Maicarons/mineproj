@@ -6,6 +6,7 @@
   "license": "Apache-2.0",
   "type": "module",
   "dependencies": {
-    "@mineproj/core": "workspace:*"
+    "@mineproj/core": "workspace:*",
+    "@mineproj/theme-classic": "workspace:*"
   }
 }
