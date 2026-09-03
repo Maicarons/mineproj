@@ -1,0 +1,18 @@
+{
+  "name": "@mineproj/test-utils",
+  "version": "0.0.0",
+  "description": "Contract test utilities for mineproj themes and plugins",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@mineproj/core": "workspace:*"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.0"
+  }
+}
