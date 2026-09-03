@@ -53,7 +53,6 @@ export function useAsyncResource<T>(
     return () => {
       cancelled = true;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [...deps, resolved, nonce]);
 
   return { data, loading, error, reload: () => setNonce((n) => n + 1) };
