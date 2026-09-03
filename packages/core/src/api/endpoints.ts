@@ -234,8 +234,17 @@ export async function generateProjectEndpoints(ctx: ApiContext): Promise<ApiEndp
 
 export async function generateApiEndpoints(ctx: ApiContext): Promise<ApiEndpoint[]> {
   const endpoints: ApiEndpoint[] = [];
+  const strategy = ctx.config.api.strategy;
   for (const def of endpointDefinitions) {
+    // Static strategy: no full-list fallback on disk.
+    if (strategy === 'static' && (def.path === 'projects.json' || def.path === 'projects/index.json')) {
+      continue;
+    }
     endpoints.push({ path: def.path, body: await def.generate(ctx) });
+  }
+  if (strategy === 'hybrid' || strategy === 'static') {
+    const { generateVariantEndpoints } = await import('./strategy');
+    endpoints.push(...generateVariantEndpoints(ctx));
   }
   endpoints.push(...(await generateProjectEndpoints(ctx)));
   return endpoints;

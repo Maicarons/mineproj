@@ -48,6 +48,23 @@ export async function resolveApiRequest(
 
   // Live query endpoint: /api/v1/projects?q=…&tag=…&sort=…
   if (path === 'projects') {
+    const { api } = ctx.config;
+    if (api.strategy === 'static') {
+      const { computeHotVariants, isPregeneratedCombo } = await import('./strategy');
+      const variants = computeHotVariants(ctx.dataset.projects, api.pageSize, api.pregeneratedPages);
+      if (!isPregeneratedCombo(variants, searchParams)) {
+        return {
+          status: 404,
+          body: {
+            apiVersion: 'v1',
+            error: {
+              code: 'NOT_FOUND',
+              message: `Query is not a pregenerated combo (strategy=static). Requested: ${searchParams.toString() || '(default)'}`,
+            },
+          },
+        };
+      }
+    }
     const spec = parseQuery(searchParams);
     const result = applyQuery(ctx.dataset.projects.filter((p) => !p.hidden), spec);
     return {

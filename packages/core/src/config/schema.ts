@@ -19,6 +19,17 @@ export const mineprojConfigSchema = z.object({
   themeConfig: z.record(z.string(), z.unknown()).default({}),
   /** Plugin list: mineproj plugins and/or bare Vite plugins. */
   plugins: z.array(z.unknown()).default([]),
+  /** API surface configuration. */
+  api: z
+    .object({
+      /** `client`: full list + client-side filtering; `hybrid`: + hot combos;
+       *  `static`: only pregenerated combos, misses are errors. */
+      strategy: z.enum(['client', 'hybrid', 'static']).default('client'),
+      pageSize: z.number().min(1).max(100).default(24),
+      /** Hot-combo pages pregenerated in hybrid/static modes. */
+      pregeneratedPages: z.number().min(1).max(10).default(3),
+    })
+    .prefault({}),
 });
 
 export type MineprojUserConfig = z.input<typeof mineprojConfigSchema>;
