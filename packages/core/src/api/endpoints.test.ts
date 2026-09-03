@@ -147,7 +147,7 @@ describe('generateApiEndpoints', () => {
     const env = (await byPath()).get('search.json') as { data: { index: unknown; documents: unknown[] } };
     const { default: MiniSearch } = await import('minisearch');
     const index = MiniSearch.loadJSON<Record<string, string>>(
-      env.data.index as unknown as Parameters<typeof MiniSearch.loadJSON>[0],
+      JSON.stringify(env.data.index),
       {
         fields: ['name', 'tagline', 'summary', 'tags'],
         storeFields: ['id'],
