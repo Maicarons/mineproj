@@ -25,7 +25,7 @@ describe('ThemeToggle (M3-12)', () => {
   });
 
   it('cycles light → dark → system and persists', () => {
-    localStorage.removeItem(THEME_STORAGE_KEY);
+    localStorage.clear();
     render(<ThemeToggle />);
     const button = screen.getByRole('button');
     expect(button.getAttribute('aria-label')).toBe('Theme: System');
