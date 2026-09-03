@@ -70,7 +70,7 @@ describe('theme-classic layouts', () => {
           links: [],
         },
       },
-    } as Partial<LayoutProps>);
+    } as unknown as Partial<LayoutProps>);
     const html = renderToString(<DetailLayout {...props} />);
     expect(html).toContain('<h1');
     expect(html).toContain('Apache-2.0');
