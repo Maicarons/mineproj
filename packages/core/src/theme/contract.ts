@@ -49,7 +49,7 @@ export function defineTheme(theme: Theme): Theme {
   return theme;
 }
 
-function isThemeLike(value: unknown): value is Theme {
+export function isThemeLike(value: unknown): value is Theme {
   return (
     typeof value === 'object' &&
     value !== null &&
@@ -63,11 +63,12 @@ function isThemeLike(value: unknown): value is Theme {
  * Resolve the `extends` chain into one flat theme. The child always wins;
  * maps (layouts, components, slots, locales) are merged key-by-key, scalars
  * are inherited only when the child does not define them. Cycles throw.
+ * String parents are resolved through `loadExternal` (which may be async).
  */
-export function resolveThemeExtends(
+export async function resolveThemeExtends(
   theme: Theme,
-  loadExternal?: (reference: string) => Theme,
-): Theme {
+  loadExternal?: (reference: string) => Theme | Promise<Theme>,
+): Promise<Theme> {
   const chain: Theme[] = [];
   const seen = new Set<string>();
   let current: Theme | undefined = theme;
@@ -86,7 +87,7 @@ export function resolveThemeExtends(
           `Theme "${current.name}" extends "${parent}" but string references require resolveTheme()`,
         );
       }
-      current = loadExternal(parent);
+      current = await loadExternal(parent);
     } else if (isThemeLike(parent)) {
       current = parent;
     } else {
