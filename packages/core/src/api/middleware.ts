@@ -89,8 +89,20 @@ export async function resolveApiRequest(
   if (detailMatch?.[1]) {
     const project = ctx.dataset.projects.find((p) => p.slug === detailMatch[1]);
     if (project) {
-      const body = envelope('Project', project, ctx.now ?? new Date().toISOString());
-      return { status: 200, body };
+      // Keep dev responses isomorphic with the build-time detail files.
+      const { loadProjectBody } = await import('../data/body');
+      const sourceFile = ctx.dataset.sources.find((s) => s.slug === project.slug)?.file;
+      const dirRel =
+        sourceFile === undefined || sourceFile.includes('#')
+          ? null
+          : (sourceFile.split('/').slice(0, -1).join('/') || null);
+      const body = await loadProjectBody(ctx.root, project, dirRel);
+      const payload = {
+        ...project,
+        body: body === null ? null : { markdown: body.markdown, html: body.html },
+      };
+      const bodyEnvelope = envelope('Project', payload, ctx.now ?? new Date().toISOString());
+      return { status: 200, body: bodyEnvelope };
     }
     return notFound(path);
   }

@@ -81,6 +81,9 @@
     },
     "i18n": {},
     "ext": {},
-    "body": null
+    "body": {
+      "markdown": "# Voxel Tool\n\nA tiny voxel editor that runs entirely in the browser.\n\n## Why\n\nMost voxel tools are heavy desktop apps. This one boots in a browser tab and\nedits models with a greedy-meshing renderer that stays at 60fps.\n\n```ts\nconst mesh = buildGreedyMesh(voxelGrid);\nrenderer.draw(mesh);\n```\n\n## Status\n\nReleased under Apache-2.0. See the repo for the roadmap.\n",
+      "html": "<h1>Voxel Tool</h1>\n<p>A tiny voxel editor that runs entirely in the browser.</p>\n<h2>Why</h2>\n<p>Most voxel tools are heavy desktop apps. This one boots in a browser tab and\nedits models with a greedy-meshing renderer that stays at 60fps.</p>\n<pre class=\"shiki shiki-themes github-light github-dark\" style=\"background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8\" tabindex=\"0\"><code class=\"language-ts\"><span class=\"line\"><span style=\"color:#D73A49;--shiki-dark:#F97583\">const</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> mesh</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> =</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\"> buildGreedyMesh</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(voxelGrid);</span></span>\n<span class=\"line\"><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">renderer.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">draw</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(mesh);</span></span></code></pre>\n<h2>Status</h2>\n<p>Released under Apache-2.0. See the repo for the roadmap.</p>\n"
+    }
   }
 }
