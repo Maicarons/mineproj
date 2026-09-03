@@ -13,4 +13,8 @@ export * from './data/validate';
 export * from './data/assets';
 export * from './data/derive';
 export * from './data/i18n';
+export * from './api/endpoints';
+export * from './api/emit';
+export * from './api/middleware';
+export * from './api/query';
 export * from './render/render';

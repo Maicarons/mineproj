@@ -1,5 +1,12 @@
 import { resolve } from 'node:path';
-import { buildSite, loadConfig, type ResolvedMineprojConfig } from '@mineproj/core';
+import {
+  buildSite,
+  loadConfig,
+  loadDataset,
+  mineprojApiMiddleware,
+  mineprojVirtualPlugin,
+  type ResolvedMineprojConfig,
+} from '@mineproj/core';
 import { parseArgs, USAGE, type CliFlags, type ParsedArgs } from './args';
 import { createLogger, type Logger } from './logger';
 
@@ -17,9 +24,23 @@ async function resolveContext(flags: CliFlags, logger: Logger): Promise<Resolved
 
 export async function runDev(flags: CliFlags, logger: Logger): Promise<void> {
   const { root, config } = await resolveContext(flags, logger);
+  const dataset = await loadDataset(root, config);
   const { createServer } = await import('vite');
   const server = await createServer({
     root,
+    plugins: [
+      mineprojVirtualPlugin({
+        config,
+        data: {
+          projects: dataset.projects,
+          profile: dataset.profile,
+          tags: dataset.tags,
+          collections: dataset.collections,
+        },
+        routes: [],
+      }),
+      mineprojApiMiddleware({ root, config, dataset }),
+    ],
     server: {
       port: flags.port,
       host: flags.host,
