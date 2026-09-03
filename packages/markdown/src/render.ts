@@ -3,6 +3,7 @@ import Shiki from '@shikijs/markdown-it';
 import footnote from 'markdown-it-footnote';
 import taskLists from 'markdown-it-task-lists';
 import { buildToc, useHeadingAnchors, type Heading, type TocEntry } from './slugify';
+import { installImageRule, type ImageProcessor } from './image';
 import { excerptOf, htmlToPlainText, readingTimeOf } from './meta';
 import { parseFrontMatter, type MarkdownRendererOptions } from './gfm';
 
@@ -27,6 +28,8 @@ export const LANGUAGE_ALIASES: Record<string, string> = {
 export interface AsyncRendererOptions extends MarkdownRendererOptions {
   /** Explicit Shiki theme pair (defaults to github light/dark). */
   themes?: { light: string; dark: string };
+  /** Image processor callback for responsive images (M4-05). */
+  imageProcessor?: ImageProcessor;
 }
 
 export type MarkdownRenderer = (markdown: string) => string;
@@ -111,6 +114,9 @@ export async function renderMarkdown(source: string, options: AsyncRendererOptio
   } catch {
     // Shiki unavailable — proceed without highlighting rather than failing.
   }
+
+  // Install image rule before rendering
+  installImageRule(md, options.imageProcessor);
 
   const html = md.render(content);
   const plainText = htmlToPlainText(html);
