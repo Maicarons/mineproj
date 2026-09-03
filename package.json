@@ -13,15 +13,20 @@
     "build": "pnpm -r build",
     "test": "pnpm -r test",
     "lint": "eslint .",
+    "format:check": "prettier --check .",
+    "typecheck": "pnpm -r typecheck",
     "docs:dev": "pnpm --filter mineproj-docs dev",
     "docs:build": "pnpm --filter mineproj-docs build",
     "docs:preview": "pnpm --filter mineproj-docs preview",
     "check:encoding": "python scripts/check-encoding.py"
   },
   "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@mineproj/eslint-config": "workspace:*",
+    "prettier": "^3.4.0",
     "typescript": "^5.7.0",
-    "vitest": "^4.0.0",
-    "eslint": "^9.0.0"
+    "typescript-eslint": "^8.0.0",
+    "vitest": "^4.0.0"
   },
   "engines": {
     "node": ">=22.12"

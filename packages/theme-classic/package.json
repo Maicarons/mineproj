@@ -10,14 +10,18 @@
   },
   "scripts": {
     "build": "tsdown",
-    "test": "vitest run --passWithNoTests"
+    "test": "vitest run --passWithNoTests",
+    "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@mineproj/tsconfig": "workspace:*",
+    "@mineproj/vitest": "workspace:*",
     "tsdown": "^0.12.0",
+    "typescript": "^5.7.0",
     "vitest": "^4.0.0"
   }
 }

@@ -1,0 +1,4 @@
+{
+  "extends": "@mineproj/tsconfig/react-lib.json",
+  "include": ["src"]
+}

@@ -1,0 +1,10 @@
+node_modules/
+dist/
+build/
+coverage/
+pnpm-lock.yaml
+docs/.vitepress/dist/
+docs/.vitepress/cache/
+CHANGELOG.md
+LICENSE
+NOTICE
