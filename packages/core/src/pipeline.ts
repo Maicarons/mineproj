@@ -213,7 +213,10 @@ export async function buildSite(
     const inner = await renderElementToString(createElement(Layout, props));
     let html = renderDocument(inner, {
       lang: resolvedConfig.site.defaultLocale,
-      title: route.title ? `${route.title} · ${resolvedConfig.site.title}` : resolvedConfig.site.title,
+      title:
+        route.title && route.title !== resolvedConfig.site.title
+          ? `${route.title} · ${resolvedConfig.site.title}`
+          : resolvedConfig.site.title,
       description: resolvedConfig.site.description,
       state: { route },
       // Islands: only pages that actually contain islands load JS at all —

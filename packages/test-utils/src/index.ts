@@ -13,10 +13,6 @@ export interface ContractResult {
   warnings: string[];
 }
 
-function ok(): ContractResult {
-  return { ok: true, errors: [], warnings: [] };
-}
-
 export interface ThemeContractOptions {
   /** Core layouts the theme must implement itself (default: only `home`). */
   requiredLayouts?: string[];

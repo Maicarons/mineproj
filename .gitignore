@@ -40,3 +40,6 @@ coverage/
 # Local tool state
 .mimosa/
 .workbuddy/
+
+# Build cache (user sources like .mineproj/theme/ stay tracked)
+.mineproj/cache/
