@@ -21,4 +21,5 @@ export * from './api/query';
 export * from './plugin/contract';
 export * from './plugin/registry';
 export * from './router/collect';
+export * from './theme/contract';
 export * from './render/render';
