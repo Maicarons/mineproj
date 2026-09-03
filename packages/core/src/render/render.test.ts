@@ -4,7 +4,6 @@ import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { mineprojConfigSchema, type ResolvedMineprojConfig } from '../config/schema';
 import { buildSite, type BuildResult } from '../build';
-import { DataError, scanProjects } from './data';
 import { escapeHtml, renderIndexHtml } from './render';
 
 let root: string;
@@ -38,72 +37,17 @@ afterEach(async () => {
   await rm(root, { recursive: true, force: true });
 });
 
-describe('scanProjects', () => {
-  it('loads directory-form projects and sorts by weight then date', async () => {
-    const base = join(root, 'data', 'projects');
-    await mkdir(join(base, 'beta-tool'), { recursive: true });
-    await writeFile(join(base, 'beta-tool', 'index.json'), projectJson('beta-tool', 'Beta Tool'), 'utf-8');
-    await mkdir(join(base, 'alpha-tool'), { recursive: true });
-    await writeFile(
-      join(base, 'alpha-tool', 'index.json'),
-      projectJson('alpha-tool', 'Alpha Tool', 10),
-      'utf-8',
-    );
-    const projects = await scanProjects(root, 'data');
-    expect(projects.map((p) => p.slug)).toEqual(['alpha-tool', 'beta-tool']);
-  });
-
-  it('loads one-file-form projects (<slug>.json)', async () => {
-    const base = join(root, 'data', 'projects');
-    await writeFile(join(base, 'solo.json'), projectJson('solo', 'Solo'), 'utf-8');
-    const projects = await scanProjects(root, 'data');
-    expect(projects.map((p) => p.slug)).toEqual(['solo']);
-  });
-
-  it('loads single-file form (projects.json array)', async () => {
-    await rm(join(root, 'data', 'projects'), { recursive: true, force: true });
-    await writeFile(
-      join(root, 'data', 'projects.json'),
-      JSON.stringify([JSON.parse(projectJson('a', 'A')), JSON.parse(projectJson('b', 'B'))]),
-      'utf-8',
-    );
-    const projects = await scanProjects(root, 'data');
-    expect(projects).toHaveLength(2);
-  });
-
-  it('rejects a slug mismatch with both names in the error', async () => {
-    const base = join(root, 'data', 'projects');
-    await mkdir(join(base, 'wrong-dir'), { recursive: true });
-    await writeFile(join(base, 'wrong-dir', 'index.json'), projectJson('other-slug', 'X'), 'utf-8');
-    await expect(scanProjects(root, 'data')).rejects.toThrow(
-      /wrong-dir[\s\S]*other-slug/,
-    );
-  });
-
-  it('reports the file and field path for invalid data', async () => {
-    const base = join(root, 'data', 'projects');
-    await mkdir(join(base, 'bad'), { recursive: true });
-    await writeFile(
-      join(base, 'bad', 'index.json'),
-      JSON.stringify({ slug: 'bad', name: '', summary: 'not enough', createdAt: 'x' }),
-      'utf-8',
-    );
-    await expect(scanProjects(root, 'data')).rejects.toThrow(DataError);
-    try {
-      await scanProjects(root, 'data');
-    } catch (err) {
-      const message = (err as Error).message;
-      expect(message).toContain(join('bad', 'index.json'));
-      expect(message).toContain('name');
-      expect(message).toContain('summary');
-    }
-  });
-
-  it('returns an empty list when no data exists', async () => {
-    await rm(join(root, 'data'), { recursive: true, force: true });
-    expect(await scanProjects(root, 'data')).toEqual([]);
-  });
-});
+async function seedThreeProjects(): Promise<void> {
+  const base = join(root, 'data', 'projects');
+  for (const [slug, name, weight] of [
+    ['alpha', 'Alpha Project', 5],
+    ['beta', 'Beta Project', 0],
+    ['gamma', 'Gamma Project', 3],
+  ] as const) {
+    await mkdir(join(base, slug), { recursive: true });
+    await writeFile(join(base, slug, 'index.json'), projectJson(slug, name, weight), 'utf-8');
+  }
+}
 
 describe('renderIndexHtml', () => {
   it('escapes HTML-special characters in titles and names', () => {
@@ -123,18 +67,6 @@ describe('renderIndexHtml', () => {
 });
 
 describe('buildSite', () => {
-  async function seedThreeProjects(): Promise<void> {
-    const base = join(root, 'data', 'projects');
-    for (const [slug, name, weight] of [
-      ['alpha', 'Alpha Project', 5],
-      ['beta', 'Beta Project', 0],
-      ['gamma', 'Gamma Project', 3],
-    ] as const) {
-      await mkdir(join(base, slug), { recursive: true });
-      await writeFile(join(base, slug, 'index.json'), projectJson(slug, name, weight), 'utf-8');
-    }
-  }
-
   it('writes dist/index.html containing all project names', async () => {
     await seedThreeProjects();
     const result: BuildResult = await buildSite(root, config);

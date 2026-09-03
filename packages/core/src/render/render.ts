@@ -2,7 +2,6 @@ import { copyFile, mkdir, readdir, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { Project } from '@mineproj/schema';
 import type { ResolvedMineprojConfig } from '../config/schema';
-import { scanProjects } from './data';
 
 export function escapeHtml(text: string): string {
   return text
@@ -75,6 +74,7 @@ export async function emitSite(
   root: string,
   config: ResolvedMineprojConfig,
   outDir: string,
+  projects: Project[],
   options: { clean?: boolean } = {},
 ): Promise<number> {
   if (options.clean !== false) {
@@ -82,7 +82,6 @@ export async function emitSite(
   }
   await mkdir(outDir, { recursive: true });
 
-  const projects = await scanProjects(root, config.dataDir);
   const html = renderIndexHtml(config, projects);
   await writeFile(join(outDir, 'index.html'), html, 'utf-8');
 

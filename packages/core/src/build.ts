@@ -1,5 +1,6 @@
 import { resolve } from 'node:path';
 import type { ResolvedMineprojConfig } from './config/schema';
+import { loadDataset } from './data/loader';
 
 export class BuildError extends Error {
   constructor(message: string) {
@@ -30,7 +31,8 @@ export async function buildSite(
   options: BuildOptions = {},
 ): Promise<BuildResult> {
   const outDir = resolve(root, options.outDir ?? config.outDir);
+  const dataset = await loadDataset(root, config);
   const { emitSite } = await import('./render/render');
-  const pages = await emitSite(root, config, outDir);
+  const pages = await emitSite(root, config, outDir, dataset.projects);
   return { outDir, pages };
 }

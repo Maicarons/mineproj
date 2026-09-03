@@ -8,5 +8,5 @@ export * from './config/load';
 export * from './hooks';
 export * from './virtual';
 export * from './build';
+export * from './data/loader';
 export * from './render/render';
-export * from './render/data';
