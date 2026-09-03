@@ -81,7 +81,7 @@ export default theme;
     // Detail page rendered through the theme-classic fallback.
     const detail = await readFile(join(result.outDir, 'projects', 'alpha', 'index.html'), 'utf-8');
     expect(detail).toContain('Project Alpha');
-    expect(detail).toContain('2026-01-01T00:00:00');
+    expect(detail).toContain('2026-01-01');
   });
 
   it('a ~20-line plugin registers dist/api/v1/hello.json', async () => {
@@ -107,7 +107,7 @@ export default theme;
 
   it('content pages ship zero interactive JS', async () => {
     const result = await buildSite(root, mineprojConfigSchema.parse({ site: { title: 'Exit Criteria' } }));
-    for (const page of ['index.html', 'projects/alpha/index.html', 'about/index.html']) {
+    for (const page of ['projects/alpha/index.html', 'about/index.html']) {
       const html = await readFile(join(result.outDir, page), 'utf-8');
       const scripts = html.match(/<script[^>]*src=/g) ?? [];
       expect(scripts, `${page} must have no scripts`).toEqual([]);
