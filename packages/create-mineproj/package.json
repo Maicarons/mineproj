@@ -1,0 +1,19 @@
+{
+  "name": "create-mineproj",
+  "version": "0.0.0",
+  "description": "Scaffold a mineproj project site",
+  "license": "Apache-2.0",
+  "type": "module",
+  "bin": {
+    "create-mineproj": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@mineproj/core": "workspace:*"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.0"
+  }
+}
