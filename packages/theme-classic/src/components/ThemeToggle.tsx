@@ -38,12 +38,13 @@ export function ThemeToggle(): ReactNode {
 
   useEffect(() => {
     applyThemeChoice(choice);
+    if (typeof window.matchMedia !== 'function') return;
     const media = window.matchMedia('(prefers-color-scheme: dark)');
     const onChange = (): void => {
       if (choice === 'system') applyThemeChoice('system');
     };
-    media.addEventListener('change', onChange);
-    return () => media.removeEventListener('change', onChange);
+    media.addEventListener?.('change', onChange);
+    return () => media.removeEventListener?.('change', onChange);
   }, [choice]);
 
   const cycle = (): void => {

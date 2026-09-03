@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { fireEvent, render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it } from 'vitest';
 import {
   applyThemeChoice,
   noFlashScript,
@@ -10,6 +10,18 @@ import {
 } from './ThemeToggle';
 
 describe('ThemeToggle (M3-12)', () => {
+  // Node's global localStorage leaks into the jsdom window without methods.
+  const store = new Map<string, string>();
+  beforeAll(() => {
+    Object.defineProperty(window, 'localStorage', {
+      configurable: true,
+      value: {
+        getItem: (k: string) => (store.has(k) ? (store.get(k) as string) : null),
+        setItem: (k: string, v: string) => void store.set(k, String(v)),
+      },
+    });
+    store.clear();
+  });
   it('resolves the system choice from the media query', () => {
     expect(resolveThemeChoice('light')).toBe('light');
     expect(resolveThemeChoice('dark')).toBe('dark');
@@ -25,6 +37,7 @@ describe('ThemeToggle (M3-12)', () => {
   });
 
   it('cycles light → dark → system and persists', () => {
+    store.clear();
     window.localStorage.setItem(THEME_STORAGE_KEY, 'system');
     render(<ThemeToggle />);
     const button = screen.getByRole('button');
@@ -42,7 +55,7 @@ describe('ThemeToggle (M3-12)', () => {
   it('ships a no-flash bootstrap covering storage + system fallback', () => {
     // The script must run before first paint: it reads the stored choice,
     // falls back to the media query and writes data-theme synchronously.
-    expect(noFlashScript).toContain(`window.localStorage.getItem('${THEME_STORAGE_KEY}')`);
+    expect(noFlashScript).toContain(`localStorage.getItem('${THEME_STORAGE_KEY}')`);
     expect(noFlashScript).toContain('prefers-color-scheme: dark');
     expect(noFlashScript).toContain('dataset.theme');
     // Replicate its decision table to lock the semantics.
