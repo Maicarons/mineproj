@@ -14,6 +14,7 @@ import { tokensCss } from './styles/tokens';
 import { componentsCss } from './styles/components';
 import { cardCss } from './styles/card';
 import { noFlashScript } from './components/ThemeToggle';
+import { classicConfigSchema } from './config';
 
 /**
  * @mineproj/theme-classic — the default theme and contract validator.
@@ -41,8 +42,10 @@ const theme = defineTheme({
     'library-explorer': LibraryExplorer,
   },
   islandsImport: '@mineproj/theme-classic/islands',
+  configSchema: classicConfigSchema,
 });
 
 export default theme;
 export { theme };
 export { islands } from './islands';
+export { classicConfigSchema, type ClassicThemeConfig } from './config';

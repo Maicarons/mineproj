@@ -10,39 +10,7 @@ import {
   NotFoundLayout,
 } from './layouts';
 import type { LayoutProps } from '@mineproj/core';
-
-function makeProps(over: Partial<LayoutProps> = {}): LayoutProps {
-  return {
-    route: { path: '/', layout: 'home' },
-    data: {
-      projects: [
-        {
-          slug: 'voxel-tool',
-          name: 'Voxel Tool',
-          tagline: 'Tiny voxel editor',
-          tags: ['web'],
-          createdAt: '2026-01-01T00:00:00.000Z',
-        },
-      ],
-      tagCounts: [{ name: 'web', count: 1 }],
-      stats: {
-        total: 1,
-        byStatus: { released: 1 },
-        featured: 0,
-        playable: 0,
-        openSource: 0,
-        platforms: [],
-        timeline: [{ year: 2026, count: 1 }],
-      },
-      profile: { name: 'Mai', bio: 'Builder' },
-      collections: [],
-      ...over.data,
-    },
-    config: { title: 'Classic Test', defaultLocale: 'zh-CN' },
-    themeConfig: {},
-    ...over,
-  } as LayoutProps;
-}
+import { makeProps } from './layouts.test-utils';
 
 describe('theme-classic layouts', () => {
   it('implements all seven core layouts', () => {
@@ -56,6 +24,7 @@ describe('theme-classic layouts', () => {
     expect(html).toContain('Classic Test');
     expect(html).toContain('Voxel Tool');
     expect(html).toContain('/projects/voxel-tool/');
+    expect(html).toContain('mp-skip-link');
   });
 
   it('renders detail pages with meta and tag links', () => {
@@ -75,13 +44,14 @@ describe('theme-classic layouts', () => {
     expect(html).toContain('<h1');
     expect(html).toContain('Apache-2.0');
     expect(html).toContain('href="/tags/web/"');
+    expect(html).toContain('aria-label="Project information"');
   });
 
   it('renders tag pages with only matching projects', () => {
     const props = makeProps({
       route: { path: '/tags/web/', layout: 'tag', tag: 'web' },
       data: { tag: 'web', projects: makeProps().data.projects },
-    } as Partial<LayoutProps>);
+    } as unknown as Partial<LayoutProps>);
     const html = renderToString(<TagLayout {...props} />);
     expect(html).toContain('#web');
     expect(html).toContain('Voxel Tool');
@@ -94,7 +64,7 @@ describe('theme-classic layouts', () => {
         collection: { slug: 'picks', name: 'Picks', projectSlugs: ['voxel-tool'] },
         projects: makeProps().data.projects,
       },
-    } as Partial<LayoutProps>);
+    } as unknown as Partial<LayoutProps>);
     const html = renderToString(<CollectionLayout {...props} />);
     expect(html).toContain('Picks');
     expect(html).toContain('Voxel Tool');

@@ -103,6 +103,18 @@ export async function buildSite(
     root: siteRoot,
     loadThemeReference: loadRef,
   });
+  // M3-14: theme config is validated against the theme's own schema.
+  if (theme.configSchema) {
+    const parsed = theme.configSchema.safeParse(resolvedConfig.themeConfig);
+    if (!parsed.success) {
+      const details = parsed.error.issues
+        .map((i) => `  ${i.path.join('.') || '(root)'}: ${i.message}`)
+        .join('\n');
+      throw new BuildError(`Invalid themeConfig for theme "${theme.name}":\n${details}`);
+    }
+    resolvedConfig = { ...resolvedConfig, themeConfig: parsed.data as Record<string, unknown> };
+    emitCtx.config = resolvedConfig;
+  }
   if (theme.setup) {
     theme.setup({ themeConfig: resolvedConfig.themeConfig, registerSlot: () => {}, logger });
   }
@@ -155,7 +167,12 @@ export async function buildSite(
   };
   const fallbackWarned = new Set<string>();
   let pages = 0;
-  await bundleIslands(siteRoot, outDir, theme);
+  try {
+    await bundleIslands(siteRoot, outDir, theme);
+  } catch (err) {
+    const firstLine = (err as Error).message.split('\n')[0] ?? '';
+    logger.warn(`island bundle skipped: ${firstLine}`);
+  }
   let revalidated = 0;
   const cache = await loadBuildCache(siteRoot);
   const nextCache: Record<string, string> = {};

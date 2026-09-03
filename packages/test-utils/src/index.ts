@@ -101,7 +101,7 @@ export function runPluginContract(plugin: unknown): ContractResult {
   if (!isMineprojPlugin(plugin)) {
     return { ok: false, errors: ['plugin must be a mineproj plugin object (name + hooks/setup)'], warnings };
   }
-  const p = plugin as Record<string, unknown>;
+  const p = plugin as unknown as Record<string, unknown>;
 
   if (typeof p.name !== 'string' || p.name.length === 0) {
     errors.push('plugin.name must be a non-empty string');

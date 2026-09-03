@@ -240,7 +240,13 @@ importers:
       '@mineproj/schema':
         specifier: workspace:^
         version: link:../schema
+      zod:
+        specifier: ^4.0.0
+        version: 4.5.4
     devDependencies:
+      '@mineproj/test-utils':
+        specifier: workspace:^
+        version: link:../test-utils
       '@mineproj/tsconfig':
         specifier: workspace:*
         version: link:../../configs/tsconfig

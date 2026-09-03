@@ -21,6 +21,7 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@mineproj/test-utils": "workspace:^",
     "@mineproj/tsconfig": "workspace:*",
     "@mineproj/vitest": "workspace:*",
     "@testing-library/react": "^16.0.0",
@@ -35,7 +36,8 @@
   },
   "dependencies": {
     "@mineproj/core": "workspace:^",
-    "@mineproj/schema": "workspace:^"
+    "@mineproj/schema": "workspace:^",
+    "zod": "^4.0.0"
   },
   "types": "./dist/index.d.ts"
 }
