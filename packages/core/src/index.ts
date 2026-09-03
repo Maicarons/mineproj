@@ -20,4 +20,5 @@ export * from './api/middleware';
 export * from './api/query';
 export * from './plugin/contract';
 export * from './plugin/registry';
+export * from './router/collect';
 export * from './render/render';

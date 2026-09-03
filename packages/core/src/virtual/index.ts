@@ -9,6 +9,10 @@ export interface RouteRecord {
   layout: 'home' | 'list' | 'detail' | 'tag' | 'collection' | 'about' | 'notFound' | (string & {});
   /** Project slug for detail routes. */
   slug?: string;
+  /** Tag name for tag routes. */
+  tag?: string;
+  /** Collection slug for collection routes. */
+  collection?: string;
   /** Page title used for `<title>` / sitemap. */
   title?: string;
 }

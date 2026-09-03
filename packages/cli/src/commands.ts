@@ -1,10 +1,10 @@
 import { resolve } from 'node:path';
 import {
-  bodySourceOf,
   buildSite,
+  collectRoutes,
+  createPluginRegistry,
   loadConfig,
   loadDataset,
-  loadProjectBody,
   mineprojApiMiddleware,
   mineprojVirtualPlugin,
   sourceDirOfProjectFile,
@@ -85,6 +85,7 @@ export async function runCheck(flags: CliFlags, logger: Logger): Promise<void> {
   logger.log(`config OK: ${configPath}`);
 
   const dataset = await loadDataset(root, config);
+  const { bodySourceOf, loadProjectBody } = await import('@mineproj/core');
   let bodyCount = 0;
   for (const project of dataset.projects) {
     const sourceFile = dataset.sources.find((s) => s.slug === project.slug)?.file;
@@ -93,14 +94,30 @@ export async function runCheck(flags: CliFlags, logger: Logger): Promise<void> {
     if (source?.kind === 'file' && source.file !== 'body.md' && dirRel !== null) {
       // A custom bodyFile is declared; loadProjectBody throws if missing.
       await loadProjectBody(root, project, dirRel);
-    }
-    if (source !== null) bodyCount += 1;
+    }    if (source !== null) bodyCount += 1;
   }
 
   logger.log(
     `data OK: ${dataset.projects.length} project(s), ${dataset.tags.length} tag(s), ` +
       `${dataset.collections.length} collection(s), ${bodyCount} with body content`,
   );
+}
+
+export async function runInfo(flags: CliFlags, logger: Logger): Promise<void> {
+  const { root, config } = await resolveContext(flags, logger);
+  const registry = createPluginRegistry(config.plugins);
+  const dataset = await loadDataset(root, config);
+  const routes = collectRoutes(dataset, config);
+
+  console.log(`site:       ${config.site.title}`);
+  console.log(`theme:      ${config.theme}`);
+  console.log(`strategy:   ${config.api.strategy}`);
+  console.log(`data:       ${dataset.projects.length} project(s), ${dataset.tags.length} tag(s)`);
+  console.log(`routes:     ${routes.length}`);
+  console.log(`plugins:    ${registry.plugins.length} mineproj, ${registry.vitePlugins.length} vite passthrough`);
+  for (const info of registry.describe()) {
+    console.log(`  - ${info.name} [${info.enforce}] hooks: ${info.hooks.length > 0 ? info.hooks.join(', ') : '(none)'}`);
+  }
 }
 
 export async function dispatch(args: ParsedArgs, logger: Logger): Promise<void> {
@@ -116,6 +133,9 @@ export async function dispatch(args: ParsedArgs, logger: Logger): Promise<void> 
       break;
     case 'check':
       await runCheck(args.flags, logger);
+      break;
+    case 'info':
+      await runInfo(args.flags, logger);
       break;
     case 'help':
       console.log(USAGE);
