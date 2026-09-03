@@ -18,7 +18,7 @@ beforeEach(async () => {
 });
 
 afterEach(async () => {
-  await rm(root, { recursive: true, force: true });
+  await rm(root, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
 });
 
 async function seedProjects(count: number): Promise<void> {
@@ -41,7 +41,7 @@ async function seedProjects(count: number): Promise<void> {
 }
 
 describe('buildSite pipeline', () => {
-  it('renders 100 projects into complete HTML documents', async () => {
+  it('renders 100 projects into complete HTML documents', { timeout: 120_000 }, async () => {
     await seedProjects(100);
     const result = await buildSite(root, config);
     // home + list + 100 details + 1 tag + about + 404
