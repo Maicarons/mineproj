@@ -106,3 +106,40 @@ export async function localizeProject(
   const inline = inlineOverrideOf(project, locale);
   return applyOverride(applyOverride(project, inline), fileOverride);
 }
+
+/**
+ * Locale fallback chain (M5-03): `locale → fallbackLocale → defaultLocale`.
+ */
+export function resolveLocaleChain(defaultLocale: string, fallbackLocale: string | undefined, locale: string): string[] {
+  const chain = [locale, fallbackLocale, defaultLocale].filter(
+    (l): l is string => l !== undefined && l.length > 0,
+  );
+  return [...new Set(chain)];
+}
+
+export interface I18nGap {
+  slug: string;
+  locale: string;
+  /** True when an inline `i18n.<locale>` override exists (file missing). */
+  hasInline: boolean;
+}
+
+/**
+ * Projects with no translation at all for `locale` (neither
+ * `index.<locale>.json` nor an inline `i18n.<locale>` object).
+ * Powers `mineproj check --i18n` and build warnings.
+ */
+export function collectI18nGaps(projects: Project[], locale: string, defaultLocale: string): I18nGap[] {
+  if (locale === defaultLocale) return [];
+  return projects
+    .filter((p) => p.i18n[locale] === undefined)
+    .map((p) => ({ slug: p.slug, locale, hasInline: false }));
+}
+
+/** RTL locales (M5-12) — dir is derived from the locale, never configured. */
+const RTL_LANGS = new Set(['ar', 'he', 'fa', 'ur']);
+
+export function dirForLocale(locale: string): 'rtl' | 'ltr' {
+  const lang = locale.split(/[-_]/)[0] ?? locale;
+  return RTL_LANGS.has(lang) ? 'rtl' : 'ltr';
+}
