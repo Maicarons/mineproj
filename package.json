@@ -23,6 +23,7 @@
   "devDependencies": {
     "@eslint/js": "^9.0.0",
     "@mineproj/eslint-config": "workspace:*",
+    "eslint": "^9.0.0",
     "prettier": "^3.4.0",
     "typescript": "^5.7.0",
     "typescript-eslint": "^8.0.0",
