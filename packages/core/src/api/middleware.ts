@@ -1,6 +1,5 @@
 import type { Connect, ViteDevServer } from 'vite';
 import { envelope, endpointDefinitions, type ApiContext } from './endpoints';
-import { localizeProject } from '../data/i18n';
 import { applyQuery, parseQuery } from './query';
 
 /**
@@ -35,17 +34,18 @@ function delay(ms: number): Promise<void> {
 }
 
 /**
- * Localize dataset projects for a given locale.
+ * Localize dataset projects for a given locale using inline i18n overrides.
+ * This applies the project.i18n[locale] fields without needing file access.
  */
-function localizeDataset(ctx: ApiContext, locale: string | null): ApiContext {
+function localizeDataset(ctx: ApiContext, locale: string | undefined | null): ApiContext {
   if (!locale || locale === ctx.config.site.defaultLocale) return ctx;
-  return {
-    ...ctx,
-    dataset: {
-      ...ctx.dataset,
-      projects: ctx.dataset.projects.map((p) => localizeProject(p, locale, ctx.config.site.defaultLocale)),
-    },
-  };
+  const localized = ctx.dataset.projects.map((p) => {
+    const overrides = (p as unknown as Record<string, unknown>).i18n as Record<string, Record<string, string>> | undefined;
+    const loc = overrides?.[locale];
+    if (!loc) return p;
+    return { ...p, name: loc.name ?? p.name, tagline: loc.tagline ?? p.tagline, summary: loc.summary ?? p.summary };
+  });
+  return { ...ctx, dataset: { ...ctx.dataset, projects: localized } };
 }
 
 /**
@@ -160,7 +160,7 @@ export function mineprojApiMiddleware(ctx: ApiContext) {
         try {
           const url = new URL(req.url ?? '/', 'http://localhost');
           let pathname = url.pathname;
-          let locale: string | null = null;
+          let locale: string | undefined;
 
           // Detect /<locale>/api/v1/... pattern
           const localeMatch = pathname.match(/^\/([a-z]{2}(?:-[A-Z]{2})?)\/api\/v1\/(.+)$/);

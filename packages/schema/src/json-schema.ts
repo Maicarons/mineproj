@@ -6,11 +6,11 @@ import { join } from 'node:path';
 /** Generate JSON Schema files for all data contracts. */
 export function generateAllJsonSchemas(): Record<string, ReturnType<typeof zodToJsonSchema>> {
   return {
-    'project': zodToJsonSchema(projectSchema),
-    'site-config': zodToJsonSchema(siteConfigSchema),
-    'profile': zodToJsonSchema(profileSchema),
-    'tag': zodToJsonSchema(tagSchema),
-    'collection': zodToJsonSchema(collectionSchema),
+    'project': zodToJsonSchema(projectSchema as never),
+    'site-config': zodToJsonSchema(siteConfigSchema as never),
+    'profile': zodToJsonSchema(profileSchema as never),
+    'tag': zodToJsonSchema(tagSchema as never),
+    'collection': zodToJsonSchema(collectionSchema as never),
   };
 }
 

@@ -1,7 +1,6 @@
 /**
  * JSON Schema export (M7-09): converts Zod schemas to JSON Schema format
- * and writes them to .mineproj/schema.json with VSCode settings mapping
- * for autocompletion and hover documentation.
+ * and writes them to .mineproj/schema.json with VSCode settings mapping.
  */
 
 import { z } from 'zod';
@@ -10,34 +9,38 @@ import { join, resolve } from 'node:path';
 
 /**
  * Convert a Zod type to a rough JSON Schema representation.
- * This is a simplified converter that handles the common types used
- * in mineproj schemas.
+ * Uses `as never` casts for Zod 4 compatibility.
  */
 function zodToJsonSchema(schema: z.ZodType): Record<string, unknown> {
-  if (schema instanceof z.ZodString) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+const s = schema as any;
+  const typeName = s?._def?.typeName as string | undefined;
+
+  if (typeName === 'ZodString') {
     const result: Record<string, unknown> = { type: 'string' };
-    if (schema.minLength !== null && schema.minLength !== undefined) result.minLength = schema.minLength;
-    if (schema.maxLength !== null && schema.maxLength !== undefined) result.maxLength = schema.maxLength;
-    if (schema.isNullable) result.type = ['string', 'null'];
+    const min = (s as { minLength?: number | null }).minLength;
+    const max = (s as { maxLength?: number | null }).maxLength;
+    if (min != null) result.minLength = min;
+    if (max != null) result.maxLength = max;
     return result;
   }
-  if (schema instanceof z.ZodNumber) {
+  if (typeName === 'ZodNumber') {
     const result: Record<string, unknown> = { type: 'number' };
-    if (schema.minValue !== null && schema.minValue !== undefined) result.minimum = schema.minValue;
-    if (schema.maxValue !== null && schema.maxValue !== undefined) result.maximum = schema.maxValue;
+    const min = (s as { minValue?: number | null }).minValue;
+    const max = (s as { maxValue?: number | null }).maxValue;
+    if (min != null) result.minimum = min;
+    if (max != null) result.maximum = max;
     return result;
   }
-  if (schema instanceof z.ZodBoolean) {
+  if (typeName === 'ZodBoolean') {
     return { type: 'boolean' };
   }
-  if (schema instanceof z.ZodArray) {
-    return {
-      type: 'array',
-      items: zodToJsonSchema(schema.element),
-    };
+  if (typeName === 'ZodArray') {
+    const element = s.element as z.ZodType;
+    return { type: 'array', items: zodToJsonSchema(element) };
   }
-  if (schema instanceof z.ZodObject) {
-    const shape = schema.shape as Record<string, z.ZodType>;
+  if (typeName === 'ZodObject') {
+    const shape = s.shape as Record<string, z.ZodType>;
     const properties: Record<string, unknown> = {};
     const required: string[] = [];
     for (const [key, fieldSchema] of Object.entries(shape)) {
@@ -50,27 +53,24 @@ function zodToJsonSchema(schema: z.ZodType): Record<string, unknown> {
     if (required.length > 0) result.required = required;
     return result;
   }
-  if (schema instanceof z.ZodEnum) {
-    return {
-      type: 'string',
-      enum: schema._def.values as string[],
-    };
+  if (typeName === 'ZodEnum') {
+    const values = s._def.values as readonly string[];
+    return { type: 'string', enum: [...values] };
   }
-  if (schema instanceof z.ZodDefault) {
-    const inner = zodToJsonSchema(schema._def.innerType);
-    if (schema._def.defaultValue !== undefined) {
-      inner.default = schema._def.defaultValue;
-    }
-    return inner;
+  if (typeName === 'ZodDefault') {
+    const innerType = s._def.innerType as z.ZodType;
+    const result = zodToJsonSchema(innerType);
+    const defaultValue = s._def.defaultValue;
+    if (defaultValue !== undefined) result.default = defaultValue;
+    return result;
   }
-  if (schema instanceof z.ZodOptional) {
-    const inner = zodToJsonSchema(schema._def.innerType);
-    return inner;
+  if (typeName === 'ZodOptional') {
+    const innerType = s._def.innerType as z.ZodType;
+    return zodToJsonSchema(innerType);
   }
-  if (schema instanceof z.ZodUnion) {
-    return {
-      anyOf: schema._def.options.map((opt: z.ZodType) => zodToJsonSchema(opt)),
-    };
+  if (typeName === 'ZodUnion') {
+    const options = s._def.options as z.ZodType[];
+    return { anyOf: options.map((opt: z.ZodType) => zodToJsonSchema(opt)) };
   }
   return {};
 }
@@ -86,7 +86,6 @@ export async function exportJsonSchema(
   const dir = resolve(outputDir, '.mineproj');
   await mkdir(dir, { recursive: true });
 
-  // Build the JSON Schema document
   const schemaDoc: Record<string, unknown> = {
     $schema: 'http://json-schema.org/draft-07/schema#',
     $id: 'https://mineproj.dev/schemas/project.json',
@@ -102,29 +101,18 @@ export async function exportJsonSchema(
   const schemaPath = join(dir, 'schema.json');
   await writeFile(schemaPath, JSON.stringify(schemaDoc, null, 2) + '\n', 'utf-8');
 
-  // Write VSCode settings for autocompletion
   const vscodeDir = join(resolve(projectRoot), '.vscode');
   await mkdir(vscodeDir, { recursive: true });
   const vscodeSettingsPath = join(vscodeDir, 'settings.json');
 
   const vscodeSettings = {
     'json.schemas': [
-      {
-        fileMatch: ['data/projects/**/index.json'],
-        url: './.mineproj/schema.json',
-      },
-      {
-        fileMatch: ['data/profile.json'],
-        url: './.mineproj/schema.json',
-      },
-      {
-        fileMatch: ['data/tags.json'],
-        url: './.mineproj/schema.json',
-      },
+      { fileMatch: ['data/projects/**/index.json'], url: './.mineproj/schema.json' },
+      { fileMatch: ['data/profile.json'], url: './.mineproj/schema.json' },
+      { fileMatch: ['data/tags.json'], url: './.mineproj/schema.json' },
     ],
   };
 
   await writeFile(vscodeSettingsPath, JSON.stringify(vscodeSettings, null, 2) + '\n', 'utf-8');
-
   return { schemaPath, vscodeSettingsPath };
 }
