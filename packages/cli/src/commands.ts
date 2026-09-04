@@ -28,6 +28,11 @@ async function resolveContext(flags: CliFlags, logger: Logger): Promise<Resolved
 export async function runDev(flags: CliFlags, logger: Logger): Promise<void> {
   const { root, config } = await resolveContext(flags, logger);
   const dataset = await loadDataset(root, config);
+
+  if (flags.editor) {
+    logger.log('Visual editor enabled (experimental)');
+    logger.log('Mount the editor at http://localhost:<port>/editor/');
+  }
   const { createServer } = await import('vite');
   const server = await createServer({
     root,

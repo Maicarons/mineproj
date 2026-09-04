@@ -5,6 +5,7 @@ export interface CliFlags {
   port?: number;
   host?: string | boolean;
   open?: boolean;
+  editor?: boolean;
   i18n?: boolean;
   locale?: string;
   failUnder?: number;
@@ -40,6 +41,7 @@ Options:
   --port <n>         Dev/preview server port
   --host <host>      Dev/preview server host
   --open             Open the browser after server start
+  --editor           Enable the visual editor (dev only)
   --fail-under <n>   Minimum score for audit CI gate (default 85)
   --i18n             (check) print per-locale translation coverage
   --locale <l>       (i18n:init/i18n:extract) target locale
@@ -95,6 +97,8 @@ export function parseArgs(argv: string[]): ParsedArgs {
         }
       } else if (key === 'open') {
         flags.open = true;
+      } else if (key === 'editor') {
+        flags.editor = true;
       } else if (key === 'i18n') {
         flags.i18n = true;
       } else if (key === 'locale') {
