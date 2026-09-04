@@ -239,6 +239,38 @@ export async function runDoctor(flags: CliFlags, logger: Logger): Promise<void> 
   }
 }
 
+/** M9-18: editor:export — export editor drafts as JSON patches. */
+export async function runEditorExport(flags: CliFlags, logger: Logger): Promise<void> {
+  const root = resolve(flags.root ?? process.cwd());
+  const { mkdir, writeFile, readFile, readdir } = await import('node:fs/promises');
+  const { join } = await import('node:path');
+
+  const draftsDir = join(root, '.mineproj', 'backup');
+  let drafts: string[] = [];
+  try {
+    drafts = (await readdir(draftsDir)).filter((f) => f.endsWith('.json'));
+  } catch {
+    logger.log('No backup drafts found in .mineproj/backup/');
+  }
+
+  if (drafts.length === 0) {
+    logger.log('No drafts to export.');
+    return;
+  }
+
+  const outDir = join(root, '.mineproj', 'exports');
+  await mkdir(outDir, { recursive: true });
+
+  for (const draft of drafts) {
+    const content = await readFile(join(draftsDir, draft), 'utf-8');
+    const outFile = join(outDir, draft.replace(/\.[^.]+$/, '') + '.json');
+    await writeFile(outFile, content, 'utf-8');
+    logger.log(`Exported ${draft} → ${outFile}`);
+  }
+
+  logger.log(`Editor export complete. ${drafts.length} draft(s) exported to ${outDir}.`);
+}
+
 export async function dispatch(args: ParsedArgs, logger: Logger): Promise<void> {
   switch (args.command) {
     case 'dev':
@@ -271,6 +303,9 @@ export async function dispatch(args: ParsedArgs, logger: Logger): Promise<void> 
     case 'i18n:init':
     case 'i18n:extract':
       await runI18n(args.command, args.flags, logger);
+      break;
+    case 'editor:export':
+      await runEditorExport(args.flags, logger);
       break;
     case 'help':
       console.log(USAGE);

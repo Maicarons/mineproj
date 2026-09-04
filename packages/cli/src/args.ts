@@ -12,7 +12,7 @@ export interface CliFlags {
 }
 
 export interface ParsedArgs {
-  command: 'dev' | 'build' | 'preview' | 'check' | 'info' | 'audit' | 'theme:eject' | 'new' | 'doctor' | 'i18n:init' | 'i18n:extract' | 'help' | 'version';
+  command: 'dev' | 'build' | 'preview' | 'check' | 'info' | 'audit' | 'theme:eject' | 'new' | 'doctor' | 'i18n:init' | 'i18n:extract' | 'editor:export' | 'help' | 'version';
   flags: CliFlags;
 }
 
@@ -32,6 +32,7 @@ Commands:
   doctor     Diagnose the environment, config and project state
   i18n:init <locale>   Scaffold a new locale
   i18n:extract         Extract untranslated keys per locale
+  editor:export        Export editor drafts as JSON patches
   info       Show resolved config, theme and plugin diagnostics
 
 Options:
@@ -120,7 +121,7 @@ export function parseArgs(argv: string[]): ParsedArgs {
   }
 
   const command = (positional ?? 'help').replace(/_/g, ':') as ParsedArgs['command'];
-  if (!['dev', 'build', 'preview', 'check', 'audit', 'theme:eject', 'new', 'doctor', 'info', 'i18n:init', 'i18n:extract', 'help', 'version'].includes(command)) {
+  if (!['dev', 'build', 'preview', 'check', 'audit', 'theme:eject', 'new', 'doctor', 'info', 'i18n:init', 'i18n:extract', 'editor:export', 'help', 'version'].includes(command)) {
     throw new Error(`Unknown command: ${positional}\n\n${USAGE}`);
   }
   return { command, flags };
