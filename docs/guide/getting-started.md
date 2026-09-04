@@ -17,7 +17,7 @@ cd my-portfolio
 pnpm dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) to see your site.
+Open `http://localhost:5173` in your browser to see your site.
 
 ## Project Structure
 
