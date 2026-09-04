@@ -27,7 +27,7 @@ export function isThemeModule(value: unknown): value is Theme {
 }
 
 async function importThemeModule(path: string, baseDir: string): Promise<Theme> {
-  const jiti = createJiti(join(baseDir, 'index.js'), { interopDefault: false });
+  const jiti = createJiti(join(baseDir, 'index.js'), { interopDefault: true });
   try {
     const mod = (await jiti.import(path)) as unknown;
     if (isThemeLike(mod)) return mod;
