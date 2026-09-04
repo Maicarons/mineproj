@@ -133,7 +133,7 @@ export function deriveFacets(projects: Project[]): {
       if (!value) continue;
       map.set(value, (map.get(value) ?? 0) + 1);
     }
-    return [...map.entries()].map(({name, count}) => ({ name, count })).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+    return [...map.entries()].map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
   };
   return {
     categories: count(projects.map((p) => p.category)),
