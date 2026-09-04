@@ -26,7 +26,7 @@ export interface MediaPanelProps {
 }
 
 export function MediaPanel({ label, items, onChange, sortable = true, accept = 'image/*' }: MediaPanelProps): ReactNode {
-  const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const [dragIndex, _setDragIndex] = useState<number | null>(null);
 
   const addItem = () => {
     const input = document.createElement('input');

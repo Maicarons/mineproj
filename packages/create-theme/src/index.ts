@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { mkdir, writeFile } from 'node:fs/promises';
-import { resolve, dirname, join } from 'node:path';
+import { join } from 'node:path';
 
 const THEME_TEMPLATE = `import { defineTheme } from '@mineproj/core';
 

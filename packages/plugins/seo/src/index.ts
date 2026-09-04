@@ -176,7 +176,7 @@ export function defineSeoPlugin(options: SeoOptions): MineprojPlugin {
           profileName: profile?.name,
           profileUrl: profile?.url,
         });
-        let out = html.replace('<head>', `<head>\n${meta}${ld ? `\n${ld}` : ''}`);
+        const out = html.replace('<head>', `<head>\n${meta}${ld ? `\n${ld}` : ''}`);
         // html lang comes from the pipeline document; nothing to do here.
         return out;
       },

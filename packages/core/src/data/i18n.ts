@@ -151,7 +151,7 @@ export function dirForLocale(locale: string): 'rtl' | 'ltr' {
  */
 export function selectLocalizedDocs<T extends { lang?: string; file: string }>(docs: T[], locale: string): T[] {
   const matchesLocale = (d: T): boolean =>
-    d.lang === locale || new RegExp(`\.${locale}\.[a-z0-9]+$`, 'i').test(d.file);
+    d.lang === locale || new RegExp('[.]' + locale + '\\.[a-z0-9]+$', 'i').test(d.file);
   const otherLocale = (d: T): boolean =>
     d.lang !== undefined && d.lang !== locale;
   const preferred = docs.filter(matchesLocale);

@@ -175,7 +175,7 @@ export async function runInfo(flags: CliFlags, logger: Logger): Promise<void> {
   }
 }
 
-export async function runAudit(flags: CliFlags, logger: Logger): Promise<void> {
+export async function runAudit(flags: CliFlags, _logger: Logger): Promise<void> {
   const root = resolve(flags.root ?? process.cwd());
   const outDir = resolve(root, flags.outDir ?? 'dist');
   const { runAudit: auditSite, formatAuditTable } = await import('./audit');
@@ -188,11 +188,11 @@ export async function runAudit(flags: CliFlags, logger: Logger): Promise<void> {
 
 export async function runThemeEject(flags: CliFlags, logger: Logger): Promise<void> {
   const root = resolve(flags.root ?? process.cwd());
-  const { loadConfig, resolveTheme, importThemeFromReference, expandThemeReference } = await import('@mineproj/core');
+  const { loadConfig, importThemeFromReference, expandThemeReference } = await import('@mineproj/core');
   const { config } = await loadConfig(root, flags.config);
   const themeRef = expandThemeReference(config.theme);
   const theme = await importThemeFromReference(root, themeRef);
-  const { mkdir, writeFile, readFile } = await import('node:fs/promises');
+  const { mkdir, writeFile } = await import('node:fs/promises');
   const { join } = await import('node:path');
   const themeDir = join(root, '.mineproj', 'theme');
   await mkdir(themeDir, { recursive: true });
@@ -274,14 +274,13 @@ export async function runEditorExport(flags: CliFlags, logger: Logger): Promise<
 /** M7-07: migrate — schema version migration tool. */
 export async function runMigrate(flags: CliFlags, logger: Logger): Promise<void> {
   const root = resolve(flags.root ?? process.cwd());
-  const { readFile, readdir, writeFile, mkdir, copyFile } = await import('node:fs/promises');
+  const { readFile, readdir, mkdir, copyFile } = await import('node:fs/promises');
   const { join } = await import('node:path');
 
   // Detect schema version
   const configPath = join(root, 'mineproj.config.ts');
-  let configContent = '';
   try {
-    configContent = await readFile(configPath, 'utf-8');
+    await readFile(configPath, 'utf-8');
   } catch {
     logger.error('No mineproj.config.ts found. Are you in a mineproj project?');
     return;
@@ -297,7 +296,6 @@ export async function runMigrate(flags: CliFlags, logger: Logger): Promise<void>
     const dataDir = join(root, 'data');
     const entries = await readdir(dataDir, { recursive: true });
     for (const entry of entries) {
-      const fullPath = join(dataDir, entry);
       if (entry.endsWith('.json') || entry.endsWith('.md')) {
         const rel = join('data', entry);
         filesToBackup.push(rel);

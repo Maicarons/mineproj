@@ -49,7 +49,7 @@ export function PdfViewer({ file, title, pages, size, cover, preview = 'viewer' 
     if (pdfDocRef.current) renderPage(pageNum, pdfDocRef.current, scale);
   }, [pageNum, scale]);
 
-  async function renderPage(num: number, pdf: any, s: number): Promise<void> {
+  async function renderPage(num: number, pdf: { getPage: (n: number) => Promise<{ render: (ctx: { canvasContext: CanvasRenderingContext2D; viewport: unknown }) => { promise: Promise<void> } }> }, s: number): Promise<void> {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const page = await pdf.getPage(num);

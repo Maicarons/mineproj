@@ -1,4 +1,4 @@
-import type { FormField, FormDescriptor } from './describe';
+import type { FormDescriptor } from './describe';
 import { getFieldControl } from './controls';
 
 /**

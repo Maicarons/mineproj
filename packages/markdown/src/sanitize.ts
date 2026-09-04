@@ -43,7 +43,7 @@ export function sanitizeHtml(html: string): string {
       if (EVENT_HANDLER.test(attrName)) return '';
       if (!ALLOWED_ATTRS.has(attrName)) return '';
 
-      let value = dq ?? sq ?? uq ?? '';
+      const value = dq ?? sq ?? uq ?? '';
       if (attrName === 'href' && FORBIDDEN_SCHEMES.test(value)) return '';
       if (attrName === 'src' && FORBIDDEN_SCHEMES.test(value)) return '';
 

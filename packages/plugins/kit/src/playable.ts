@@ -1,5 +1,5 @@
 import { existsSync, cpSync, mkdirSync } from 'node:fs';
-import { join, resolve, dirname } from 'node:path';
+import { join, dirname } from 'node:path';
 import type { MineprojPlugin, Project } from '@mineproj/core';
 
 /**

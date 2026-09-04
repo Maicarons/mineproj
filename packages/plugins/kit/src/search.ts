@@ -14,7 +14,7 @@ export interface SearchShard {
 export function buildSearchShards(
   projects: Project[],
   locales: string[],
-  defaultLocale: string,
+  _defaultLocale: string,
 ): SearchShard[] {
   const shards: SearchShard[] = [];
   for (const locale of locales) {

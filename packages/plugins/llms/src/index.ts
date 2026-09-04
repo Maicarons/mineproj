@@ -61,7 +61,7 @@ export function buildAgentsMd(): string {
   ].join('\n');
 }
 
-export function defineLlmsPlugin(options: LlmsOptions): MineprojPlugin {
+export function defineLlmsPlugin(_options: LlmsOptions): MineprojPlugin {
   return {
     name: '@mineproj/plugin-llms',
     enforce: 'post',

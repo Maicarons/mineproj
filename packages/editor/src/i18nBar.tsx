@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 /**
  * I18nBar (M9-08): language selector for editing multilingual fields.
@@ -28,7 +28,6 @@ export interface I18nBarProps {
 }
 
 export function I18nBar({ locales, activeLocale, onLocaleChange, missingCount }: I18nBarProps): ReactNode {
-  const [open, setOpen] = useState(false);
 
   const active = locales.find((l) => l.locale === activeLocale);
   const coverage = active ? Math.round((active.translated / Math.max(active.total, 1)) * 100) : 0;

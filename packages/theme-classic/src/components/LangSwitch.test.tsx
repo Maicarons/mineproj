@@ -3,7 +3,6 @@ import { describe, expect, it } from 'vitest';
 import { switchLocalePath } from './LangSwitch';
 
 describe('LangSwitch path logic (M5-11)', () => {
-  const locales = ['zh-CN', 'en'];
   const known = new Set([
     '/',
     '/projects/voxel-tool/',

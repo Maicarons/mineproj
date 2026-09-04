@@ -1,4 +1,4 @@
-import type { Transport, TransportResult } from './transport';
+import type { Transport } from './transport';
 
 /**
  * GitHubTransport (M9-14): reads/writes files via the GitHub Contents API
