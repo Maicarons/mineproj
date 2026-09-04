@@ -1,6 +1,18 @@
-# 指南 - Deploying
+# 部署指南
 
-完整文档目前仅有英文版。请访问英文文档获取完整内容。
+mineproj 生成纯静态 `dist/` 目录，可部署到任何静态托管服务。
 
-- [English Documentation](/guide/deploying)
-- [zh-CN Home](/zh-CN/)
+## GitHub Pages
+
+```yaml
+# .github/workflows/deploy.yml
+- run: pnpm build
+- uses: actions/upload-pages-artifact@v3
+  with:
+    path: dist
+```
+
+## Netlify / Vercel / Cloudflare
+
+构建命令：`pnpm build`
+输出目录：`dist`

@@ -1,6 +1,15 @@
-# 指南 - Cli Reference
+# CLI 参考
 
-完整文档目前仅有英文版。请访问英文文档获取完整内容。
+```bash
+mineproj <command> [options]
+```
 
-- [English Documentation](/guide/cli-reference)
-- [zh-CN Home](/zh-CN/)
+## 命令
+
+| 命令 | 说明 |
+|------|------|
+| `dev` | 启动开发服务器 |
+| `build` | 构建静态站点 |
+| `preview` | 预览构建结果 |
+| `check` | 验证配置和数据 |
+| `audit` | SEO/AI/性能评分 |

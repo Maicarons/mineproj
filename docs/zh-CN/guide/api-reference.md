@@ -1,6 +1,12 @@
-# 指南 - Api Reference
+# API 参考
 
-完整文档目前仅有英文版。请访问英文文档获取完整内容。
+mineproj 在构建时生成位于 `/api/v1/` 的静态 API。
 
-- [English Documentation](/guide/api-reference)
-- [zh-CN Home](/zh-CN/)
+## 端点
+
+| 端点 | 说明 |
+|------|------|
+| `/api/v1/projects.json` | 项目列表 |
+| `/api/v1/projects/<slug>.json` | 项目详情 |
+| `/api/v1/tags.json` | 标签列表 |
+| `/api/v1/stats.json` | 统计数据 |

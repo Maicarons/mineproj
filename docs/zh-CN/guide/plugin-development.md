@@ -1,6 +1,25 @@
-# 指南 - Plugin Development
+# 插件开发
 
-完整文档目前仅有英文版。请访问英文文档获取完整内容。
+mineproj 插件通过生命周期钩子扩展构建流水线。
 
-- [English Documentation](/guide/plugin-development)
-- [zh-CN Home](/zh-CN/)
+## 创建插件
+
+```bash
+npx create-plugin my-plugin
+cd my-plugin
+pnpm install
+```
+
+## 插件结构
+
+```ts
+import { definePlugin } from '@mineproj/core';
+
+export default definePlugin({
+  name: '@mineproj/my-plugin',
+  hooks: {
+    'render:before': async (html) => html,
+    'build:done': async () => console.log('构建完成！'),
+  },
+});
+```
