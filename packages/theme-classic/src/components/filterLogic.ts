@@ -13,6 +13,9 @@ export interface FilterState {
   categories: string[];
   tags: string[];
   status: string[];
+  platforms: string[];
+  years: string[];
+  playable: boolean | null; // null = all, true = playable, false = not playable
   excludeArchived: boolean;
   sort: SortKey;
 }
@@ -22,6 +25,9 @@ export const DEFAULT_FILTER_STATE: FilterState = {
   categories: [],
   tags: [],
   status: [],
+  platforms: [],
+  years: [],
+  playable: null,
   excludeArchived: true,
   sort: 'newest',
 };
@@ -35,6 +41,13 @@ export function applyFilters(projects: Project[], state: FilterState): Project[]
     }
     if (state.tags.length > 0 && !state.tags.every((t) => p.tags.includes(t))) return false;
     if (state.status.length > 0 && !state.status.includes(p.status)) return false;
+    if (state.platforms.length > 0 && !state.platforms.some((pl) => p.platforms.includes(pl))) return false;
+    if (state.years.length > 0) {
+      const year = p.createdAt?.slice(0, 4);
+      if (!year || !state.years.includes(year)) return false;
+    }
+    if (state.playable === true && !p.playable) return false;
+    if (state.playable === false && p.playable) return false;
     if (q.length > 0) {
       const haystack = [p.name, p.tagline, p.summary, p.tags.join(' ')].join(' ').toLowerCase();
       if (!haystack.includes(q)) return false;
@@ -66,6 +79,10 @@ export function stateToQuery(state: FilterState): string {
   if (state.categories.length > 0) params.set('category', state.categories.join(','));
   if (state.tags.length > 0) params.set('tag', state.tags.join(','));
   if (state.status.length > 0) params.set('status', state.status.join(','));
+  if (state.platforms.length > 0) params.set('platform', state.platforms.join(','));
+  if (state.years.length > 0) params.set('year', state.years.join(','));
+  if (state.playable === true) params.set('playable', '1');
+  else if (state.playable === false) params.set('playable', '0');
   if (!state.excludeArchived) params.set('archived', '1');
   if (state.sort !== DEFAULT_FILTER_STATE.sort) params.set('sort', state.sort);
   const qs = params.toString();
@@ -81,11 +98,16 @@ export function queryToState(search: string, base: FilterState = DEFAULT_FILTER_
       .map((v) => v.trim())
       .filter((v) => v.length > 0);
   };
+  const playableRaw = params.get('playable');
+  const playable = playableRaw === '1' ? true : playableRaw === '0' ? false : null;
   return {
     q: params.get('q') ?? base.q,
     categories: list('category'),
     tags: list('tag'),
     status: list('status'),
+    platforms: list('platform'),
+    years: list('year'),
+    playable,
     excludeArchived: params.get('archived') !== '1',
     sort: (['newest', 'oldest', 'name', 'updated'] as const).includes(params.get('sort') as never)
       ? (params.get('sort') as SortKey)
@@ -102,6 +124,8 @@ export function deriveFacets(projects: Project[]): {
   categories: { name: string; count: number }[];
   tags: { name: string; count: number }[];
   statuses: { name: string; count: number }[];
+  platforms: { name: string; count: number }[];
+  years: { name: string; count: number }[];
 } {
   const count = (values: (string | undefined)[]): { name: string; count: number }[] => {
     const map = new Map<string, number>();
@@ -109,11 +133,13 @@ export function deriveFacets(projects: Project[]): {
       if (!value) continue;
       map.set(value, (map.get(value) ?? 0) + 1);
     }
-    return [...map.entries()].map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+    return [...map.entries()].map(({name, count}) => ({ name, count })).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
   };
   return {
     categories: count(projects.map((p) => p.category)),
     tags: count(projects.flatMap((p) => p.tags)),
     statuses: count(projects.map((p) => p.status)),
+    platforms: count(projects.flatMap((p) => p.platforms)),
+    years: count(projects.map((p) => p.createdAt?.slice(0, 4))),
   };
 }

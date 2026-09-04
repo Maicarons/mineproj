@@ -41,8 +41,55 @@ export function buildAtom(siteTitle: string, siteUrl: string, items: FeedItem[])
   ].join('\n');
 }
 
+/** JSON Feed format (M6-08): https://www.jsonfeed.org/version/1.1/ */
+export function buildJsonFeed(siteTitle: string, siteUrl: string, items: FeedItem[]): string {
+  const base = siteUrl.replace(/\/+$/, '');
+  const feed = {
+    version: 'https://jsonfeed.org/version/1.1',
+    title: siteTitle,
+    home_page_url: base,
+    feed_url: `${base}/feed.json`,
+    items: items.map((i) => ({
+      id: `${base}/projects/${i.slug}/`,
+      url: `${base}/projects/${i.slug}/`,
+      title: i.name,
+      summary: i.summary,
+      date_published: i.createdAt,
+      date_modified: i.updatedAt ?? i.createdAt,
+    })),
+  };
+  return JSON.stringify(feed, null, 2) + '\n';
+}
+
 export function feedItemsOf(projects: Project[]): FeedItem[] {
   return projects
     .filter((p) => !p.hidden)
     .map((p) => ({ slug: p.slug, name: p.name, summary: p.summary, createdAt: p.createdAt, updatedAt: p.updatedAt }));
+}
+
+/** Define a feed plugin that emits RSS, Atom, and JSON Feed files. */
+import type { MineprojPlugin, Project } from '@mineproj/core';
+
+export interface FeedPluginOptions {
+  siteTitle: string;
+  siteUrl: string;
+}
+
+export function defineFeedPlugin(options: FeedPluginOptions): MineprojPlugin {
+  return {
+    name: '@mineproj/plugin-feed',
+    enforce: 'post',
+    hooks: {
+      'emit': async (_value, ctx) => {
+        const c = ctx as unknown as {
+          dataset: { projects: Project[] };
+          emit: (path: string, content: string) => Promise<void>;
+        };
+        const items = feedItemsOf(c.dataset.projects);
+        await ctx.emit('feed.xml', buildRss(options.siteTitle, options.siteUrl, items));
+        await ctx.emit('feed.atom', buildAtom(options.siteTitle, options.siteUrl, items));
+        await ctx.emit('feed.json', buildJsonFeed(options.siteTitle, options.siteUrl, items));
+      },
+    },
+  };
 }

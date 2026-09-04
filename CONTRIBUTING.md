@@ -40,3 +40,41 @@
 ## 行为准则
 
 参与本仓库即视为同意 [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)。
+
+## 开发者原创证书（DCO）
+
+本仓库要求所有提交使用 **开发者原创证书（Developer Certificate of Origin, DCO）**。每次提交必须包含 `Signed-off-by` 跟踪行，表明你同意 DCO 1.1 条款：
+
+```
+Developer Certificate of Origin Version 1.1
+
+By making a contribution to this project, I certify that:
+
+(a) The contribution was created in whole or in part by me and I have
+    the right to submit it under the open source license indicated in
+    the file; or
+
+(b) The contribution is based upon previous work that, to the best of
+    my knowledge, is covered under an appropriate open source license
+    and I have the right under that license to submit that work with
+    modifications, whether created in whole or in part by me, under the
+    same open source license (unless I am permitted to submit under a
+    different license); or
+
+(c) The contribution was provided directly to me by some other person
+    who certified (a), (b) or (c) and I have not modified it; or
+
+(d) I understand and agree that this project and the contribution are
+    public and that a record of the contribution (including all personal
+    information I submit with it, including my sign-off) is maintained
+    indefinitely and may be redistributed consistent with this project
+    or the open source license(s) involved.
+
+```
+
+添加 `Signed-off-by` 的方法：
+
+```bash
+git commit -s   # -s 自动追加 Signed-off-by 行
+git commit --amend -s  # 补签上一次提交
+```

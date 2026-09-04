@@ -68,13 +68,28 @@ export function defineLlmsPlugin(options: LlmsOptions): MineprojPlugin {
     hooks: {
       'emit': async (_value, ctx) => {
         const c = ctx as unknown as {
-          config: { site: { title: string; description?: string } };
+          config: { site: { title: string; description?: string; defaultLocale?: string; locales?: string[] } };
           dataset: { projects: Project[] };
         };
         const visible = c.dataset.projects.filter((p) => !p.hidden);
+
+        // Default locale version
         await ctx.emit('llms.txt', buildLlmsTxt(c.config.site.title, visible, (p) => p.tagline));
         await ctx.emit('llms-full.txt', buildLlmsFull(visible));
         await ctx.emit('AGENTS.md', buildAgentsMd());
+
+        // Per-locale versions (M5-07)
+        const locales = c.config.site.locales ?? [];
+        const defaultLocale = c.config.site.defaultLocale ?? 'zh-CN';
+        for (const locale of locales) {
+          if (locale === defaultLocale) continue;
+          const { localizeProject } = await import('@mineproj/core');
+          const localized = visible.map((p) => localizeProject(p, locale, defaultLocale));
+          const prefix = locale;
+          await ctx.emit(`${prefix}/llms.txt`, buildLlmsTxt(c.config.site.title, localized, (p) => p.tagline));
+          await ctx.emit(`${prefix}/llms-full.txt`, buildLlmsFull(localized));
+          await ctx.emit(`${prefix}/AGENTS.md`, buildAgentsMd());
+        }
       },
     },
   };

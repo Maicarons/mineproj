@@ -7,6 +7,10 @@ import { applyQuery, parseQuery } from './query';
  * Dev API middleware (M1-08): serves the same paths as the build-time static
  * endpoints under `/api/v1` during `mineproj dev`, with full query parameter
  * support — one handler drives both so dev and build stay isomorphic.
+ *
+ * Locale support (M5-09):
+ *   - ?lang=<locale> localizes all project data before returning
+ *   - /<locale>/api/v1/... is equivalent to /api/v1/...?lang=<locale>
  */
 
 export interface ApiResponse {
@@ -31,16 +35,35 @@ function delay(ms: number): Promise<void> {
 }
 
 /**
+ * Localize dataset projects for a given locale.
+ */
+function localizeDataset(ctx: ApiContext, locale: string | null): ApiContext {
+  if (!locale || locale === ctx.config.site.defaultLocale) return ctx;
+  return {
+    ...ctx,
+    dataset: {
+      ...ctx.dataset,
+      projects: ctx.dataset.projects.map((p) => localizeProject(p, locale, ctx.config.site.defaultLocale)),
+    },
+  };
+}
+
+/**
  * Resolve a request against the API surface.
  * @param pathname Path below `/api/v1`, e.g. `projects`, `projects.json`, `projects/<slug>.json`.
+ * @param locale Optional locale for localization.
  */
 export async function resolveApiRequest(
   ctx: ApiContext,
   pathname: string,
   searchParams: URLSearchParams,
+  locale?: string | null,
 ): Promise<ApiResponse | null> {
   const path = pathname.replace(/^\/+/, '').replace(/\/+$/, '');
   if (path === '') return notFound(path);
+
+  const lang = locale ?? searchParams.get('lang') ?? null;
+  const localizedCtx = localizeDataset(ctx, lang);
 
   const waitMs = Number(searchParams.get('_delay') ?? 0);
   if (Number.isFinite(waitMs) && waitMs > 0) {
@@ -49,10 +72,10 @@ export async function resolveApiRequest(
 
   // Live query endpoint: /api/v1/projects?q=…&tag=…&sort=…
   if (path === 'projects') {
-    const { api } = ctx.config;
+    const { api } = localizedCtx.config;
     if (api.strategy === 'static') {
       const { computeHotVariants, isPregeneratedCombo } = await import('./strategy');
-      const variants = computeHotVariants(ctx.dataset.projects, api.pageSize, api.pregeneratedPages);
+      const variants = computeHotVariants(localizedCtx.dataset.projects, api.pageSize, api.pregeneratedPages);
       if (!isPregeneratedCombo(variants, searchParams)) {
         return {
           status: 404,
@@ -67,10 +90,10 @@ export async function resolveApiRequest(
       }
     }
     const spec = parseQuery(searchParams);
-    const result = applyQuery(ctx.dataset.projects.filter((p) => !p.hidden), spec);
+    const result = applyQuery(localizedCtx.dataset.projects.filter((p) => !p.hidden), spec);
     return {
       status: 200,
-      body: envelope('ProjectList', result.items, ctx.now ?? new Date().toISOString(), {
+      body: envelope('ProjectList', result.items, localizedCtx.now ?? new Date().toISOString(), {
         total: result.total,
         page: result.page,
         pageSize: result.pageSize,
@@ -82,27 +105,27 @@ export async function resolveApiRequest(
   // Static endpoint definitions (projects.json, tags.json, stats.json, …).
   const def = endpointDefinitions.find((d) => d.path === path);
   if (def) {
-    return { status: 200, body: await def.generate(ctx) };
+    return { status: 200, body: await def.generate(localizedCtx) };
   }
 
   // Project detail endpoints.
   const detailMatch = path.match(/^projects\/([a-z0-9][a-z0-9-]*)\.json$/);
   if (detailMatch?.[1]) {
-    const project = ctx.dataset.projects.find((p) => p.slug === detailMatch[1]);
+    const project = localizedCtx.dataset.projects.find((p) => p.slug === detailMatch[1]);
     if (project) {
       // Keep dev responses isomorphic with the build-time detail files.
       const { loadProjectBody } = await import('../data/body');
-      const sourceFile = ctx.dataset.sources.find((s) => s.slug === project.slug)?.file;
+      const sourceFile = localizedCtx.dataset.sources.find((s) => s.slug === project.slug)?.file;
       const dirRel =
         sourceFile === undefined || sourceFile.includes('#')
           ? null
           : (sourceFile.split('/').slice(0, -1).join('/') || null);
-      const body = await loadProjectBody(ctx.root, project, dirRel);
+      const body = await loadProjectBody(localizedCtx.root, project, dirRel);
       const payload = {
         ...project,
         body: body === null ? null : { markdown: body.markdown, html: body.html },
       };
-      const bodyEnvelope = envelope('Project', payload, ctx.now ?? new Date().toISOString());
+      const bodyEnvelope = envelope('Project', payload, localizedCtx.now ?? new Date().toISOString());
       return { status: 200, body: bodyEnvelope };
     }
     return notFound(path);
@@ -124,19 +147,35 @@ interface MiddlewareResponse {
  * Vite plugin mounting the API on the dev server under `/api/v1`.
  * `?_delay=<ms>` injects an artificial latency (capped at 10s) for testing
  * loading states.
+ *
+ * Supports locale-aware endpoints:
+ *   - /api/v1/projects?lang=en
+ *   - /en/api/v1/projects  (equivalent)
  */
 export function mineprojApiMiddleware(ctx: ApiContext) {
   return {
     name: 'mineproj:api-middleware',
     configureServer(server: ViteDevServer) {
-      server.middlewares.use('/api/v1', (async (
-        req: MiddlewareRequest,
-        res: MiddlewareResponse,
-        next: Connect.NextFunction,
-      ) => {
+      async function handle(req: MiddlewareRequest, res: MiddlewareResponse, next: Connect.NextFunction) {
         try {
           const url = new URL(req.url ?? '/', 'http://localhost');
-          const result = await resolveApiRequest(ctx, url.pathname, url.searchParams);
+          let pathname = url.pathname;
+          let locale: string | null = null;
+
+          // Detect /<locale>/api/v1/... pattern
+          const localeMatch = pathname.match(/^\/([a-z]{2}(?:-[A-Z]{2})?)\/api\/v1\/(.+)$/);
+          if (localeMatch) {
+            locale = localeMatch[1];
+            pathname = `/api/v1/${localeMatch[2]}`;
+          }
+
+          if (!pathname.startsWith('/api/v1')) {
+            next();
+            return;
+          }
+
+          const apiPath = pathname.slice('/api/v1'.length);
+          const result = await resolveApiRequest(ctx, apiPath, url.searchParams, locale);
           if (result === null) {
             next();
             return;
@@ -154,7 +193,17 @@ export function mineprojApiMiddleware(ctx: ApiContext) {
             }),
           );
         }
-      }) as Connect.NextHandleFunction);
+      }
+
+      // Mount both /api/v1 and catch-all for /<locale>/api/v1
+      server.middlewares.use('/api/v1', handle as Connect.NextHandleFunction);
+      server.middlewares.use((req: MiddlewareRequest, res: MiddlewareResponse, next: Connect.NextFunction) => {
+        if (req.url?.match(/^\/[a-z]{2}(?:-[A-Z]{2})?\/api\/v1\//)) {
+          handle(req, res, next);
+        } else {
+          next();
+        }
+      });
     },
   };
 }

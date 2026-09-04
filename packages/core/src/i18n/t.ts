@@ -23,10 +23,34 @@ export function createT(
 ): TranslateFn {
   const chain = [locale, fallbackLocale, 'en', 'zh-CN']
     .filter((l, i, arr): l is string => l !== undefined && arr.indexOf(l) === i);
+
+  // Prepare plural rules for the locale
+  const pluralRules = (() => {
+    try {
+      return new Intl.PluralRules(locale);
+    } catch {
+      return null;
+    }
+  })();
+
   return (key, params) => {
+    // Resolve plural form if count is provided
+    let resolvedKey = key;
+    if (params?.count !== undefined && pluralRules) {
+      const pluralForm = pluralRules.select(Number(params.count));
+      // Try key with plural form suffix first, then fall back to bare key
+      const pluralKey = `${key}.${pluralForm}`;
+      for (const loc of chain) {
+        if (dictionaries[loc]?.[pluralKey] !== undefined) {
+          resolvedKey = pluralKey;
+          break;
+        }
+      }
+    }
+
     for (const loc of chain) {
       const dict = dictionaries[loc];
-      const value = dict?.[key];
+      const value = dict?.[resolvedKey];
       if (value !== undefined) return interpolate(value, params);
     }
     // Last resort: the key itself (visible, debuggable, never crashes).

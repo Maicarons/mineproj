@@ -99,14 +99,14 @@ export const cardCss = String.raw`
 .mp-footer a:hover { color: var(--mp-color-accent); }
 
 .mp-skip-link {
-  position: absolute; left: -9999px;
+  position: absolute; inset-inline-start: -9999px;
   background: var(--mp-color-accent); color: var(--mp-color-accent-fg);
   padding: var(--mp-space-2) var(--mp-space-4); z-index: 200;
 }
-.mp-skip-link:focus { left: var(--mp-space-4); top: var(--mp-space-4); }
+.mp-skip-link:focus { inset-inline-start: var(--mp-space-4); top: var(--mp-space-4); }
 
 .mp-toolbar { display: flex; flex-wrap: wrap; gap: var(--mp-space-3); align-items: center; margin-bottom: var(--mp-space-6); }
-.mp-toolbar__count { margin-left: auto; color: var(--mp-color-muted); font-size: var(--mp-text-meta); }
+.mp-toolbar__count { margin-inline-start: auto; color: var(--mp-color-muted); font-size: var(--mp-text-meta); }
 .mp-visually-hidden {
   position: absolute; width: 1px; height: 1px; overflow: hidden;
   clip: rect(0 0 0 0); white-space: nowrap;

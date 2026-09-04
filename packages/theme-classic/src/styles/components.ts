@@ -54,7 +54,7 @@ a.mp-tag:hover { color: var(--mp-color-accent); }
 @keyframes mp-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
 
 .mp-pagination { display: flex; gap: var(--mp-space-2); list-style: none; padding: 0; }
-.mp-pagination__link { min-width: 36px; min-height: 36px; display: inline-flex; align-items: center; justify-content: center; }
+.mp-pagination__link { min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
 .mp-pagination__link[aria-current='page'] { background: var(--mp-color-accent); color: var(--mp-color-accent-fg); border-color: var(--mp-color-accent); }
 
 .mp-switch { display: inline-flex; align-items: center; gap: var(--mp-space-2); cursor: pointer; }
