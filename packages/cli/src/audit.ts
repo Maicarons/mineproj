@@ -1,3 +1,4 @@
+import { existsSync } from 'node:fs';
 import { readFile, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 
@@ -77,10 +78,10 @@ export async function runAudit(outDir: string, failUnder = 85): Promise<AuditRes
   add('ai', 'sitemap.xml exists', hasSitemap);
   const hasAgents = await readFile(join(outDir, 'AGENTS.md'), 'utf-8').then(() => true).catch(() => false);
   add('ai', 'AGENTS.md exists', hasAgents);
-  const hasMdMirror = htmlFiles.some((f) => f.endsWith('.html') && (() => {
-    const md = f.replace(/\.html$/, '.md');
-    return false;
-  })());
+  const hasMdMirror = htmlFiles.some((f) => {
+    const mdFile = f.replace(/\.html$/, '.md');
+    return existsSync(join(outDir, mdFile));
+  });
   const mdExists = await glob(outDir, '*.md').then((f) => f.length > 0);
   add('ai', 'Markdown mirrors exist', mdExists);
   const hasSitemapMd = await readFile(join(outDir, 'sitemap.md'), 'utf-8').then(() => true).catch(() => false);
