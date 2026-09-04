@@ -83,8 +83,18 @@ export function defineLlmsPlugin(options: LlmsOptions): MineprojPlugin {
         const defaultLocale = c.config.site.defaultLocale ?? 'zh-CN';
         for (const locale of locales) {
           if (locale === defaultLocale) continue;
-          const { localizeProject } = await import('@mineproj/core');
-          const localized = visible.map((p) => localizeProject(p, locale, defaultLocale));
+          const localized = visible.map((p) => {
+            const overrides = (p as Record<string, unknown>).i18n as Record<string, Record<string, string>> | undefined;
+            const loc = overrides?.[locale];
+            if (!loc) return p;
+            return {
+              ...p,
+              name: loc.name ?? p.name,
+              tagline: loc.tagline ?? p.tagline,
+              summary: loc.summary ?? p.summary,
+              description: loc.description ?? p.description,
+            };
+          });
           const prefix = locale;
           await ctx.emit(`${prefix}/llms.txt`, buildLlmsTxt(c.config.site.title, localized, (p) => p.tagline));
           await ctx.emit(`${prefix}/llms-full.txt`, buildLlmsFull(localized));
