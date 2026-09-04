@@ -1,0 +1,13 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@3.0.0/schema.json",
+  "changelog": "@changesets/cli/changelog",
+  "commit": true,
+  "fixed": [
+    ["@mineproj/schema", "@mineproj/core", "@mineproj/client", "@mineproj/markdown", "@mineproj/theme-classic", "@mineproj/theme-gallery"]
+  ],
+  "linked": [],
+  "access": "public",
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch",
+  "ignore": ["example-basic", "@mineproj/e2e", "@mineproj/contract-tests"]
+}

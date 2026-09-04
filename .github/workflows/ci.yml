@@ -8,7 +8,12 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [22, 24]
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.os == 'windows-latest' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -20,30 +25,42 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22.12
+          node-version: ${{ matrix.node-version }}
           cache: pnpm
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Lint
+      - name: Lint (ESLint)
         run: pnpm lint
 
       - name: Typecheck
         run: pnpm typecheck
 
-      - name: Build
-        run: pnpm -r build
-
-      - name: Test
+      - name: Unit tests
         run: pnpm -r test
 
-      - name: Install Playwright browser
+      - name: Contract tests
+        run: pnpm --filter @mineproj/contract-tests test
+
+      - name: Build workspace
+        run: pnpm -r build
+
+      - name: Build example site
+        run: pnpm --filter @mineproj/e2e build
+
+      - name: Install Playwright
+        if: matrix.os == 'ubuntu-latest'
         run: pnpm --filter @mineproj/e2e exec playwright install --with-deps chromium
 
-      - name: Smoke E2E
+      - name: E2E tests
+        if: matrix.os == 'ubuntu-latest'
         run: pnpm --filter @mineproj/e2e test
 
-      - name: Encoding check (UTF-8 + LF)
+      - name: Audit
+        if: matrix.os == 'ubuntu-latest'
+        run: node packages/cli/dist/cli.js audit --root examples/basic
+
+      - name: Encoding check
         run: |
-          python scripts/check-encoding.py $(git diff --name-only --diff-filter=ACM HEAD~1 2>/dev/null | grep -E '\.(md|ts|json|yml|yaml)$' || true)
+          python scripts/check-encoding.py $(git diff --name-only --diff-filter=ACM HEAD~1 2>/dev/null | grep -E '\.(md|ts|json|yml|yaml)$' || echo 'README.md')

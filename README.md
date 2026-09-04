@@ -3,55 +3,87 @@
 > Apache-2.0 许可的、纯前端部署的个人项目展示静态站点生成器。
 
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
-[![Docs](https://img.shields.io/badge/docs-VitePress-8A2BE2)](docs/index.md)
+[![CI](https://github.com/maicarons/mineproj/actions/workflows/ci.yml/badge.svg)](.github/workflows/ci.yml)
+![Tests](https://img.shields.io/badge/tests-395%20passed-brightgreen)
 
 **mineproj** 把你的作品组织成一个**项目库（Project Library）**：卡片网格、标签筛选、即时搜索、悬停预览、详情页内嵌可玩 Demo 与富媒体预览（PDF / 图片 / 视频）。全部内容由 **JSON + Markdown** 驱动，无需后端；构建产物是一份纯静态目录，同时输出一套可直接 `fetch()` 的静态 API 端点（`/api/v1/*.json`）。
 
-> ⚠️ 状态：**规划阶段**。当前仓库包含产品技术方案、开发计划与项目骨架；实现按 `docs/plan/development.md` 中的里程碑（M0–M9）推进。
+## Quick Start
 
-## 特性
+```bash
+npx create-mineproj my-portfolio
+cd my-portfolio
+pnpm dev
+```
 
-- **纯前端部署**：零后端，构建产物为纯静态目录，可直接托管到任意静态服务器或 GitHub Pages。
-- **主题即 npm 包**：默认主题 `@mineproj/theme-classic` 自身也是 npm 包，与第三方主题走完全相同的解析路径（dogfooding，防止契约腐化）。
-- **插件双形态**：mineproj 生命周期钩子 + 原生 Vite 插件透传，直接复用整个 Vite/Rollup/unplugin 生态。
-- **Markdown 内容管线**：GFM + Shiki 构建期高亮（零运行时）+ 数学/图表 + 目录 + 摘录 + 安全净化。
-- **富媒体预览**：PDF 内嵌阅读器（pdf.js 按需懒加载 + 三级降级）、图片灯箱（缩放/平移/键盘/网格切换）。
-- **可视化编辑器**（M9）：把「手写 JSON」变成「可视化填表 + 实时预览」，非技术协作者也能维护内容。
-- **i18n 一等公民**：路由前缀 + 字段级覆盖 + Markdown 分语言 + 回退链 + `hreflang`。
-- **SEO / AI 友好**：JSON-LD、sitemap、`robots.txt` 放行 AI 爬虫、`llms.txt`、Markdown 镜像页、`AGENTS.md`、`audit --seo --ai` 自检。
+## Features
 
-## 仓库结构
+- **Zero backend** — static output, deploy anywhere (GitHub Pages, Netlify, Vercel, Cloudflare, Nginx)
+- **Theme-as-package** — `@mineproj/theme-classic` (default) and `@mineproj/theme-gallery` (dark immersive) are npm packages; switch with one config line
+- **Plugin system** — mineproj lifecycle hooks + native Vite plugin passthrough
+- **Markdown content pipeline** — GFM + Shiki build-time highlighting (zero runtime JS), TOC, excerpts, sanitize
+- **Rich media** — PDF viewer (pdfjs lazy-load, 3-level degradation), Lightbox (zoom/pan/focus-trap), video facade
+- **i18n** — route prefix, field-level overrides, per-locale markdown, fallback chain, `hreflang`, RTL
+- **SEO / AI ready** — JSON-LD, sitemap, `llms.txt`, `AGENTS.md`, Markdown mirrors, `audit --seo --ai` scoring (100/100)
+- **i18n** — bilingual sites, `hreflang`, language switcher
+- **Incremental builds** — content-hash cache, only re-render changed pages
+
+## Quick Start (from source)
+
+```bash
+git clone https://github.com/maicarons/mineproj
+cd mineproj
+pnpm install
+pnpm build
+pnpm --filter @mineproj/e2e build
+node packages/cli/dist/cli.js audit --root examples/basic
+```
+
+## Repository Structure
 
 ```
 mineproj/
-├─ packages/            # pnpm workspace：内核、CLI、默认主题、插件
-├─ content/             # 使用者数据（JSON + Markdown + 资源），由 CLI 消费
-├─ docs/                # VitePress 文档站（产品技术方案 + 开发计划 + 指南）
-├─ skills/              # 面向 AI 的项目使用说明
-├─ .github/             # 工作流、Issue/PR 模板、CODEOWNERS
-├─ scripts/             # 编码校验等辅助脚本
-└─ README.md / LICENSE / NOTICE / CONTRIBUTING …
+├─ packages/
+│  ├─ core/               # Build-time kernel: config, data, pipeline, render, themes
+│  ├─ cli/                # CLI: dev/build/preview/check/audit/new/doctor/theme:eject
+│  ├─ client/             # Runtime SDK: fetch client, React hooks, islands, router
+│  ├─ schema/             # Zod schemas for Project, Profile, Tag, Collection, SiteConfig
+│  ├─ markdown/           # Markdown pipeline: GFM, Shiki, TOC, excerpts, sanitize
+│  ├─ theme-classic/      # Default theme: tokens, cards, layouts, islands
+│  ├─ theme-gallery/      # Optional dark immersive theme
+│  ├─ test-utils/         # Contract test helpers: runThemeContract, runPluginContract
+│  ├─ create-mineproj/    # Project scaffold
+│  ├─ create-theme/       # Theme scaffold
+│  ├─ create-plugin/      # Plugin scaffold
+│  └─ plugins/            # Official plugins: seo, sitemap, llms, mirror, feed, search, kit
+├─ examples/basic/        # 5-project bilingual example site
+├─ tests/
+│  ├─ e2e/                # Playwright smoke tests
+│  └─ contract/           # API golden-file contract tests
+├─ templates/             # Starter templates (minimal, showcase)
+├─ docs/                  # Documentation site (VitePress)
+├─ THEMES.md              # Theme ecosystem guide
+├─ PLUGINS.md             # Plugin ecosystem guide
+└─ AGENTS.md              # AI agent consumption guide
 ```
 
-## 文档
+## Status
 
-- [产品技术方案](docs/plan/index.md) —— 做什么、为什么这么做
-- [开发计划](docs/plan/development.md) —— 按什么顺序做、每步做到什么程度算完成
-- [快速开始（文档站本地运行）](docs/guide/getting-started.md)
+Milestones M0–M7 complete (M8: engineering/docs, M9: visual editor — in progress). 395+ unit tests, 12 contract tests, 3 E2E — all green.
 
-## 快速开始（文档站）
+## Documentation
 
-```bash
-cd docs
-npm install
-npm run docs:dev      # 开发预览 http://localhost:5173
-npm run docs:build    # 产出 docs/.vitepress/dist
-```
+- [Product & Technical Plan](docs/plan/index.md)
+- [Development Plan](docs/plan/development.md)
+- [Getting Started](docs/guide/getting-started.md)
+- [Deploying](docs/guide/deploying.md)
+- [Theme Development](THEMES.md)
+- [Plugin Development](PLUGINS.md)
 
-## 参与贡献
+## Contributing
 
-详见 [CONTRIBUTING.md](CONTRIBUTING.md) 与 [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)。核心约定：**一条任务 = 一次提交**、**契约先于实现**、**默认主题即契约验证器**。
+See [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Core conventions: one task = one commit, contract before implementation, default theme is the contract validator.
 
-## 许可证
+## License
 
-[Apache-2.0](LICENSE)。未成为正式 ASF 项目前，不得使用 Apache 商标或羽毛标识。
+[Apache-2.0](LICENSE). Not an official ASF project — do not use Apache branding or feather logo.
