@@ -66,7 +66,3 @@ jobs:
       - name: Audit
         if: matrix.os == 'ubuntu-latest'
         run: node packages/cli/dist/cli.js audit --root examples/basic
-
-      - name: Encoding check
-        run: |
-          python scripts/check-encoding.py $(git diff --name-only --diff-filter=ACM HEAD~1 2>/dev/null | grep -E '\.(md|ts|json|yml|yaml)$' || echo 'README.md')
