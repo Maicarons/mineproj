@@ -1,0 +1,33 @@
+{
+  "name": "@mineproj/editor",
+  "version": "0.0.0",
+  "description": "mineproj visual editor — schema-driven form, field controls, file system transport",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./describe": "./src/describe.ts",
+    "./controls": "./src/controls.ts",
+    "./transport": "./src/transport.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@mineproj/core": "workspace:*",
+    "@mineproj/schema": "workspace:*",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@mineproj/tsconfig": "workspace:*",
+    "@mineproj/vitest": "workspace:*",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "react": "^19.0.0",
+    "typescript": "^5.7.0",
+    "vitest": "^4.0.0"
+  }
+}

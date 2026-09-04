@@ -234,6 +234,60 @@ importers:
         specifier: ^4.0.0
         version: 4.1.11(@types/node@24.13.3)(jsdom@26.1.0)(vite@7.3.6(@types/node@24.13.3)(jiti@2.7.0))
 
+  packages/create-plugin:
+    dependencies:
+      '@mineproj/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      vitest:
+        specifier: ^4.0.0
+        version: 4.1.11(@types/node@24.13.3)(jsdom@26.1.0)(vite@7.3.6(@types/node@24.13.3)(jiti@2.7.0))
+
+  packages/create-theme:
+    dependencies:
+      '@mineproj/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      vitest:
+        specifier: ^4.0.0
+        version: 4.1.11(@types/node@24.13.3)(jsdom@26.1.0)(vite@7.3.6(@types/node@24.13.3)(jiti@2.7.0))
+
+  packages/editor:
+    dependencies:
+      '@mineproj/core':
+        specifier: workspace:*
+        version: link:../core
+      '@mineproj/schema':
+        specifier: workspace:*
+        version: link:../schema
+      zod:
+        specifier: ^4.0.0
+        version: 4.5.4
+    devDependencies:
+      '@mineproj/tsconfig':
+        specifier: workspace:*
+        version: link:../../configs/tsconfig
+      '@mineproj/vitest':
+        specifier: workspace:*
+        version: link:../../configs/vitest
+      '@types/node':
+        specifier: ^24.0.0
+        version: 24.13.3
+      '@types/react':
+        specifier: ^19.0.0
+        version: 19.2.18
+      react:
+        specifier: ^19.0.0
+        version: 19.2.8
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+      vitest:
+        specifier: ^4.0.0
+        version: 4.1.11(@types/node@24.13.3)(jsdom@26.1.0)(vite@7.3.6(@types/node@24.13.3)(jiti@2.7.0))
+
   packages/markdown:
     dependencies:
       '@shikijs/markdown-it':
@@ -301,6 +355,16 @@ importers:
         version: 4.1.11(@types/node@24.13.3)(jsdom@26.1.0)(vite@7.3.6(@types/node@24.13.3)(jiti@2.7.0))
 
   packages/plugins/markdown-mirror:
+    dependencies:
+      '@mineproj/core':
+        specifier: workspace:*
+        version: link:../../core
+    devDependencies:
+      vitest:
+        specifier: ^4.0.0
+        version: 4.1.11(@types/node@24.13.3)(jsdom@26.1.0)(vite@7.3.6(@types/node@24.13.3)(jiti@2.7.0))
+
+  packages/plugins/og-image:
     dependencies:
       '@mineproj/core':
         specifier: workspace:*
