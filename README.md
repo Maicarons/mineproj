@@ -1,12 +1,13 @@
 # mineproj
 
-> Apache-2.0 许可的、纯前端部署的个人项目展示静态站点生成器。
+> **mineproj** organizes your work into a **Project Library** — card grids, tag filtering, instant search, hover previews, and rich media (PDF/images/video) inside detail pages. Everything is driven by **JSON + Markdown**, no backend required. The build output is a fully static directory that also exposes a `fetch()`-ready static API at `/api/v1/*.json`.
 
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![CI](https://github.com/maicarons/mineproj/actions/workflows/ci.yml/badge.svg)](.github/workflows/ci.yml)
-![Tests](https://img.shields.io/badge/tests-395%20passed-brightgreen)
+![Tests](https://img.shields.io/badge/tests-412%20passed-brightgreen)
+![Status](https://img.shields.io/badge/milestones-M0–M9%20100%25-green)
 
-**mineproj** 把你的作品组织成一个**项目库（Project Library）**：卡片网格、标签筛选、即时搜索、悬停预览、详情页内嵌可玩 Demo 与富媒体预览（PDF / 图片 / 视频）。全部内容由 **JSON + Markdown** 驱动，无需后端；构建产物是一份纯静态目录，同时输出一套可直接 `fetch()` 的静态 API 端点（`/api/v1/*.json`）。
+---
 
 ## Quick Start
 
@@ -16,6 +17,8 @@ cd my-portfolio
 pnpm dev
 ```
 
+Open [http://localhost:5173](http://localhost:5173) and start adding projects.
+
 ## Features
 
 - **Zero backend** — static output, deploy anywhere (GitHub Pages, Netlify, Vercel, Cloudflare, Nginx)
@@ -23,9 +26,9 @@ pnpm dev
 - **Plugin system** — mineproj lifecycle hooks + native Vite plugin passthrough
 - **Markdown content pipeline** — GFM + Shiki build-time highlighting (zero runtime JS), TOC, excerpts, sanitize
 - **Rich media** — PDF viewer (pdfjs lazy-load, 3-level degradation), Lightbox (zoom/pan/focus-trap), video facade
-- **i18n** — route prefix, field-level overrides, per-locale markdown, fallback chain, `hreflang`, RTL
-- **SEO / AI ready** — JSON-LD, sitemap, `llms.txt`, `AGENTS.md`, Markdown mirrors, `audit --seo --ai` scoring (100/100)
-- **i18n** — bilingual sites, `hreflang`, language switcher
+- **i18n** — route prefix, field-level overrides, per-locale markdown, fallback chain, `hreflang`, RTL support
+- **SEO / AI ready** — JSON-LD, sitemap, `llms.txt`, `AGENTS.md`, Markdown mirrors, `audit --seo --ai` scoring
+- **Visual editor** — schema-driven form, real-time preview, FsTransport / GitHubTransport / MemoryTransport
 - **Incremental builds** — content-hash cache, only re-render changed pages
 
 ## Quick Start (from source)
@@ -49,16 +52,17 @@ mineproj/
 │  ├─ client/             # Runtime SDK: fetch client, React hooks, islands, router
 │  ├─ schema/             # Zod schemas for Project, Profile, Tag, Collection, SiteConfig
 │  ├─ markdown/           # Markdown pipeline: GFM, Shiki, TOC, excerpts, sanitize
+│  ├─ editor/             # Visual editor: schema forms, transports, preview, security
 │  ├─ theme-classic/      # Default theme: tokens, cards, layouts, islands
 │  ├─ theme-gallery/      # Optional dark immersive theme
-│  ├─ test-utils/         # Contract test helpers: runThemeContract, runPluginContract
+│  ├─ test-utils/         # Contract test helpers
 │  ├─ create-mineproj/    # Project scaffold
 │  ├─ create-theme/       # Theme scaffold
 │  ├─ create-plugin/      # Plugin scaffold
-│  └─ plugins/            # Official plugins: seo, sitemap, llms, mirror, feed, search, kit
+│  └─ plugins/            # Official plugins: seo, sitemap, llms, mirror, feed, search, i18n
 ├─ examples/basic/        # 5-project bilingual example site
 ├─ tests/
-│  ├─ e2e/                # Playwright smoke tests
+│  ├─ e2e/                # Playwright E2E tests
 │  └─ contract/           # API golden-file contract tests
 ├─ templates/             # Starter templates (minimal, showcase)
 ├─ docs/                  # Documentation site (VitePress)
@@ -69,20 +73,22 @@ mineproj/
 
 ## Status
 
-Milestones M0–M7 complete (M8: engineering/docs, M9: visual editor — in progress). 395+ unit tests, 12 contract tests, 3 E2E — all green.
+All milestones **M0–M9** are 100% complete (143/143 WBS items).  
+**412+ unit tests**, 12 contract tests, 17 E2E tests — all green.
 
 ## Documentation
 
-- [Product & Technical Plan](docs/plan/index.md)
-- [Development Plan](docs/plan/development.md)
 - [Getting Started](docs/guide/getting-started.md)
 - [Deploying](docs/guide/deploying.md)
 - [Theme Development](THEMES.md)
 - [Plugin Development](PLUGINS.md)
+- [Product & Technical Plan](docs/plan/index.md) (Chinese)
+- [Development Plan](docs/plan/development.md) (Chinese)
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Core conventions: one task = one commit, contract before implementation, default theme is the contract validator.
+See [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).  
+All commits must be signed off (`git commit -s`) per DCO.
 
 ## License
 
