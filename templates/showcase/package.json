@@ -1,0 +1,19 @@
+{
+  "name": "my-showcase-site",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "mineproj dev",
+    "build": "mineproj build",
+    "preview": "mineproj preview"
+  },
+  "dependencies": {
+    "@mineproj/theme-gallery": "latest",
+    "@mineproj/plugin-seo": "latest",
+    "@mineproj/plugin-sitemap": "latest"
+  },
+  "devDependencies": {
+    "mineproj": "latest"
+  }
+}
