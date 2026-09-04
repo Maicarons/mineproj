@@ -1,4 +1,7 @@
 {
   "extends": "@mineproj/tsconfig/react-lib.json",
+  "compilerOptions": {
+    "skipLibCheck": true
+  },
   "include": ["src"]
 }
