@@ -10,9 +10,11 @@ import {
 } from './layouts';
 import { LibraryExplorer } from './components/LibraryExplorer';
 import { ThemeToggle } from './components/ThemeToggle';
+import { Prose } from './components/Prose';
 import { tokensCss } from './styles/tokens';
 import { componentsCss } from './styles/components';
 import { cardCss } from './styles/card';
+import { proseCss } from './styles/prose';
 import { noFlashScript } from './components/ThemeToggle';
 import { classicConfigSchema } from './config';
 
@@ -33,9 +35,9 @@ const theme = defineTheme({
     about: AboutLayout,
     notFound: NotFoundLayout,
   },
-  components: {},
+  components: { Prose },
   slots: ['nav-end', 'prose-top', 'prose-bottom'],
-  styles: [tokensCss, componentsCss, cardCss],
+  styles: [tokensCss, componentsCss, cardCss, proseCss],
   headScripts: [noFlashScript],
   islands: {
     'theme-toggle': ThemeToggle,
