@@ -35,7 +35,7 @@ jobs:
         run: pnpm -r build
 
       - name: Create Release Pull Request or Publish
-        uses: changesets/action@v1
+        uses: changesets/action@v2
         with:
           publish: pnpm publish -r
           version: pnpm changeset version
