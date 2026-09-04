@@ -38,6 +38,10 @@ export default defineConfig({
           text: '指南',
           items: [
             { text: '快速开始', link: '/guide/getting-started' },
+            { text: '主题开发', link: '/guide/theme-development' },
+            { text: '插件开发', link: '/guide/plugin-development' },
+            { text: 'API 参考', link: '/guide/api-reference' },
+            { text: '部署', link: '/guide/deploying' },
           ],
         },
       ],

@@ -4,6 +4,7 @@ export interface CreateVitestConfigOptions {
   environment?: 'node' | 'jsdom' | 'happy-dom';
   include?: string[];
   passWithNoTests?: boolean;
+  coverage?: boolean;
 }
 
 /**
@@ -15,6 +16,7 @@ export function createVitestConfig(options: CreateVitestConfigOptions = {}) {
     environment = 'node',
     include = ['src/**/*.test.ts'],
     passWithNoTests = true,
+    coverage = false,
   } = options;
 
   return defineConfig({
@@ -24,5 +26,14 @@ export function createVitestConfig(options: CreateVitestConfigOptions = {}) {
       passWithNoTests,
       testTimeout: 30_000,
     },
+    ...(coverage
+      ? {
+          coverage: {
+            reporter: ['text', 'lcov'],
+            include: ['src/**/*.ts'],
+            exclude: ['src/**/*.test.ts', 'src/**/*.d.ts'],
+          },
+        }
+      : {}),
   });
 }
