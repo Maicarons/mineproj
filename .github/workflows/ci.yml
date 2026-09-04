@@ -47,7 +47,7 @@ jobs:
         run: pnpm -r build
 
       - name: Unit tests
-        run: pnpm -r test
+        run: pnpm -r --filter !@mineproj/e2e test
 
       - name: Contract tests
         run: pnpm --filter @mineproj/contract-tests test
@@ -61,7 +61,7 @@ jobs:
 
       - name: E2E tests
         if: matrix.os == 'ubuntu-latest'
-        run: pnpm --filter @mineproj/e2e test
+        run: pnpm --filter @mineproj/e2e test:e2e
 
       - name: Audit
         if: matrix.os == 'ubuntu-latest'
