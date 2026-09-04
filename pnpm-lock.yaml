@@ -337,6 +337,26 @@ importers:
         specifier: ^4.0.0
         version: 4.1.11(@types/node@24.13.3)(jsdom@26.1.0)(vite@7.3.6(@types/node@24.13.3)(jiti@2.7.0))
 
+  packages/plugins/github-import:
+    dependencies:
+      '@mineproj/core':
+        specifier: workspace:*
+        version: link:../../core
+    devDependencies:
+      vitest:
+        specifier: ^4.0.0
+        version: 4.1.11(@types/node@24.13.3)(jsdom@26.1.0)(vite@7.3.6(@types/node@24.13.3)(jiti@2.7.0))
+
+  packages/plugins/i18n:
+    dependencies:
+      '@mineproj/core':
+        specifier: workspace:*
+        version: link:../../core
+    devDependencies:
+      vitest:
+        specifier: ^4.0.0
+        version: 4.1.11(@types/node@24.13.3)(jsdom@26.1.0)(vite@7.3.6(@types/node@24.13.3)(jiti@2.7.0))
+
   packages/plugins/kit:
     dependencies:
       '@mineproj/core':
