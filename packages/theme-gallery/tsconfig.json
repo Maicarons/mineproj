@@ -1,10 +1,8 @@
 {
   "extends": "@mineproj/tsconfig/react-lib.json",
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "ESNext",
-    "downlevelIteration": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "downlevelIteration": true
   },
-  "include": ["src"]
+  "include": ["src", "src/plugins.d.ts"]
 }

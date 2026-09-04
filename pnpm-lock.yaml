@@ -525,6 +525,9 @@ importers:
         specifier: ^19.0.0
         version: 19.2.8(react@19.2.8)
     devDependencies:
+      '@mineproj/tsconfig':
+        specifier: workspace:*
+        version: link:../../configs/tsconfig
       tsdown:
         specifier: ^0.12.0
         version: 0.12.9(typescript@5.9.3)

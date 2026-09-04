@@ -22,6 +22,7 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@mineproj/tsconfig": "workspace:*",
     "tsdown": "^0.12.0",
     "typescript": "^5.7.0",
     "vitest": "^4.0.0"
