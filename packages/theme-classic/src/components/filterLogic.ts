@@ -41,7 +41,7 @@ export function applyFilters(projects: Project[], state: FilterState): Project[]
     }
     if (state.tags.length > 0 && !state.tags.every((t) => p.tags.includes(t))) return false;
     if (state.status.length > 0 && !state.status.includes(p.status)) return false;
-    if (state.platforms.length > 0 && !state.platforms.some((pl) => p.platforms.includes(pl))) return false;
+    if (state.platforms.length > 0 && !state.platforms.some((pl) => (p.platforms as string[]).includes(pl))) return false;
     if (state.years.length > 0) {
       const year = p.createdAt?.slice(0, 4);
       if (!year || !state.years.includes(year)) return false;
