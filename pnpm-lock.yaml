@@ -528,6 +528,9 @@ importers:
       '@mineproj/tsconfig':
         specifier: workspace:*
         version: link:../../configs/tsconfig
+      '@mineproj/vitest':
+        specifier: workspace:*
+        version: link:../../configs/vitest
       tsdown:
         specifier: ^0.12.0
         version: 0.12.9(typescript@5.9.3)
