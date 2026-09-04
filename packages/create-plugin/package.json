@@ -1,0 +1,11 @@
+{
+  "name": "@mineproj/create-plugin",
+  "version": "0.0.0",
+  "description": "Scaffold a mineproj plugin package",
+  "license": "Apache-2.0",
+  "type": "module",
+  "bin": { "create-plugin": "./src/index.ts" },
+  "scripts": { "test": "vitest run --passWithNoTests" },
+  "dependencies": { "@mineproj/core": "workspace:*" },
+  "devDependencies": { "vitest": "^4.0.0" }
+}
