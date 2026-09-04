@@ -52,7 +52,6 @@ export function PdfViewer({ file, title, pages, size, cover, preview = 'viewer' 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- pdfjs API is dynamic
   async function renderPage(num: number, pdf: any, s: number): Promise<void> {
     const canvas = canvasRef.current;
-    const canvas = canvasRef.current;
     if (!canvas) return;
     const page = await pdf.getPage(num);
     const viewport = page.getViewport({ scale: s });
