@@ -1,4 +1,4 @@
 {
   "extends": "@mineproj/tsconfig/node-lib.json",
-  "include": ["src"]
+  "include": ["src/**/*", "./*"]
 }

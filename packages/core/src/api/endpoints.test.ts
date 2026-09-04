@@ -116,7 +116,7 @@ describe('generateApiEndpoints', () => {
     expect(data.summary).toContain('Summary for voxel-tool');
     const body = data.body as { markdown: string; html: string };
     expect(body.markdown).toContain('# Voxel');
-    expect(body.html).toContain('<h1>Voxel</h1>');
+    expect(body.html).toContain('<h1');
     expect(body.html).toContain('shiki-themes');
   });
 

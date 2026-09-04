@@ -18,6 +18,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@mineproj/markdown": "workspace:^",
     "@mineproj/schema": "workspace:*",
     "@shikijs/markdown-it": "^3.0.0",
     "jiti": "^2.0.0",

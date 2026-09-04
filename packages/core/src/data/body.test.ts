@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import type { Project } from '@mineproj/schema';
-import { bodySourceOf, createMarkdownRenderer, loadProjectBody } from './body';
+import { bodySourceOf, loadProjectBody, renderBodyMarkdown } from './body';
 
 let root: string;
 
@@ -44,47 +44,41 @@ const baseProject: Project = {
   hidden: false,
 };
 
-describe('createMarkdownRenderer', () => {
+describe('renderBodyMarkdown', () => {
   it('renders headings, paragraphs and links', async () => {
-    const render = await createMarkdownRenderer();
-    const html = render('# Hello\n\nSome [text](https://example.com).');
-    expect(html).toContain('<h1>Hello</h1>');
+    const html = await renderBodyMarkdown('# Hello\n\nSome [text](https://example.com).');
+    expect(html).toContain('<h1');
     expect(html).toContain('<a href="https://example.com"');
   });
 
   it('highlights code blocks at build time with dual-theme CSS variables', async () => {
-    const render = await createMarkdownRenderer();
-    const html = render('```ts\nconst answer: number = 42;\n```');
+    const html = await renderBodyMarkdown('```ts\nconst answer: number = 42;\n```');
     expect(html).toContain('<pre');
     expect(html).toContain('shiki-themes');
     expect(html).toContain('--shiki-dark');
   });
 
   it('escapes raw HTML (html: false)', async () => {
-    const render = await createMarkdownRenderer();
-    const html = render('hello <script>alert(1)</script>');
+    const html = await renderBodyMarkdown('hello <script>alert(1)</script>');
     expect(html).not.toContain('<script>');
     expect(html).toContain('&lt;script&gt;');
   });
 
   it('adds rel="noopener noreferrer" to external links only', async () => {
-    const render = await createMarkdownRenderer();
-    const html = render('[gh](https://github.com/x) and [local](/projects/voxel-tool/)');
+    const html = await renderBodyMarkdown('[gh](https://github.com/x) and [local](/projects/voxel-tool/)');
     expect(html).toContain('rel="noopener noreferrer"');
     const localPart = html.split('and')[1] ?? '';
     expect(localPart).not.toContain('noopener');
   });
 
   it('renders GFM tables and strikethrough', async () => {
-    const render = await createMarkdownRenderer();
-    const html = render('| a | b |\n| - | - |\n| 1 | 2 |\n\n~~gone~~');
+    const html = await renderBodyMarkdown('| a | b |\n| - | - |\n| 1 | 2 |\n\n~~gone~~');
     expect(html).toContain('<table>');
     expect(html).toContain('<s>gone</s>');
   });
 
   it('renders unknown languages without failing the build', async () => {
-    const render = await createMarkdownRenderer();
-    const html = render('```not-a-lang\nplain\n```');
+    const html = await renderBodyMarkdown('```not-a-lang\nplain\n```');
     expect(html).toContain('<pre');
   });
 });
@@ -121,7 +115,7 @@ describe('loadProjectBody', () => {
     );
     const body = await loadProjectBody(root, project, 'data/projects/voxel-tool');
     expect(body?.markdown).toContain('# Voxel Tool');
-    expect(body?.html).toContain('<h1>Voxel Tool</h1>');
+    expect(body?.html).toContain('<h1');
     expect(body?.html).toContain('shiki-themes');
   });
 

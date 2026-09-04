@@ -1,15 +1,16 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import MarkdownIt from 'markdown-it';
-import Shiki from '@shikijs/markdown-it';
 import { DataError } from './loader';
 import type { Project } from '@mineproj/schema';
+import { renderMarkdown } from '@mineproj/markdown';
 
 /**
- * Markdown body pipeline (M1-04).
+ * Markdown body pipeline (M1-04, updated M4-08).
+ * Delegates rendering to the shared `@mineproj/markdown` package so all
+ * markdown features (GFM, Shiki highlighting, TOC, excerpts, sanitize,
+ * image/link processing) are consistent across the project.
  * `description` (inline Markdown) and `bodyFile` (external Markdown, default
- * `body.md`) are the two ways a project carries prose; both funnel into
- * `{ markdown, html }` with build-time Shiki highlighting (zero runtime JS).
+ * `body.md`) are the two ways a project carries prose.
  */
 
 export interface RenderedBody {
@@ -21,53 +22,11 @@ export interface RenderedBody {
 
 export type MarkdownRenderer = (markdown: string) => string;
 
-let rendererPromise: Promise<MarkdownRenderer> | null = null;
-
-/** Create the shared markdown-it instance (Shiki dual themes, html disabled). */
-export async function createMarkdownRenderer(): Promise<MarkdownRenderer> {
-  const md = new MarkdownIt({
-    html: false, // raw HTML is escaped — content must not inject markup
-    linkify: true,
-    typographer: false,
-  });
-  md.use(
-    await Shiki({
-      themes: { light: 'github-light', dark: 'github-dark' },
-    }),
-  );
-  // A single unknown language must not break the build — degrade to plain text.
-  const shikiHighlight = md.options.highlight;
-  md.options.highlight = (code, lang, attrs) => {
-    if (shikiHighlight) {
-      try {
-        return shikiHighlight(code, lang, attrs);
-      } catch {
-        return md.utils.escapeHtml(code);
-      }
-    }
-    return md.utils.escapeHtml(code);
-  };
-  // External links open safely; internal links are left untouched.
-  const defaultLinkOpen =
-    md.renderer.rules.link_open ??
-    ((tokens, idx, opts, _env, self) => self.renderToken(tokens, idx, opts));
-  md.renderer.rules.link_open = (tokens, idx, opts, env, self) => {
-    const token = tokens[idx];
-    if (token) {
-      const href = token.attrGet('href') ?? '';
-      if (/^https?:\/\//i.test(href)) {
-        token.attrSet('rel', 'noopener noreferrer');
-      }
-    }
-    return defaultLinkOpen(tokens, idx, opts, env, self);
-  };
-  return (markdown: string) => md.render(markdown);
-}
-
-/** Memoized renderer so a build renders every body with one highlighter. */
-export function getMarkdownRenderer(): Promise<MarkdownRenderer> {
-  rendererPromise ??= createMarkdownRenderer();
-  return rendererPromise;
+/** Render markdown using the shared @mineproj/markdown package. */
+export async function renderBodyMarkdown(markdown: string): Promise<string> {
+  // Use the async renderer with all features enabled
+  const result = await renderMarkdown(markdown, { html: false });
+  return result.html;
 }
 
 export type BodySource =
@@ -96,10 +55,8 @@ export async function loadProjectBody(
 ): Promise<RenderedBody | null> {
   const source = bodySourceOf(project);
   if (source === null) return null;
-  const render = await getMarkdownRenderer();
-
   if (source.kind === 'inline') {
-    return { markdown: source.markdown, html: render(source.markdown) };
+    return { markdown: source.markdown, html: await renderBodyMarkdown(source.markdown) };
   }
 
   if (sourceDirRel === null) {
@@ -122,5 +79,5 @@ export async function loadProjectBody(
     }
     throw new DataError(`Cannot read body file for ${project.slug}: ${(err as Error).message}`);
   }
-  return { markdown, html: render(markdown) };
+  return { markdown, html: await renderBodyMarkdown(markdown) };
 }

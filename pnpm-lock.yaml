@@ -159,6 +159,9 @@ importers:
 
   packages/core:
     dependencies:
+      '@mineproj/markdown':
+        specifier: workspace:^
+        version: link:../markdown
       '@mineproj/schema':
         specifier: workspace:*
         version: link:../schema
@@ -262,7 +265,7 @@ importers:
         specifier: ^14.0.0
         version: 14.2.0
       '@types/node':
-        specifier: ^24.0.0
+        specifier: ^24.13.3
         version: 24.13.3
       tsdown:
         specifier: ^0.12.0
@@ -416,6 +419,12 @@ importers:
 
   packages/theme-gallery:
     dependencies:
+      '@mineproj/core':
+        specifier: workspace:*
+        version: link:../core
+      '@mineproj/theme-classic':
+        specifier: workspace:*
+        version: link:../theme-classic
       react:
         specifier: ^19.0.0
         version: 19.2.8
@@ -423,12 +432,6 @@ importers:
         specifier: ^19.0.0
         version: 19.2.8(react@19.2.8)
     devDependencies:
-      '@mineproj/tsconfig':
-        specifier: workspace:*
-        version: link:../../configs/tsconfig
-      '@mineproj/vitest':
-        specifier: workspace:*
-        version: link:../../configs/vitest
       tsdown:
         specifier: ^0.12.0
         version: 0.12.9(typescript@5.9.3)
