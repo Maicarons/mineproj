@@ -2,88 +2,66 @@
 
 mineproj generates a fully static REST-like API under `dist/api/v1/`. Every endpoint serves static JSON — no backend required.
 
-## Endpoints
+## Envelope
 
-| Endpoint | Description |
-|---|---|
-| `GET /api/v1/projects.json` | Full project list (lite fields) |
-| `GET /api/v1/projects/index.json` | Paginated project list with envelope |
-| `GET /api/v1/projects/<slug>.json` | Single project with full body |
-| `GET /api/v1/tags.json` | Tag aggregation with counts |
-| `GET /api/v1/categories.json` | Category aggregation with counts |
-| `GET /api/v1/collections.json` | Curated collections |
-| `GET /api/v1/profile.json` | Author profile |
-| `GET /api/v1/search.json` | MiniSearch index + documents |
-| `GET /api/v1/stats.json` | Site statistics |
-| `GET /api/v1/feed.json` | JSON Feed (latest projects) |
-| `GET /api/v1/manifest.json` | Self-describing endpoint manifest |
-
-## Response Envelope
-
-Every response follows a consistent envelope:
+Every response follows this structure:
 
 ```json
 {
   "apiVersion": "v1",
   "kind": "ProjectList",
-  "generatedAt": "2026-09-03T08:00:00.000Z",
-  "schemaVersion": "1.0.0",
-  "total": 42,
-  "page": 1,
-  "pageSize": 24,
-  "data": [ ... ],
-  "facets": {
-    "tags": { "web": 12, "game": 7 },
-    "status": { "released": 30 }
-  }
+  "generatedAt": "2026-01-01T00:00:00.000Z",
+  "schemaVersion": 1,
+  "data": { ... }
 }
 ```
 
-## Query Parameters
+## Endpoints
 
-`GET /api/v1/projects?q=web&tag=game&sort=createdAt:desc&page=1&pageSize=12`
+| Endpoint | Kind | Description |
+|----------|------|-------------|
+| `/api/v1/projects.json` | ProjectList | Full project list |
+| `/api/v1/projects/<slug>.json` | Project | Single project detail |
+| `/api/v1/tags.json` | TagList | All tags with counts |
+| `/api/v1/categories.json` | CategoryList | All categories |
+| `/api/v1/collections.json` | CollectionList | All collections |
+| `/api/v1/profile.json` | Profile | Profile data |
+| `/api/v1/stats.json` | Stats | Aggregated statistics |
+| `/api/v1/search.json` | SearchIndex | MiniSearch index |
+| `/api/v1/feed.json` | Feed | Feed items |
+| `/api/v1/manifest.json` | Manifest | Self-describing endpoint list |
 
-| Param | Type | Default | Description |
-|---|---|---|---|
-| `q` | string | — | Free-text search (name, tagline, summary, tags) |
-| `tag` | string | — | Filter by tag (comma-separated for AND) |
-| `tagMode` | `and` \| `or` | `or` | Multi-tag matching mode |
-| `category` | string | — | Filter by category |
-| `status` | string | — | Filter by status |
-| `platform` | string | — | Filter by platform |
-| `playable` | boolean | — | Filter by playable status |
-| `sort` | string | `createdAt:desc` | Sort field and direction |
-| `page` | number | 1 | Page number |
-| `pageSize` | number | 24 | Items per page |
-| `fields` | string | — | Comma-separated field projection |
+## Query Parameters (dev mode)
 
-## Searching
-
-The search index is built with MiniSearch. Use the client SDK:
-
-```ts
-import { createApiClient } from '@mineproj/client';
-const client = createApiClient();
-const results = await client.search('voxel');
-```
-
-## Localization
-
-Add `?lang=en` to get localized responses:
-
-```
-GET /api/v1/projects/voxel-tool.json?lang=en
-```
+| Param | Example | Description |
+|-------|---------|-------------|
+| `q` | `?q=web` | Full-text search |
+| `tag` | `?tag=web,game` | Filter by tags (AND) |
+| `category` | `?category=web` | Filter by category |
+| `status` | `?status=released` | Filter by status |
+| `sort` | `?sort=createdAt:desc` | Sort field and direction |
+| `page` | `?page=2` | Page number |
+| `pageSize` | `?pageSize=20` | Items per page |
+| `lang` | `?lang=en` | Locale for localized data |
 
 ## Client SDK
 
 ```ts
 import { createApiClient } from '@mineproj/client';
 
-const client = createApiClient({ baseUrl: '/api/v1' });
+const api = createApiClient({ baseUrl: 'https://example.com' });
+const projects = await api.getProjects();
+const project = await api.getProject('my-project');
+const results = await api.search('web');
+```
 
-// React hooks
-const { data, loading, error } = useProjects({ tag: 'web' });
-const { data: project } = useProject('voxel-tool');
-const { data: tags } = useTags();
+React hooks:
+
+```ts
+import { useProjects, useProject, useTags, useSearch } from '@mineproj/client';
+
+function MyComponent() {
+  const { data, loading } = useProjects({ tag: 'web' });
+  return <div>{loading ? 'Loading...' : data.length} projects</div>;
+}
 ```

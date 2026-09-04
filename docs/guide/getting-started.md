@@ -1,30 +1,66 @@
-# 快速开始
+# Getting Started
 
-**mineproj** 是一款 **Apache-2.0 许可**的纯前端个人项目展示静态站点生成器。本文介绍仓库结构与文档站本地运行方式。
+Welcome to mineproj! This guide will help you create your first project portfolio site.
 
-## 仓库结构
+## Prerequisites
 
-| 路径 | 说明 |
-| --- | --- |
-| `packages/` | 各 npm 包（内核、默认主题、插件等），采用 pnpm workspace |
-| `docs/` | 本文档站（VitePress），其中 `plan/` 存放产品技术方案与开发计划 |
-| `skills/` | 面向 AI 的技能说明，告诉 AI 如何理解并使用本项目 |
-| `.github/` | GitHub 工作流、Issue/PR 模板、CODEOWNERS 等治理文件 |
-| `scripts/` | 编码校验等辅助脚本 |
+- **Node.js** 22 or later
+- **pnpm** 10 (install via `npm install -g pnpm`)
 
-## 本地运行文档站
+## Create a New Site
+
+The fastest way to start is with the scaffolding tool:
 
 ```bash
-cd docs
-npm install
-npm run docs:dev      # 开发预览，默认 http://localhost:5173
-npm run docs:build    # 产出 docs/.vitepress/dist
-npm run docs:preview  # 预览构建产物
+npx create-mineproj my-portfolio
+cd my-portfolio
+pnpm dev
 ```
 
-> 部署到 GitHub Pages 时，基路径默认为 `/mineproj/`，可用环境变量 `DOCS_BASE` 覆盖（如本地 `DOCS_BASE=/ npm run docs:dev`）。
+Open [http://localhost:5173](http://localhost:5173) to see your site.
 
-## 下一步
+## Project Structure
 
-- 阅读 [产品技术方案](/plan/) 了解「做什么、为什么这么做」
-- 阅读 [开发计划](/plan/development) 了解「按什么顺序做、每步做到什么程度算完成」
+```
+my-portfolio/
+├─ mineproj.config.ts      # Site configuration
+├─ data/
+│  ├─ projects/             # Project data (JSON + Markdown)
+│  │  └─ my-project/
+│  │     ├─ index.json      # Project metadata
+│  │     └─ body.md         # Project body content
+│  ├─ profile.json          # Your profile
+│  └─ tags.json             # Tag definitions
+├─ public/                  # Static assets (images, PDFs, etc.)
+└─ dist/                    # Build output (generated)
+```
+
+## Adding a Project
+
+Create a new directory under `data/projects/`:
+
+```bash
+mineproj new my-project
+```
+
+This creates `data/projects/my-project/index.json` and `data/projects/my-project/body.md`. Edit the JSON file to set the project's metadata.
+
+## Building for Production
+
+```bash
+pnpm build
+```
+
+Output goes to `dist/`. Preview it locally:
+
+```bash
+pnpm preview
+```
+
+## Next Steps
+
+- [Configuration Guide](./configuration) — full configuration reference
+- [Data Model](./data-model) — understand the project schema
+- [Theme Development](./theme-development) — customize the look and feel
+- [Plugin Development](./plugin-development) — extend functionality
+- [Deploying](./deploying) — deploy your site to production

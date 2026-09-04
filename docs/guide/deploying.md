@@ -1,11 +1,12 @@
-# Deploying a mineproj site
+# Deploying a mineproj Site
 
 mineproj generates a fully static `dist/` directory — deploy it anywhere static files are served.
 
 ## GitHub Pages
 
+Create `.github/workflows/deploy.yml`:
+
 ```yaml
-# .github/workflows/deploy.yml
 name: Deploy to GitHub Pages
 on:
   push:
@@ -23,53 +24,36 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
-        with: { version: 10 }
       - uses: actions/setup-node@v4
-        with: { node-version: 22, cache: pnpm }
+        with:
+          node-version: 22
+          cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: node packages/cli/dist/cli.js build --root .
+      - run: pnpm build
       - uses: actions/configure-pages@v4
       - uses: actions/upload-pages-artifact@v3
-        with: { path: './dist' }
+        with:
+          path: dist
       - id: deployment
         uses: actions/deploy-pages@v4
 ```
 
 ## Cloudflare Pages
 
-```bash
-# Build command
-node packages/cli/dist/cli.js build --root .
-
-# Output directory
-dist/
-
-# Environment variables (optional)
-NODE_VERSION=22
-```
+- **Build command:** `pnpm build`
+- **Build output:** `dist`
+- **Environment:** `NODE_VERSION=22`
 
 ## Netlify
 
-```toml
-# netlify.toml
-[build]
-  command = "node packages/cli/dist/cli.js build --root ."
-  publish = "dist"
-
-[build.environment]
-  NODE_VERSION = "22"
-```
+- **Build command:** `pnpm build`
+- **Publish directory:** `dist`
 
 ## Vercel
 
-```json
-// vercel.json
-{
-  "buildCommand": "node packages/cli/dist/cli.js build --root .",
-  "outputDirectory": "dist",
-  "framework": null
-}
-```
+- **Framework preset:** Other
+- **Build command:** `pnpm build`
+- **Output directory:** `dist`
 
 ## Nginx
 
@@ -77,18 +61,23 @@ NODE_VERSION=22
 server {
     listen 80;
     server_name example.com;
-    root /var/www/mysite/dist;
+    root /var/www/mysite;
     index index.html;
     location / {
-        try_files $uri $uri/ /404.html;
+        try_files $uri $uri/ =404;
+    }
+    location /assets/ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
     }
 }
 ```
 
-## Static Hosting Checklist
+## Post-Deployment Checklist
 
-- [ ] Set `site.url` in `mineproj.config.ts` for canonical URLs
-- [ ] Run `mineproj audit` and ensure score ≥ 85
-- [ ] Verify `dist/api/v1/projects.json` is accessible
-- [ ] Check that `dist/404.html` is served for 404 errors
-- [ ] Set up a custom domain and HTTPS
+- [ ] Site loads and is fully navigable
+- [ ] `sitemap.xml` is accessible
+- [ ] `robots.txt` is accessible
+- [ ] `llms.txt` is accessible
+- [ ] OG images render correctly
+- [ ] Lighthouse audit score ≥ 85

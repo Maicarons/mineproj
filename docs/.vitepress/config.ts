@@ -1,16 +1,11 @@
 import { defineConfig } from 'vitepress'
 
-// 文档站部署基路径：GitHub Pages 项目站点通常为 /<repo>/。
-// 本地预览可用 DOCS_BASE=/ 覆盖（例如：DOCS_BASE=/ npm run docs:dev）。
 const base = process.env.DOCS_BASE ?? '/mineproj/'
 
-// 注：如需中英双语，可在此追加 `locales` 配置（root 为 zh-CN，en 为 en-US），
-// 并为每个 locale 提供对应的 themeConfig.nav / sidebar。产品本身的 i18n 方案见
-// 《产品技术方案》§13。
 export default defineConfig({
   base,
   title: 'mineproj',
-  description: 'Apache-2.0 许可的纯前端个人项目展示静态站点生成器',
+  description: 'Apache-2.0 licensed static site generator for personal project portfolios',
   lastUpdated: true,
   cleanUrls: true,
   appearance: 'toggle',
@@ -19,29 +14,44 @@ export default defineConfig({
   },
   themeConfig: {
     nav: [
-      { text: '产品技术方案', link: '/plan/' },
-      { text: '开发计划', link: '/plan/development' },
-      { text: '指南', link: '/guide/getting-started' },
+      { text: 'Guide', link: '/guide/getting-started' },
+      { text: 'Theme Dev', link: '/guide/theme-development' },
+      { text: 'Plugin Dev', link: '/guide/plugin-development' },
+      { text: 'API', link: '/guide/api-reference' },
+      { text: 'Deploy', link: '/guide/deploying' },
     ],
     sidebar: {
-      '/plan/': [
-        {
-          text: '计划与方案',
-          items: [
-            { text: '产品技术方案', link: '/plan/' },
-            { text: '开发计划', link: '/plan/development' },
-          ],
-        },
-      ],
       '/guide/': [
         {
-          text: '指南',
+          text: 'Getting Started',
           items: [
-            { text: '快速开始', link: '/guide/getting-started' },
-            { text: '主题开发', link: '/guide/theme-development' },
-            { text: '插件开发', link: '/guide/plugin-development' },
-            { text: 'API 参考', link: '/guide/api-reference' },
-            { text: '部署', link: '/guide/deploying' },
+            { text: 'Quick Start', link: '/guide/getting-started' },
+            { text: 'Configuration', link: '/guide/configuration' },
+            { text: 'Data Model', link: '/guide/data-model' },
+            { text: 'Deploying', link: '/guide/deploying' },
+          ],
+        },
+        {
+          text: 'Theme Development',
+          items: [
+            { text: 'Theme Basics', link: '/guide/theme-development' },
+            { text: 'Layouts & Slots', link: '/guide/theme-layouts' },
+            { text: 'Islands', link: '/guide/theme-islands' },
+          ],
+        },
+        {
+          text: 'Plugin Development',
+          items: [
+            { text: 'Plugin Basics', link: '/guide/plugin-development' },
+            { text: 'Lifecycle Hooks', link: '/guide/plugin-hooks' },
+          ],
+        },
+        {
+          text: 'Reference',
+          items: [
+            { text: 'API Reference', link: '/guide/api-reference' },
+            { text: 'CLI Reference', link: '/guide/cli-reference' },
+            { text: 'Configuration Reference', link: '/guide/configuration' },
           ],
         },
       ],
@@ -58,15 +68,15 @@ export default defineConfig({
     },
     editLink: {
       pattern: 'https://github.com/Maicarons/mineproj/edit/main/docs/:path',
-      text: '在 GitHub 上编辑此页',
+      text: 'Edit this page on GitHub',
     },
-    docFooter: { prev: false, next: true },
-    outline: { label: '本页目录' },
-    lastUpdated: { text: '最后更新于' },
-    returnToTopLabel: '回到顶部',
-    sidebarMenuLabel: '菜单',
-    darkModeSwitchLabel: '主题',
-    lightModeSwitchTitle: '切换到浅色模式',
-    darkModeSwitchTitle: '切换到深色模式',
+    docFooter: { prev: 'Previous', next: 'Next' },
+    outline: { label: 'On this page' },
+    lastUpdated: { text: 'Last updated' },
+    returnToTopLabel: 'Back to top',
+    sidebarMenuLabel: 'Menu',
+    darkModeSwitchLabel: 'Appearance',
+    lightModeSwitchTitle: 'Switch to light mode',
+    darkModeSwitchTitle: 'Switch to dark mode',
   },
 })

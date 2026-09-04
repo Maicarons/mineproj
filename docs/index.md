@@ -3,30 +3,33 @@ layout: home
 
 hero:
   name: mineproj
-  text: 纯前端个人项目展示生成器
-  tagline: Apache-2.0 许可 · 零后端 · JSON + Markdown 驱动 · 主题与插件皆为 npm 包
+  text: Static Site Generator for Project Portfolios
+  tagline: Apache-2.0 · Zero backend · JSON + Markdown driven · Themes and plugins as npm packages
   actions:
     - theme: brand
-      text: 阅读产品技术方案
-      link: /plan/
-    - theme: alt
-      text: 查看开发计划
-      link: /plan/development
-    - theme: alt
-      text: 快速开始
+      text: Get Started
       link: /guide/getting-started
+    - theme: alt
+      text: View on GitHub
+      link: https://github.com/Maicarons/mineproj
 
 features:
-  - title: 纯前端部署
-    details: 构建产物是一份纯静态目录，可直接托管到任意静态服务器或 GitHub Pages，无需任何后端。
-  - title: 主题即 npm 包
-    details: 默认主题 @mineproj/theme-classic 自身也是 npm 包，与第三方主题走完全相同的解析路径，契约不被腐化。
-  - title: 插件双形态
-    details: mineproj 生命周期钩子 + 原生 Vite 插件透传，直接复用整个 Vite/Rollup/unplugin 生态。
-  - title: SEO / AI 友好
-    details: JSON-LD、sitemap、robots 放行 AI 爬虫、llms.txt、Markdown 镜像页与 AGENTS.md。
-  - title: 可视化编辑器
-    details: 把「手写 JSON」变成「可视化填表 + 实时预览」，非技术协作者也能维护内容。
-  - title: i18n 一等公民
-    details: 路由前缀 + 字段级覆盖 + Markdown 分语言 + 回退链 + hreflang。
+  - title: Zero Backend
+    details: Pure static output. Deploy to GitHub Pages, Netlify, Vercel, Cloudflare, or any static host.
+  - title: Theme-as-Package
+    details: Themes are npm packages. Switch between classic and gallery with one config line.
+  - title: Plugin System
+    details: Lifecycle hooks + native Vite plugin passthrough. Extend without forking.
+  - title: Markdown Pipeline
+    details: GFM + Shiki build-time highlighting (zero runtime JS). TOC, excerpts, sanitize.
+  - title: Rich Media
+    details: PDF viewer (pdfjs lazy-load, 3-level degradation), Lightbox, video facade.
+  - title: i18n Ready
+    details: Route prefix, field-level overrides, per-locale markdown, fallback chain, hreflang.
+  - title: SEO / AI
+    details: JSON-LD, sitemap, llms.txt, AGENTS.md, Markdown mirrors, audit scoring.
+  - title: Visual Editor
+    details: Schema-driven form, real-time preview, multiple transports, security hardened.
+  - title: Incremental Builds
+    details: Content-hash cache, only re-render changed pages. Fast iteration.
 ---

@@ -4,6 +4,7 @@
 
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![CI](https://github.com/maicarons/mineproj/actions/workflows/ci.yml/badge.svg)](.github/workflows/ci.yml)
+[![Docs](https://img.shields.io/badge/docs-vitepress-blue)](https://maicarons.github.io/mineproj/)
 ![Tests](https://img.shields.io/badge/tests-412%20passed-brightgreen)
 ![Status](https://img.shields.io/badge/milestones-M0–M9%20100%25-green)
 
@@ -78,6 +79,7 @@ All milestones **M0–M9** are 100% complete (143/143 WBS items).
 
 ## Documentation
 
+- [Documentation](https://maicarons.github.io/mineproj/) — online docs site
 - [Getting Started](docs/guide/getting-started.md)
 - [Deploying](docs/guide/deploying.md)
 - [Theme Development](THEMES.md)
