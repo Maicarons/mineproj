@@ -1,5 +1,8 @@
 import { DiscoveryQueue, PlayableFrame, SearchPalette } from './components/interactive';
 import { LangSwitch } from './components/LangSwitch';
+import { PdfViewer } from './components/PdfViewer';
+import { Lightbox } from './components/Lightbox';
+import { MediaFrame } from './components/MediaFrame';
 import { LibraryExplorer } from './components/LibraryExplorer';
 import { ThemeToggle } from './components/ThemeToggle';
 
@@ -15,4 +18,7 @@ export const islands = {
   'search-palette': SearchPalette,
   'discovery-queue': DiscoveryQueue,
   'lang-switch': LangSwitch,
+  'pdf-viewer': PdfViewer,
+  'lightbox': Lightbox,
+  'media-frame': MediaFrame,
 };
