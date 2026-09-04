@@ -9,11 +9,11 @@
     "preview": "mineproj preview"
   },
   "dependencies": {
-    "@mineproj/theme-gallery": "latest",
-    "@mineproj/plugin-seo": "latest",
-    "@mineproj/plugin-sitemap": "latest"
+    "@mineproj/theme-gallery": "^0.0.0",
+    "@mineproj/plugin-seo": "^0.0.0",
+    "@mineproj/plugin-sitemap": "^0.0.0"
   },
   "devDependencies": {
-    "mineproj": "latest"
+    "mineproj": "^0.0.0"
   }
 }
