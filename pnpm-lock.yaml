@@ -544,6 +544,9 @@ importers:
 
   tests/e2e:
     devDependencies:
+      '@mineproj/cli':
+        specifier: workspace:*
+        version: link:../../packages/cli
       '@playwright/test':
         specifier: ^1.50.0
         version: 1.62.1
