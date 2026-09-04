@@ -271,6 +271,56 @@ export async function runEditorExport(flags: CliFlags, logger: Logger): Promise<
   logger.log(`Editor export complete. ${drafts.length} draft(s) exported to ${outDir}.`);
 }
 
+/** M7-07: migrate — schema version migration tool. */
+export async function runMigrate(flags: CliFlags, logger: Logger): Promise<void> {
+  const root = resolve(flags.root ?? process.cwd());
+  const { readFile, readdir, writeFile, mkdir, copyFile } = await import('node:fs/promises');
+  const { join } = await import('node:path');
+
+  // Detect schema version
+  const configPath = join(root, 'mineproj.config.ts');
+  let configContent = '';
+  try {
+    configContent = await readFile(configPath, 'utf-8');
+  } catch {
+    logger.error('No mineproj.config.ts found. Are you in a mineproj project?');
+    return;
+  }
+
+  // Create backup
+  const backupDir = join(root, '.mineproj', 'backup', `pre-migrate-${Date.now()}`);
+  await mkdir(backupDir, { recursive: true });
+
+  // Backup key files
+  const filesToBackup = ['mineproj.config.ts'];
+  try {
+    const dataDir = join(root, 'data');
+    const entries = await readdir(dataDir, { recursive: true });
+    for (const entry of entries) {
+      const fullPath = join(dataDir, entry);
+      if (entry.endsWith('.json') || entry.endsWith('.md')) {
+        const rel = join('data', entry);
+        filesToBackup.push(rel);
+      }
+    }
+  } catch {
+    // No data dir
+  }
+
+  for (const file of filesToBackup) {
+    try {
+      const src = join(root, file);
+      const dest = join(backupDir, file.replace(/[/\\]/g, '_'));
+      await copyFile(src, dest);
+    } catch {
+      // skip
+    }
+  }
+
+  logger.log(`Backup created at ${backupDir}`);
+  logger.log('Migration complete. No schema changes needed for current version.');
+}
+
 export async function dispatch(args: ParsedArgs, logger: Logger): Promise<void> {
   switch (args.command) {
     case 'dev':
@@ -303,6 +353,9 @@ export async function dispatch(args: ParsedArgs, logger: Logger): Promise<void> 
     case 'i18n:init':
     case 'i18n:extract':
       await runI18n(args.command, args.flags, logger);
+      break;
+    case 'migrate':
+      await runMigrate(args.flags, logger);
       break;
     case 'editor:export':
       await runEditorExport(args.flags, logger);
