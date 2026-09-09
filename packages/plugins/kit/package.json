@@ -16,5 +16,5 @@
   },
   "scripts": { "test": "vitest run --passWithNoTests" },
   "dependencies": { "@mineproj/core": "workspace:*", "minisearch": "^7.0.0" },
-  "devDependencies": { "vitest": "^4.0.0" }
+  "devDependencies": { "vitest": "^5.0.0" }
 }
