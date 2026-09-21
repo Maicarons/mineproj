@@ -21,7 +21,7 @@
     "check:encoding": "python scripts/check-encoding.py"
   },
   "devDependencies": {
-    "@eslint/js": "^9.0.0",
+    "@eslint/js": "^10.0.1",
     "@mineproj/eslint-config": "workspace:*",
     "eslint": "^10.10.0",
     "prettier": "^3.4.0",
