@@ -26,7 +26,7 @@
     "@mineproj/tsconfig": "workspace:*",
     "@mineproj/vitest": "workspace:*",
     "@types/markdown-it": "^14.0.0",
-    "@types/node": "^26.4.1",
+    "@types/node": "^26.6.1",
     "tsdown": "^0.23.0",
     "typescript": "^7.0.2",
     "vitest": "^5.0.0"
