@@ -19,7 +19,7 @@
   "dependencies": {
     "@mineproj/core": "workspace:*",
     "@mineproj/schema": "workspace:*",
-    "zod": "^4.0.0"
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@mineproj/tsconfig": "workspace:*",
