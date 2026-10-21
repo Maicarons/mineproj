@@ -20,7 +20,7 @@
   "dependencies": {
     "@mineproj/markdown": "workspace:^",
     "@mineproj/schema": "workspace:*",
-    "@shikijs/markdown-it": "^4.4.3",
+    "@shikijs/markdown-it": "^4.5.0",
     "jiti": "^2.0.0",
     "markdown-it": "^15.0.3",
     "minisearch": "^7.0.0",
